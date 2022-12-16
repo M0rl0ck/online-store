@@ -75,15 +75,18 @@
 }
 
 .range__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   height: 2rem;
 }
 
-.range__wrapper input[type='range'] {
+/* .range__wrapper input[type='range'] {
   position: absolute;
-}
+} */
 
-.input__range {
+/* .input__range {
   -webkit-appearance: none;
   appearance: none;
   width: 96%;
@@ -97,4 +100,4 @@
 
 .range__wrapper input[type='range']:nth-child(2) {
   background: none;
-}
+} */

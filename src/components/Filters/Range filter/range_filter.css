@@ -1,0 +1,30 @@
+.noUi-connect,
+.noUi-handle {
+  background: orange;
+  cursor: pointer;
+}
+
+.noUi-tooltip {
+  display: none;
+}
+
+.noUi-active .noUi-tooltip {
+  display: block;
+  background: orange;
+  color: azure;
+  font-size: 1.6rem;
+}
+
+.input__range {
+  width:  90%;
+}
+
+.input__range:hover {
+  cursor: pointer;
+}
+.input__range:hover .noUi-tooltip {
+  display: block;
+  background: orange;
+  color: azure;
+  font-size: 1.6rem;
+}
