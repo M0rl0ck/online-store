@@ -5,12 +5,16 @@ import FilterRange from '../Range filter/range_filter';
 export default class LeftFilter {
   rangePrice: number[];
   rangeInputPrice: FilterRange;
+  rangeStock: number[];
+  rangeInputStock: FilterRange;
   constructor() {
     this.rangePrice = [10, 1750];
+    this.rangeStock = [1, 150];
     this.rangeInputPrice = new FilterRange(this.rangePrice, 'input__range');
+    this.rangeInputStock = new FilterRange(this.rangeStock, 'input__range');
   }
   createLeftFilter(): HTMLElement {
-    const element = createHtmlElement('div', 'filters', '', document.body);
+    const element = createHtmlElement('div', 'filters', '');
     const buttonsWrapper = createHtmlElement('div', 'reset__total', '', element);
     const buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', buttonsWrapper);
     const buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', buttonsWrapper);
@@ -28,29 +32,14 @@ export default class LeftFilter {
     const priceDataTo = createHtmlElement('div', 'data__to', `€${this.rangePrice[1]}.00`, priceData);
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
-    // const inputRangeFrom = createHtmlElement('input', 'input__range', ``, priceRangeWrapper);
-    // inputRangeFrom.setAttribute('type', 'range');
-    // inputRangeFrom.setAttribute('min', '0');
-    // inputRangeFrom.setAttribute('max', '48');
-    // const inputRangeTo = createHtmlElement('input', 'input__range', ``, priceRangeWrapper);
-    // inputRangeTo.setAttribute('type', 'range');
-    // inputRangeTo.setAttribute('min', '0');
-    // inputRangeTo.setAttribute('max', '48');
     const stockDualSlider = createHtmlElement('div', 'price__slider', '', element);
     const stockDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
     const stockData = createHtmlElement('div', 'price__data', '', stockDualSlider);
-    const stockDataFrom = createHtmlElement('div', 'data__from', '1', stockData);
+    const stockDataFrom = createHtmlElement('div', 'data__from', `${this.rangeStock[0]}`, stockData);
     const stockDualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, stockData);
-    const stockDataTo = createHtmlElement('div', 'data__to', '150', stockData);
+    const stockDataTo = createHtmlElement('div', 'data__to', `${this.rangeStock[1]}`, stockData);
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
-    const stockInputRangeFrom = createHtmlElement('input', 'input__range', ``, stockRangeWrapper);
-    stockInputRangeFrom.setAttribute('type', 'range');
-    stockInputRangeFrom.setAttribute('min', '0');
-    stockInputRangeFrom.setAttribute('max', '48');
-    const stockInputRangeTo = createHtmlElement('input', 'input__range', ``, stockRangeWrapper);
-    stockInputRangeTo.setAttribute('type', 'range');
-    stockInputRangeTo.setAttribute('min', '0');
-    stockInputRangeTo.setAttribute('max', '48');
+    stockRangeWrapper.append(this.rangeInputStock.rangeInput);
     return element;
   }
 }

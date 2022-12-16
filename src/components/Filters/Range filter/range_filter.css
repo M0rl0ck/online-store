@@ -16,7 +16,7 @@
 }
 
 .input__range {
-  width:  90%;
+  width: 90%;
 }
 
 .input__range:hover {
@@ -27,4 +27,48 @@
   background: orange;
   color: azure;
   font-size: 1.6rem;
+}
+
+.slider-styled,
+.slider-styled .noUi-handle {
+  box-shadow: none;
+}
+
+.slider-styled .noUi-handle::before,
+.slider-styled .noUi-handle::after {
+  display: none;
+}
+
+.noUi-target,
+.noUi-target * {
+  background: orange;
+  border-radius: none;
+  border: none;
+  box-shadow: none;
+}
+
+.input__range {
+  width: 90%;
+  height: 2px;
+}
+
+.noUi-horizontal .noUi-handle {
+  height: 18px;
+  width: 18px;
+  top: -7px;
+  right: -9px;
+  border-radius: 9px;
+}
+
+.noUi-touch-area {
+  height: 100%;
+  width: 100%;
+  border-radius: 9px;
+  background-color: #181a1c;
+  border: 1px solid orange;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
 }

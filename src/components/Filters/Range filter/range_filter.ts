@@ -13,7 +13,7 @@ export default class FilterRange {
 
     noUiSlider.create(this.rangeInput, {
       start: [this.min, this.max],
-      tooltips: true,
+      // tooltips: true,
       step: 1,
       connect: true,
       format: {
@@ -22,7 +22,7 @@ export default class FilterRange {
         },
         from: function (value) {
           return parseInt(value);
-      }
+        },
       },
       range: {
         min: [this.min],

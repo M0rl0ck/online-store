@@ -72,7 +72,7 @@ html {
   box-sizing: inherit;
 }
 
-html::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
@@ -88,13 +88,17 @@ html::-webkit-scrollbar {
 }
 
 body {
+  background: center/cover;
   background-image: url(../../img/bg.jpg);
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  font-family: sans-serif;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  height: 100vh;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  margin: 0;
+  height: 100%;
 }
