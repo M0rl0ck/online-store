@@ -14,6 +14,7 @@ const config = {
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
+    assetModuleFilename: path.join('img', '[name].[contenthash][ext]'),
   },
   devServer: {
     open: true,
@@ -21,7 +22,8 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html",
+      template: path.resolve(__dirname, './src/index.html'),
+      filename: 'index.html',
     }),
 
     // Add your plugins here
@@ -45,6 +47,10 @@ const config = {
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",
+      },
+      {
+        test: /.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
 
       // Add your rules for custom modules here
