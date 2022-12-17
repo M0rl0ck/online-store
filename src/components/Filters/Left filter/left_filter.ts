@@ -48,6 +48,7 @@ export default class LeftFilter {
     this.rangeInputPrice.rangeInput.noUiSlider?.on(
       "update",
       (values: (string | number)[], handle: number): void => {
+        this.rangePrice[handle] = Number(values[handle]);
         this.priceDataFrom.textContent = values[0].toString();
         this.priceDataTo.textContent = values[1].toString();
       }
@@ -55,6 +56,7 @@ export default class LeftFilter {
     this.rangeInputStock.rangeInput.noUiSlider?.on(
       "update",
       (values: (string | number)[], handle: number): void => {
+        this.rangeStock[handle] = Number(values[handle]);
         this.stockDataFrom.textContent = values[0].toString();
         this.stockDataTo.textContent = values[1].toString();
       }

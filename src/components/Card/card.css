@@ -17,7 +17,7 @@
   height: 100%;
   position: absolute;
   top: 0;
-  background: url(https://i.dummyjson.com/data/products/6/thumbnail.png) 0% 0% / cover;
+  /* background: url(https://i.dummyjson.com/data/products/6/thumbnail.png) 0% 0% / cover; */
 }
 
 .card__text {

@@ -1,11 +1,12 @@
 import './catalog.css';
 import { createHtmlElement } from '../../utils/createElement';
 import Card from './../Card/card';
+import ICard from '../constants/interfaces/ICard';
 
 export default class Catalog {
-  card: Card;
-  constructor() {
-    this.card = new Card();
+  cards: Card[] = [];
+  constructor(dataCards: ICard[]) {
+    dataCards.forEach(el => this.cards.push(new Card(el)))
   }
   createCatalog(): HTMLElement {
     const element = createHtmlElement('div', 'catalog', '');
@@ -26,7 +27,7 @@ export default class Catalog {
     const viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
     const viewModeBig = createHtmlElement('div', 'view__big', `4 in a row`, viewMode);
     const productsWrap = createHtmlElement('div', 'products__wrap', '', element);
-    productsWrap.append(this.card.createCard());
+    productsWrap.append(...(this.cards.map(card => card.element)));
     return element;
   }
 }
