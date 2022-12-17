@@ -7,6 +7,10 @@ export default class LeftFilter {
   rangeInputPrice: FilterRange;
   rangeStock: number[];
   rangeInputStock: FilterRange;
+  priceDataFrom!: HTMLElement;
+  priceDataTo!: HTMLElement;
+  stockDataFrom!: HTMLElement;
+  stockDataTo!: HTMLElement;
   constructor() {
     this.rangePrice = [10, 1750];
     this.rangeStock = [1, 150];
@@ -27,19 +31,34 @@ export default class LeftFilter {
     const priceDualSlider = createHtmlElement('div', 'price__slider', '', element);
     const priceDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
     const priceData = createHtmlElement('div', 'price__data', '', priceDualSlider);
-    const priceDataFrom = createHtmlElement('div', 'data__from', `€${this.rangePrice[0]}`, priceData);
+    this.priceDataFrom = createHtmlElement('div', 'data__from', `€${this.rangePrice[0]}`, priceData);
     const dualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, priceData);
-    const priceDataTo = createHtmlElement('div', 'data__to', `€${this.rangePrice[1]}.00`, priceData);
+    this.priceDataTo = createHtmlElement('div', 'data__to', `€${this.rangePrice[1]}.00`, priceData);
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
     const stockDualSlider = createHtmlElement('div', 'price__slider', '', element);
     const stockDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
     const stockData = createHtmlElement('div', 'price__data', '', stockDualSlider);
-    const stockDataFrom = createHtmlElement('div', 'data__from', `${this.rangeStock[0]}`, stockData);
+    this.stockDataFrom = createHtmlElement('div', 'data__from', `${this.rangeStock[0]}`, stockData);
     const stockDualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, stockData);
-    const stockDataTo = createHtmlElement('div', 'data__to', `${this.rangeStock[1]}`, stockData);
+    this.stockDataTo = createHtmlElement('div', 'data__to', `${this.rangeStock[1]}`, stockData);
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
     stockRangeWrapper.append(this.rangeInputStock.rangeInput);
+
+    this.rangeInputPrice.rangeInput.noUiSlider?.on(
+      "update",
+      (values: (string | number)[], handle: number): void => {
+        this.priceDataFrom.textContent = values[0].toString();
+        this.priceDataTo.textContent = values[1].toString();
+      }
+    );
+    this.rangeInputStock.rangeInput.noUiSlider?.on(
+      "update",
+      (values: (string | number)[], handle: number): void => {
+        this.stockDataFrom.textContent = values[0].toString();
+        this.stockDataTo.textContent = values[1].toString();
+      }
+    );
     return element;
   }
 }
