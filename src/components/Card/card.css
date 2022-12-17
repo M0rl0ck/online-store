@@ -1,0 +1,77 @@
+.product__card {
+  width: 23%;
+  padding-top: 20%;
+  position: relative;
+  /* width: 14.6%;
+  padding-top: 12%; */
+  margin: 1%;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  /* background: url(https://i.dummyjson.com/data/products/6/thumbnail.png) 0% 0% / cover; */
+}
+
+.card__text {
+  width: 100%;
+  height: 83%;
+  cursor: pointer;
+}
+
+.card__title {
+  background: rgba(24, 26, 28, 0.8);
+  padding: 1%;
+  font-size: 90%;
+  text-align: center;
+  border-bottom: 1px solid orange;
+  white-space: nowrap;
+}
+
+.card__info-wrap {
+  color: wheat;
+}
+
+.card__info {
+  width: 60%;
+  background-color: #4d2f14f2;
+  border-radius: 0 0 0.4rem;
+  border-bottom: 1px solid orange;
+  border-right: 1px solid orange;
+  padding: 1%;
+}
+
+.info__category {
+  font-size: 0.6rem;
+  color: wheat;
+}
+
+.info__category > span {
+  font-size: 0.6rem;
+  color: #bb954e;
+}
+
+.card__buttons {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.add__button,
+.details__button {
+  background-color: #181a1c;
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  padding-left: 2%;
+  padding-right: 2%;
+  font-size: 80%;
+  cursor: pointer;
+}

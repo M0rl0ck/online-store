@@ -1,0 +1,10 @@
+.main__content {
+  position: relative;
+  padding: 2%;
+}
+
+.main__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

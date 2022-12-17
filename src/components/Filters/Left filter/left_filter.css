@@ -75,26 +75,9 @@
 }
 
 .range__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   height: 2rem;
-}
-
-.range__wrapper input[type='range'] {
-  position: absolute;
-}
-
-.input__range {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 96%;
-  margin: 2%;
-  overflow: hidden;
-  outline: none;
-  background: linear-gradient(orange, orange) no-repeat center;
-  background-size: 100% 2px;
-  pointer-events: none;
-}
-
-.range__wrapper input[type='range']:nth-child(2) {
-  background: none;
 }
