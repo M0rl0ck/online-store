@@ -3,26 +3,22 @@ import LeftFilter from '../src/components/Filters/Left filter/left_filter';
 import Catalog from '../src/components/Catalog/catalog';
 import '../src/css/global.css';
 import Footer from './components/Footer/footer';
-import Main from './components/Main/main';
-import ICard from './components/constants/interfaces/ICard'
+import main from './components/Main/main';
+import ICard from './components/constants/interfaces/ICard';
+import connector from './data/connector/Connector'
 
-const dataCards: ICard[] = [];
-const header = new Header();
-header.createHeader();
-
-const main = new Main();
-
-const leftFilter = new LeftFilter();
-
-
+new Header();
 
 
 
 const footer = new Footer();
 footer.createFooter();
 
-fetch('https://dummyjson.com/products?limit=100').then(responce => responce.json()).then(data => {
-  dataCards.push(...data.products);
-  const catalog = new Catalog(dataCards);
-  main.createMain().append(leftFilter.createLeftFilter(), catalog.createCatalog());
-})
+async function mainPage() {
+  const data: ICard[] = await connector.getProducts(100);
+  const catalog = new Catalog(data);
+  const leftFilter = new LeftFilter();
+  main.append(leftFilter.createLeftFilter(), catalog.createCatalog());
+}
+
+mainPage();
