@@ -7,7 +7,7 @@ export default class FilterRange {
   rangeInput: noUiSlider.target;
   min: number;
   max: number;
-  constructor(rangeValue: number[], className: string) {
+  constructor(values: number[], rangeValue: number[], className: string) {
     this.rangeInput = createHtmlElement('div', className);
     [this.min, this.max] = rangeValue;
 
@@ -18,15 +18,15 @@ export default class FilterRange {
       connect: true,
       format: {
         to: function (value) {
-          return Math.floor(value);
+          return values[Math.round(value)];
         },
         from: function (value) {
-          return parseInt(value);
+          return values.indexOf(Number(value));
         },
       },
       range: {
-        min: [this.min],
-        max: [this.max],
+        min: [0],
+        max: [values.length - 1],
       },
     });
   }

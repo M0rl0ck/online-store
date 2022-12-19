@@ -17,7 +17,7 @@ footer.createFooter();
 async function mainPage() {
   const data: ICard[] = await connector.getProducts(100);
   const catalog = new Catalog(data);
-  const leftFilter = new LeftFilter();
+  const leftFilter = new LeftFilter(data);
   main.append(leftFilter.createLeftFilter(), catalog.createCatalog());
 }
 
