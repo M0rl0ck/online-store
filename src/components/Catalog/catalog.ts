@@ -2,15 +2,17 @@ import './catalog.css';
 import { createHtmlElement } from '../../utils/createElement';
 import Card from './../Card/card';
 import ICard from '../constants/interfaces/ICard';
+import Main from '../Main/main';
 
-export default class Catalog {
+export default class Catalog extends Main {
   data: ICard[];
   cards: Card[] = [];
   element!: HTMLElement;
   productsWrap!: HTMLElement;
-  constructor(dataCards: ICard[]) {
+  constructor(id: string, dataCards: ICard[]) {
+    super(id);
     this.data = [...dataCards];
-    this.data.forEach(el => this.cards.push(new Card(el)));
+    this.data.forEach((el) => this.cards.push(new Card(el)));
   }
   createCatalog(): HTMLElement {
     const element = createHtmlElement('div', 'catalog', '');
@@ -45,7 +47,7 @@ export default class Catalog {
     const viewModeBig = createHtmlElement('div', 'view__big', `4 in a row`, viewMode);
     const productsWrap = createHtmlElement('div', 'products__wrap', '', element);
     this.productsWrap = productsWrap;
-    productsWrap.append(...(this.cards.map(card => card.element)));
+    productsWrap.append(...this.cards.map((card) => card.element));
     return element;
   }
 
@@ -53,26 +55,26 @@ export default class Catalog {
     this.productsWrap.innerHTML = '';
     switch (prop) {
       case 'PriceASC':
-        this.data.sort((a, b) => a.price - b.price)
+        this.data.sort((a, b) => a.price - b.price);
         break;
       case 'PriceDESC':
-        this.data.sort((a, b) => b.price - a.price)
+        this.data.sort((a, b) => b.price - a.price);
         break;
       case 'RatingASC':
-        this.data.sort((a, b) => a.rating - b.rating)
+        this.data.sort((a, b) => a.rating - b.rating);
         break;
       case 'RatingDESC':
-        this.data.sort((a, b) => b.rating - a.rating)
+        this.data.sort((a, b) => b.rating - a.rating);
         break;
       case 'DiscountASC':
-        this.data.sort((a, b) => a.discountPercentage - b.discountPercentage)
+        this.data.sort((a, b) => a.discountPercentage - b.discountPercentage);
         break;
       case 'DiscountDESC':
-        this.data.sort((a, b) => b.discountPercentage - a.discountPercentage)
+        this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
     }
     this.cards = [];
-    this.data.forEach(el => this.cards.push(new Card(el)));
-    this.productsWrap.append(...(this.cards.map(card => card.element)));
+    this.data.forEach((el) => this.cards.push(new Card(el)));
+    this.productsWrap.append(...this.cards.map((card) => card.element));
   }
 }
