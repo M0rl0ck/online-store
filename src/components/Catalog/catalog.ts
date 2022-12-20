@@ -2,22 +2,20 @@ import './catalog.css';
 import { createHtmlElement } from '../../utils/createElement';
 import Card from './../Card/card';
 import ICard from '../constants/interfaces/ICard';
-import Main from '../Main/main';
 
-export default class Catalog extends Main {
+export default class Catalog {
   data: ICard[];
   cards: Card[] = [];
-  element!: HTMLElement;
+  element: HTMLElement;
   productsWrap!: HTMLElement;
-  constructor(id: string, dataCards: ICard[]) {
-    super(id);
+  constructor(dataCards: ICard[]) {
     this.data = [...dataCards];
     this.data.forEach((el) => this.cards.push(new Card(el)));
+    this.element = createHtmlElement('div', 'catalog', '');
+    this.createCatalog();
   }
-  createCatalog(): HTMLElement {
-    const element = createHtmlElement('div', 'catalog', '');
-    this.element = element;
-    const sortProducts = createHtmlElement('div', 'sort__products', '', element);
+  private createCatalog() {
+    const sortProducts = createHtmlElement('div', 'sort__products', '', this.element);
     const sortSelectWrap = createHtmlElement('div', 'sort__wrap', '', sortProducts);
     const sortSelect = createHtmlElement('select', 'sort__select', '', sortSelectWrap);
     const sortByPriceASC = createHtmlElement('option', 'sort__option-1', 'Sort by price ASC', sortSelect);
@@ -45,10 +43,13 @@ export default class Catalog extends Main {
     const viewMode = createHtmlElement('div', 'view__mode', '', sortProducts);
     const viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
     const viewModeBig = createHtmlElement('div', 'view__big', `4 in a row`, viewMode);
-    const productsWrap = createHtmlElement('div', 'products__wrap', '', element);
+    const productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
     this.productsWrap = productsWrap;
     productsWrap.append(...this.cards.map((card) => card.element));
-    return element;
+  }
+
+  render() {
+    return this.element;
   }
 
   sortCards(prop: string) {

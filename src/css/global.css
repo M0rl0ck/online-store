@@ -102,3 +102,7 @@ body {
   flex-direction: column;
   height: 100%;
 }
+
+a {
+  text-decoration: none;
+}
