@@ -1,4 +1,4 @@
-import { createHtmlElement } from '../../utils/createElement';
+import { createHtmlElement } from '../../../utils/createElement';
 
 export default abstract class Page {
   mainWrapper: HTMLElement;

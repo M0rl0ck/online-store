@@ -1,6 +1,6 @@
 import './errorPage.css';
 import { createHtmlElement } from '../../../utils/createElement';
-import Page from '../page';
+import Page from '../Template/page';
 
 export default class ErrorPage extends Page {
   constructor(id: string) {

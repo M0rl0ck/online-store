@@ -42,7 +42,32 @@ export default class Catalog {
     inputSearch.setAttribute('placeholder', 'Search product');
     const viewMode = createHtmlElement('div', 'view__mode', '', sortProducts);
     const viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
-    const viewModeBig = createHtmlElement('div', 'view__big', `4 in a row`, viewMode);
+    const viewModeBig = createHtmlElement('div', 'view__big active', `4 in a row`, viewMode);
+
+    viewModeSmall.addEventListener('click', (e: Event) => {
+      let target = e.target as HTMLElement;
+      if (!target.classList.contains('active')) {
+        viewModeSmall.classList.toggle('active');
+        viewModeBig.classList.remove('active');
+        this.cards.forEach((card) => card.element.classList.toggle('small'));
+        this.cards.forEach((card) => card.element.querySelector('.card__text')?.classList.toggle('card__text-none'));
+        this.cards.forEach((card) => card.element.querySelector('.add__button')?.classList.toggle('button__small'));
+        this.cards.forEach((card) => card.element.querySelector('.details__button')?.classList.toggle('button__small'));
+      }
+    });
+
+    viewModeBig.addEventListener('click', (e: Event) => {
+      let target = e.target as HTMLElement;
+      if (!target.classList.contains('active')) {
+        viewModeBig.classList.toggle('active');
+        viewModeSmall.classList.remove('active');
+        this.cards.forEach((card) => card.element.classList.toggle('small'));
+        this.cards.forEach((card) => card.element.querySelector('.card__text')?.classList.toggle('card__text-none'));
+        this.cards.forEach((card) => card.element.querySelector('.add__button')?.classList.toggle('button__small'));
+        this.cards.forEach((card) => card.element.querySelector('.details__button')?.classList.toggle('button__small'));
+      }
+    });
+
     const productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
     this.productsWrap = productsWrap;
     productsWrap.append(...this.cards.map((card) => card.element));

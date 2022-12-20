@@ -1,10 +1,10 @@
 import './main.css';
-import Page from '../page';
+import Page from '../Template/page';
 import Catalog from '../../Catalog/catalog';
 import LeftFilter from '../../Filters/Left filter/left_filter';
 import ICard from '../../constants/interfaces/ICard';
 
-class MainPage extends Page{
+class MainPage extends Page {
   constructor(id: string, data: ICard[]) {
     super(id);
     const catalog = new Catalog(data);
@@ -13,7 +13,6 @@ class MainPage extends Page{
   }
 
   render(): HTMLElement {
-
     return this.mainWrapper;
   }
 }
