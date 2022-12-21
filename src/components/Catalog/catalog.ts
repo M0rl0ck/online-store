@@ -45,7 +45,10 @@ export default class Catalog {
     const viewModeBig = createHtmlElement('div', 'view__big active', `4 in a row`, viewMode);
 
     viewModeSmall.addEventListener('click', (e: Event) => {
-      let target = e.target as HTMLElement;
+      const target = e.target;
+      if (!target || !(target instanceof HTMLElement)) {
+        return;
+      }
       if (!target.classList.contains('active')) {
         viewModeSmall.classList.toggle('active');
         viewModeBig.classList.remove('active');
@@ -57,7 +60,10 @@ export default class Catalog {
     });
 
     viewModeBig.addEventListener('click', (e: Event) => {
-      let target = e.target as HTMLElement;
+      const target = e.target;
+      if (!target || !(target instanceof HTMLElement)) {
+        return;
+      }
       if (!target.classList.contains('active')) {
         viewModeBig.classList.toggle('active');
         viewModeSmall.classList.remove('active');
