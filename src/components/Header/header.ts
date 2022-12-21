@@ -5,13 +5,14 @@ export default class Header {
   element: HTMLElement;
   totalPriceNumber: HTMLElement;
   cart: HTMLElement;
+  logo: HTMLElement;
   constructor() {
     this.element = createHtmlElement('header', 'header');
     document.body.prepend(this.element);
     const wrapper = createHtmlElement('div', 'header__wrapper', '', this.element);
-    const logoLink = createHtmlElement('a', 'logo__link', '', wrapper);
-    const logoImg = createHtmlElement('div', 'logo__img', `🛍`, logoLink);
-    const logoText = createHtmlElement('div', 'logo__text', 'Online Store', logoLink);
+    this.logo = createHtmlElement('a', 'logo__link', '', wrapper);
+    const logoImg = createHtmlElement('div', 'logo__img', `🛍`, this.logo);
+    const logoText = createHtmlElement('div', 'logo__text', 'Online Store', this.logo);
     const totalPrice = createHtmlElement('div', 'total__price', ``, wrapper);
     const totalPriceText = createHtmlElement('span', 'total__price-text', 'Cart total: ', totalPrice);
     this.totalPriceNumber = createHtmlElement('span', 'total__price-number', '€0.00', totalPrice);

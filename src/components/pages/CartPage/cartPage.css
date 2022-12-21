@@ -1,0 +1,149 @@
+.cart__page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.cart__wrap {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.products__in__cart {
+  width: 69%;
+  border: 1px solid orange;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: #1e1b1b80;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.title__page-control {
+  display: flex;
+  background-color: #181a1c;
+  padding: 0.3rem;
+  border-bottom: 1px solid orange;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title__cart {
+  font-size: 130%;
+}
+
+.page__control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.limit {
+  color: wheat;
+}
+
+.limit__input {
+  width: 2rem;
+  text-align: center;
+  outline: none;
+  border: 1px solid orange;
+  border-radius: 0.2rem;
+  background-color: #373636;
+  font-size: 140%;
+}
+
+.page__number {
+  margin-left: 2rem;
+  color: wheat;
+}
+
+.page__button {
+  background-color: #373636;
+  cursor: pointer;
+  border: 1px solid orange;
+  border-radius: 0.2rem;
+  padding: 0.1rem;
+  font-size: 140%;
+}
+
+.page__number-text {
+  font-size: 140%;
+  margin: 0 0.5rem;
+}
+
+.prod__items {
+  width: 100%;
+}
+
+.summary {
+  width: 29%;
+  border: 1px solid orange;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background-color: #1e1b1b80;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.summary__title {
+  text-align: center;
+  font-size: 130%;
+  background-color: #181a1c;
+  padding: 0.3rem;
+  border-bottom: 1px solid orange;
+}
+
+.total__amount,
+.total__price-sum {
+  width: 90%;
+  font-size: 170%;
+  color: wheat;
+  text-align: center;
+  margin: 4%;
+}
+
+.total__amount-text,
+.total__price-text {
+  font-size: 90%;
+}
+
+.promo__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo__code-input {
+  background-color: #181a1c;
+  width: 70%;
+  border: 1px solid orange;
+  color: orange;
+  border-radius: 2rem;
+  padding: 0.4rem;
+  text-align: center;
+  outline: none;
+  font-size: 100%;
+}
+
+.promo__ex {
+  display: block;
+  margin: 3% auto;
+  text-align: center;
+  color: #e38383;
+}
+
+.button__buy {
+  font-size: 100%;
+  display: block;
+  padding: 2% 0;
+  background: #9a3535;
+  color: wheat;
+  border: 2px solid orange;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  width: 50%;
+  margin: 3rem auto 1rem;
+}

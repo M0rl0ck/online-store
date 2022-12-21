@@ -6,9 +6,10 @@ import ErrorPage from '../pages/ErrorPage/errorPage';
 import { createHtmlElement } from '../../utils/createElement';
 import MainPage from '../pages/Main/main';
 import CartPage from '../pages/CartPage/CartPage';
+import ProductPage from './../pages/ProductPage/productPage';
 
-export const PATCH = {
-  catalog: '/',
+export const PATH = {
+  catalog: '/catalog',
   product: '/product',
   cart: '/cart',
   errorPage: '/404',
@@ -24,10 +25,10 @@ class App {
     const footer = new Footer();
     footer.createFooter();
     this.routes = {
-      [PATCH.catalog]: this.mainPage,
-      [PATCH.product]: this.product,
-      [PATCH.cart]: this.cart,
-      [PATCH.errorPage]: this.errorPage,
+      [PATH.catalog]: this.mainPage,
+      [PATH.product]: this.product,
+      [PATH.cart]: this.cart,
+      [PATH.errorPage]: this.errorPage,
     };
 
     window.addEventListener('popstate', () => {
@@ -37,10 +38,11 @@ class App {
       if (this.routes[window.location.pathname]) {
         this.routes[window.location.pathname](window.location.pathname);
       } else {
-        this.routes[PATCH.errorPage](PATCH.errorPage);
+        this.routes[PATH.errorPage](PATH.errorPage);
       }
     });
-    this.header.cart.addEventListener('click', () => this.navigate(PATCH.cart));
+    this.header.cart.addEventListener('click', () => this.navigate(PATH.cart));
+    this.header.logo.addEventListener('click', () => this.navigate(PATH.catalog));
   }
 
   navigate = (path: string) => {
@@ -56,7 +58,9 @@ class App {
   };
   private product = (idPage: string) => {
     this.container.innerHTML = '';
-    this.container.append('product');
+    // this.container.append('product');
+    const page = new ProductPage(idPage);
+    this.container.append(page.render());
   };
   private cart = (idPage: string) => {
     this.container.innerHTML = '';
