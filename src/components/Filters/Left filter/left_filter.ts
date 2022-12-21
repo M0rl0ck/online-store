@@ -1,21 +1,33 @@
 import './left_filter.css';
 import { createHtmlElement } from '../../../utils/createElement';
 import FilterRange from '../Range filter/range_filter';
+import ICard from '../../constants/interfaces/ICard';
+
+type FilterList = {
+  [index: string]: number;
+}
 
 export default class LeftFilter {
   rangePrice: number[];
+  currentRangePrice: number[];
   rangeInputPrice: FilterRange;
   rangeStock: number[];
+  currentRangeStock: number[];
   rangeInputStock: FilterRange;
   priceDataFrom!: HTMLElement;
   priceDataTo!: HTMLElement;
   stockDataFrom!: HTMLElement;
   stockDataTo!: HTMLElement;
-  constructor() {
-    this.rangePrice = [10, 1750];
-    this.rangeStock = [1, 150];
-    this.rangeInputPrice = new FilterRange(this.rangePrice, 'input__range');
-    this.rangeInputStock = new FilterRange(this.rangeStock, 'input__range');
+  data: ICard[];
+  constructor(data: ICard[]) {
+    this.data = data;
+
+    this.rangePrice = this.getRange('price');
+    this.rangeStock = this.getRange('stock');
+    this.currentRangePrice = [this.rangePrice[0], this.rangePrice[this.rangePrice.length - 1]];
+    this.currentRangeStock = [this.rangeStock[0], this.rangeStock[this.rangeStock.length - 1]];
+    this.rangeInputPrice = new FilterRange(this.rangePrice, this.currentRangePrice, 'input__range');
+    this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
   }
   createLeftFilter(): HTMLElement {
     const element = createHtmlElement('div', 'filters', '');
@@ -24,10 +36,23 @@ export default class LeftFilter {
     const buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', buttonsWrapper);
     const categoryFilter = createHtmlElement('div', 'category__filter', '', element);
     const categoryFilterTitle = createHtmlElement('h3', 'category__filter-title', 'Category', categoryFilter);
-    const categoryFilterList = createHtmlElement('div', 'filter__list', '', categoryFilter);
+    const categoryFilterList = createHtmlElement('ul', 'filter__list', '', categoryFilter);
+
+    const category = this.getFilterList('category');
+    for (const key in category) {
+      categoryFilterList.append(this.createFilterLine(key, category[key], category[key]));
+    }
+    
+
     const brandFilter = createHtmlElement('div', 'brand__filter', '', element);
     const brandFilterTitle = createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
-    const brandFilterList = createHtmlElement('div', 'filter__list', '', brandFilter);
+    const brandFilterList = createHtmlElement('ul', 'filter__list', '', brandFilter);
+
+    const brand = this.getFilterList('brand');
+    for (const key in brand) {
+      brandFilterList.append(this.createFilterLine(key, brand[key], brand[key]));
+    }
+
     const priceDualSlider = createHtmlElement('div', 'price__slider', '', element);
     const priceDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
     const priceData = createHtmlElement('div', 'price__data', '', priceDualSlider);
@@ -48,7 +73,7 @@ export default class LeftFilter {
     this.rangeInputPrice.rangeInput.noUiSlider?.on(
       "update",
       (values: (string | number)[], handle: number): void => {
-        this.rangePrice[handle] = Number(values[handle]);
+        this.currentRangePrice[handle] = Number(values[handle]);
         this.priceDataFrom.textContent = values[0].toString();
         this.priceDataTo.textContent = values[1].toString();
       }
@@ -56,11 +81,41 @@ export default class LeftFilter {
     this.rangeInputStock.rangeInput.noUiSlider?.on(
       "update",
       (values: (string | number)[], handle: number): void => {
-        this.rangeStock[handle] = Number(values[handle]);
+        this.currentRangeStock[handle] = Number(values[handle]);
         this.stockDataFrom.textContent = values[0].toString();
         this.stockDataTo.textContent = values[1].toString();
       }
     );
     return element;
+  }
+
+  createFilterLine(name: string, min: number, max: number): HTMLElement {
+    const el = createHtmlElement('li', 'filter-line item-active');
+    const check = createHtmlElement('input', '', '', el);
+    check.setAttribute('type', 'checkbox');
+    check.setAttribute('id', name);
+    const label = createHtmlElement('label', '', name, el);
+    label.setAttribute('for', name);
+    createHtmlElement('span', '',  `(${min}/${max})`, el);
+
+    return el;
+  }
+
+  getFilterList(key: 'category' | 'brand'): FilterList {
+    const list: FilterList = {};
+    this.data.forEach(el => {
+      const index = el[key];
+      if (!list[index]) {
+        list[index] = 1;
+      } else list[index] += 1;
+    })
+
+    return list;
+  }
+
+  getRange(key: 'price' | 'stock'): number[] {;
+    const res = this.data.map(el => el[key]).sort((a, b) => a - b);
+    const result = [...(new Set(res))];
+    return result;
   }
 }

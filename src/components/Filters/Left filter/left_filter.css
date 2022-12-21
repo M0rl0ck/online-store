@@ -81,3 +81,25 @@
   position: relative;
   height: 2rem;
 }
+
+.filter-line {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.filter-line label {
+  overflow: hidden;
+  padding-left: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-line span {
+  margin-left: auto;
+}
+
+.item-active {
+
+}
