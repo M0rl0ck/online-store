@@ -9,7 +9,7 @@ import CartPage from '../pages/CartPage/CartPage';
 import ProductPage from './../pages/ProductPage/productPage';
 
 export const PATH = {
-  catalog: '/catalog',
+  catalog: '/',
   product: '/product',
   cart: '/cart',
   errorPage: '/404',
@@ -41,8 +41,8 @@ class App {
         this.routes[PATH.errorPage](PATH.errorPage);
       }
     });
-    this.header.cart.addEventListener('click', () => this.navigate(PATH.cart));
-    this.header.logo.addEventListener('click', () => this.navigate(PATH.catalog));
+
+    this.header.on('navigate', this.navigate);
   }
 
   navigate = (path: string) => {
@@ -54,11 +54,11 @@ class App {
     this.container.innerHTML = '';
     const data: ICard[] = await connector.getProducts(100);
     const main = new MainPage(idPage, data);
+    main.catalog.on('navigate', this.navigate);
     this.container.append(main.render());
   };
   private product = (idPage: string) => {
     this.container.innerHTML = '';
-    // this.container.append('product');
     const page = new ProductPage(idPage);
     this.container.append(page.render());
   };
@@ -73,8 +73,6 @@ class App {
     const page = new ErrorPage(idPage);
     this.container.append(page.render());
   };
-
-  // run() {}
 }
 
 export default App;

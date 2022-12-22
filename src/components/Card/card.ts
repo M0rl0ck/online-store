@@ -4,8 +4,12 @@ import ICard from '../constants/interfaces/ICard';
 
 export default class Card {
   element: HTMLElement;
+  id:number;
+  addButton: HTMLElement;
+  detailsButton: HTMLElement;
   constructor(data: ICard) {
     this.element = createHtmlElement('div', 'product__card', '');
+    this.id = data.id;
     const cardWrap = createHtmlElement('div', 'card__wrap', '', this.element);
     cardWrap.setAttribute('style', `background: url(${data.thumbnail}) 0% 0% / cover`)
     const cardText = createHtmlElement('div', 'card__text', '', cardWrap);
@@ -19,7 +23,7 @@ export default class Card {
     const infoRating = createHtmlElement('p', 'info__category', `<span>Rating: </span> ${data.rating}`, cardInfo);
     const infoStock = createHtmlElement('p', 'info__category', `<span>Stock: </span> ${data.stock}`, cardInfo);
     const cardButtons = createHtmlElement('div', 'card__buttons', '', cardWrap);
-    const addButton = createHtmlElement('button', 'add__button', 'ADD TO CART', cardButtons);
-    const detailsButton = createHtmlElement('button', 'details__button', 'DETAILS', cardButtons);
+    this.addButton = createHtmlElement('button', 'add__button', 'ADD TO CART', cardButtons);
+    this.detailsButton = createHtmlElement('button', 'details__button', 'DETAILS', cardButtons);
   }
 }
