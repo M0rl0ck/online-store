@@ -4,17 +4,18 @@ import ICard from '../constants/interfaces/ICard';
 
 export default class Card {
   element: HTMLElement;
-  id:number;
+  id: number;
   addButton: HTMLElement;
   detailsButton: HTMLElement;
+  cardText: HTMLElement;
   constructor(data: ICard) {
     this.element = createHtmlElement('div', 'product__card', '');
     this.id = data.id;
     const cardWrap = createHtmlElement('div', 'card__wrap', '', this.element);
-    cardWrap.setAttribute('style', `background: url(${data.thumbnail}) 0% 0% / cover`)
-    const cardText = createHtmlElement('div', 'card__text', '', cardWrap);
-    const cardTitle = createHtmlElement('div', 'card__title', `${data.title}`, cardText);
-    const cardInfoWrap = createHtmlElement('div', 'card__info-wrap', '', cardText);
+    cardWrap.setAttribute('style', `background: url(${data.thumbnail}) 0% 0% / cover`);
+    this.cardText = createHtmlElement('div', 'card__text', '', cardWrap);
+    const cardTitle = createHtmlElement('div', 'card__title', `${data.title}`, this.cardText);
+    const cardInfoWrap = createHtmlElement('div', 'card__info-wrap', '', this.cardText);
     const cardInfo = createHtmlElement('div', 'card__info', '', cardInfoWrap);
     const infoCategory = createHtmlElement('p', 'info__category', `<span>Category: </span> ${data.category}`, cardInfo);
     const infoBrand = createHtmlElement('p', 'info__category', `<span>Brand: </span> ${data.brand}`, cardInfo);

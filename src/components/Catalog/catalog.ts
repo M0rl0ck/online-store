@@ -84,7 +84,8 @@ export default class Catalog extends EventEmitter {
     this.productsWrap.innerHTML = '';
     this.productsWrap.append(
       ...this.cards.map((card) => {
-        card.element.addEventListener('click', () => this.emit('navigate', '/product'));
+        card.detailsButton.addEventListener('click', () => this.emit('navigate', '/product'));
+        card.cardText.addEventListener('click', () => this.emit('navigate', '/product'));
         return card.element;
       })
     );
