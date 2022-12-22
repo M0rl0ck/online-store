@@ -1,0 +1,17 @@
+.product__details {
+  width: 80%;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.navigation {
+  margin: 3% auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.main__wrapper {
+  justify-content: center;
+}
