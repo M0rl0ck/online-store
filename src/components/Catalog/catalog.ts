@@ -2,13 +2,15 @@ import './catalog.css';
 import { createHtmlElement } from '../../utils/createElement';
 import Card from './../Card/card';
 import ICard from '../constants/interfaces/ICard';
+import EventEmitter from 'events';
 
-export default class Catalog {
+export default class Catalog extends EventEmitter {
   data: ICard[];
   cards: Card[] = [];
   element: HTMLElement;
   productsWrap!: HTMLElement;
   constructor(dataCards: ICard[]) {
+    super();
     this.data = [...dataCards];
     this.data.forEach((el) => this.cards.push(new Card(el)));
     this.element = createHtmlElement('div', 'catalog', '');
@@ -74,17 +76,23 @@ export default class Catalog {
       }
     });
 
-    const productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
-    this.productsWrap = productsWrap;
-    productsWrap.append(...this.cards.map((card) => card.element));
+    this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
+    this.render();
   }
 
   render() {
+    this.productsWrap.innerHTML = '';
+    this.productsWrap.append(
+      ...this.cards.map((card) => {
+        card.detailsButton.addEventListener('click', () => this.emit('navigate', '/product'));
+        card.cardText.addEventListener('click', () => this.emit('navigate', '/product'));
+        return card.element;
+      })
+    );
     return this.element;
   }
 
   sortCards(prop: string) {
-    this.productsWrap.innerHTML = '';
     switch (prop) {
       case 'PriceASC':
         this.data.sort((a, b) => a.price - b.price);
@@ -107,6 +115,6 @@ export default class Catalog {
     }
     this.cards = [];
     this.data.forEach((el) => this.cards.push(new Card(el)));
-    this.productsWrap.append(...this.cards.map((card) => card.element));
+    this.render();
   }
 }

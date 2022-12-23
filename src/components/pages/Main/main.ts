@@ -5,20 +5,17 @@ import LeftFilter from '../../Filters/Left filter/left_filter';
 import ICard from '../../constants/interfaces/ICard';
 
 class MainPage extends Page {
+  catalog: Catalog;
   constructor(id: string, data: ICard[]) {
     super(id);
-    const catalog = new Catalog(data);
+    this.catalog = new Catalog(data);
     const leftFilter = new LeftFilter(data);
-    this.mainWrapper.append(leftFilter.createLeftFilter(), catalog.render());
+    this.mainWrapper.append(leftFilter.createLeftFilter(), this.catalog.render());
   }
 
   render(): HTMLElement {
     return this.mainWrapper;
   }
 }
-
-// const main = (new Main).mainWrapper;
-
-// export default main;
 
 export default MainPage;
