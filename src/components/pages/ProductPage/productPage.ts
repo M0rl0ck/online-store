@@ -11,7 +11,7 @@ export default class ProductPage extends Page {
   async createProduct() {
     const productId = parseInt(window.location.pathname.split('/')[2]);
     const productDetails = new ProductDetails(productId);
-    productDetails.on('navigation', (patch: string) => this.emit('navigation', patch))
+    productDetails.on('navigation', (path: string) => this.emit('navigation', path));
     this.mainWrapper.append(await productDetails.createProduct());
   }
   render(): HTMLElement {
