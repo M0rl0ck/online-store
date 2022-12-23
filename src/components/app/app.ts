@@ -32,13 +32,15 @@ class App {
     };
 
     window.addEventListener('popstate', () => {
-      this.routes[window.location.pathname](window.location.pathname);
+      this.routes[window.location.pathname.split('/').slice(0, 2).join('/')]();
     });
     window.addEventListener('DOMContentLoaded', () => {
-      if (this.routes[window.location.pathname]) {
-        this.routes[window.location.pathname](window.location.pathname);
+      const patch = window.location.pathname.split('/').slice(0, 2).join('/');
+      if (this.routes[patch]) {
+        this.routes[patch]();
       } else {
-        this.routes[PATH.errorPage](PATH.errorPage);
+        window.history.pushState({}, 'path', (window.location.origin + PATH.errorPage));
+        this.routes[PATH.errorPage]();
       }
     });
 
@@ -47,30 +49,31 @@ class App {
 
   navigate = (path: string) => {
     window.history.pushState({}, 'path', window.location.origin + path);
-    this.routes[path](path);
+    this.routes[path.split('/').slice(0, 2).join('/')]();
   };
 
-  private mainPage = async (idPage: string): Promise<void> => {
+  private mainPage = async (): Promise<void> => {
     this.container.innerHTML = '';
     const data: ICard[] = await connector.getProducts(100);
-    const main = new MainPage(idPage, data);
+    const main = new MainPage(PATH.catalog, data);
     main.catalog.on('navigate', this.navigate);
     this.container.append(main.render());
   };
-  private product = (idPage: string) => {
+  private product = () => {
     this.container.innerHTML = '';
-    const page = new ProductPage(idPage);
+    const page = new ProductPage(PATH.product);
+    page.on('navigation', this.navigate);
     this.container.append(page.render());
   };
-  private cart = (idPage: string) => {
+  private cart = () => {
     this.container.innerHTML = '';
-    const page = new CartPage(idPage);
+    const page = new CartPage(PATH.cart);
     this.container.innerHTML = '';
     this.container.append(page.render());
   };
-  private errorPage = (idPage: string) => {
+  private errorPage = () => {
     this.container.innerHTML = '';
-    const page = new ErrorPage(idPage);
+    const page = new ErrorPage(PATH.errorPage);
     this.container.append(page.render());
   };
 }
