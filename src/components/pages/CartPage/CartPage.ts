@@ -3,6 +3,9 @@ import cartData from './CartData';
 import Page from '../Template/page';
 import './cartPage.css';
 import ProductInCart from './../../Cart/cart';
+import Popup from './../../Popup/popup';
+import e from 'express';
+import Blackout from './../../Blackout/blackout';
 
 export default class CartPage extends Page {
   constructor(id: string) {
@@ -14,10 +17,13 @@ export default class CartPage extends Page {
       this.mainWrapper.className = 'cart-empty';
       createHtmlElement('h1', 'cart-empty-text', 'Cart is empty', this.mainWrapper);
     } else {
-      let str: string = '';
+      let str1: string = '';
+      let str2: string = '';
       let count: number = 0;
       this.mainWrapper.className = 'cart__page';
+      const popup = new Popup();
       const cartWrap = createHtmlElement('div', 'cart__wrap', '', this.mainWrapper);
+      this.mainWrapper.append(popup.popupContentWrap);
       const productsInCart = createHtmlElement('div', 'products__in__cart', '', cartWrap);
       const titleAndPageControl = createHtmlElement('div', 'title__page-control', '', productsInCart);
       const title = createHtmlElement('h2', 'title__cart', 'Products In Cart', titleAndPageControl);
@@ -55,28 +61,43 @@ export default class CartPage extends Page {
       const promoAdd = createHtmlElement('button', 'promo__add', 'ADD', promoRes);
       const promoEx = createHtmlElement('span', 'promo__ex', `Promo for test: 'RS', 'EPM'`, summary);
       const buttonBuy = createHtmlElement('button', 'button__buy', 'BUY NOW', summary);
+      const blackout = new Blackout();
+
+      buttonBuy.addEventListener('click', () => {
+        popup.popupContentWrap.classList.toggle('popup__active');
+        blackout.blackout.classList.toggle('blackout__active');
+      });
+
+      blackout.blackout.addEventListener('click', (e: Event) => {
+        if (e.target !== popup.popupContentWrap) {
+          popup.popupContentWrap.classList.toggle('popup__active');
+          blackout.blackout.classList.toggle('blackout__active');
+        }
+      });
 
       if (!(promoCodeInput instanceof HTMLInputElement)) {
         throw Error('Not input element');
       }
       promoCodeInput.addEventListener('input', () => {
         if (promoCodeInput.value.toLowerCase() === 'rs') {
-          console.log(count);
-          if (str !== 'rs' && str !== '' && count < 2) {
-            promoAdd.classList.toggle('unactive-promo');
+          if (str1 !== 'rs' && count < 2) {
+            promoAdd.classList.remove('unactive-promo');
+          }
+          if (str1 === 'rs' && count === 1) {
+            promoAdd.classList.add('unactive-promo');
           }
           promoRes.classList.toggle('active-promo');
           promoResText.textContent = 'Rolling Scopes School - 10%  ';
-          str = 'rs';
         }
         if (promoCodeInput.value.toLowerCase() === 'epm') {
-          console.log(str);
-          if (str !== 'epm' && str !== '' && count < 2) {
-            promoAdd.classList.toggle('unactive-promo');
+          if (str2 !== 'epm' && count < 2) {
+            promoAdd.classList.remove('unactive-promo');
+          }
+          if (str2 === 'epm' && count === 1) {
+            promoAdd.classList.add('unactive-promo');
           }
           promoRes.classList.toggle('active-promo');
           promoResText.textContent = 'EPAM Systems - 10%  ';
-          str = 'epm';
         }
         if (promoCodeInput.value === '') {
           promoRes.classList.remove('active-promo');
@@ -88,15 +109,53 @@ export default class CartPage extends Page {
       }
 
       promoAdd.addEventListener('click', () => {
+        promoApplied.classList.remove('unactive-promo');
         const promoToDrop = createHtmlElement('div', 'promo__to__drop', ' - ', promoApplied);
         const promoToDropText = createHtmlElement('span', 'promo__to__drop-text', '');
         promoToDropText.textContent = promoResText.textContent;
         const dropButton = createHtmlElement('button', 'button__drop', 'DROP');
+
+        dropButton.addEventListener('click', () => {
+          promoRes.classList.add('active-promo');
+          promoResText.textContent = promoToDropText.textContent;
+          promoAdd.classList.remove('unactive-promo');
+          promoToDrop.remove();
+
+          count -= 1;
+          if (promoToDropText.textContent === 'Rolling Scopes School - 10%  ') {
+            str1 = '';
+          }
+          if (promoToDropText.textContent === 'EPAM Systems - 10%  ') {
+            str2 = '';
+          }
+
+          if (count === 0) {
+            promoApplied.classList.add('unactive-promo');
+          }
+          if (count === 0) {
+            totalPrice.classList.toggle('line-through');
+            newTotalPriceWrap.classList.toggle('active-promo');
+          }
+          if (count === 1) {
+            newTotalPrice.textContent = `€${(Number(totalPrice.textContent?.slice(8)) * 0.9).toFixed(2)}`;
+          }
+          if (count === 2) {
+            newTotalPrice.textContent = `€${(Number(totalPrice.textContent?.slice(8)) * 0.8).toFixed(2)}`;
+          }
+        });
+
         promoToDrop.prepend(promoToDropText);
         promoToDrop.append(dropButton);
         promoApplied.append(promoToDrop);
-        promoAdd.classList.toggle('unactive-promo');
+        promoAdd.classList.add('unactive-promo');
         count += 1;
+        if (promoToDropText.textContent === 'Rolling Scopes School - 10%  ') {
+          str1 = 'rs';
+        }
+        if (promoToDropText.textContent === 'EPAM Systems - 10%  ') {
+          str2 = 'epm';
+        }
+
         if (!totalPrice.classList.contains('line-through')) {
           totalPrice.classList.toggle('line-through');
         }

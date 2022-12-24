@@ -6,9 +6,13 @@ import ProductDetails from './../../ProductDetails/productDetails';
 export default class ProductPage extends Page {
   constructor(id: string) {
     super(id);
-
-    const productDetails = new ProductDetails();
-    this.mainWrapper.append(productDetails.createProduct());
+    this.createProduct();
+  }
+  async createProduct() {
+    const productId = parseInt(window.location.pathname.split('/')[2]);
+    const productDetails = new ProductDetails(productId);
+    productDetails.on('navigation', (path: string) => this.emit('navigation', path));
+    this.mainWrapper.append(await productDetails.createProduct());
   }
   render(): HTMLElement {
     return this.mainWrapper;

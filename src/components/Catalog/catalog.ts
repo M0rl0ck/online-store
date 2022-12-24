@@ -77,15 +77,16 @@ export default class Catalog extends EventEmitter {
     });
 
     this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
-    this.render();
   }
 
   render() {
     this.productsWrap.innerHTML = '';
     this.productsWrap.append(
       ...this.cards.map((card) => {
-        card.detailsButton.addEventListener('click', () => this.emit('navigate', '/product'));
-        card.cardText.addEventListener('click', () => this.emit('navigate', '/product'));
+        card.detailsButton.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
+        card.cardText.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
+        card.addButton.addEventListener('click', () => this.emit('navigate', `/cart/${card.id}`));
+
         return card.element;
       })
     );

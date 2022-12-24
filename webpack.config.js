@@ -15,6 +15,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "dist"),
     assetModuleFilename: path.join('img', '[name].[contenthash][ext]'),
+    publicPath: '/',
   },
   devServer: {
     open: true,

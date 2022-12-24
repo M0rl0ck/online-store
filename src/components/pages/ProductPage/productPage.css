@@ -15,3 +15,14 @@
 .main__wrapper {
   justify-content: center;
 }
+
+.nav__link-store {
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.nav__link-store:hover {
+  transform: scale(1.2);
+  text-shadow: 6px 4px 1px black;
+  transition: 0.4s;
+}
