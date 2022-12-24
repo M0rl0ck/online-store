@@ -1,25 +1,27 @@
 import { createHtmlElement } from '../../../utils/createElement';
-import cartData from './CartData';
 import Page from '../Template/page';
 import './cartPage.css';
 import ProductInCart from './../../Cart/cart';
 import Popup from './../../Popup/popup';
 import e from 'express';
 import Blackout from './../../Blackout/blackout';
+import CartData from './CartData';
 
 export default class CartPage extends Page {
-  constructor(id: string) {
+  cartData: CartData;
+  constructor(id: string, cartData: CartData) {
     super(id);
+    this.cartData = cartData;
   }
 
   render(): HTMLElement {
-    if (!Object.keys(cartData.list).length) {
+    if (!Object.keys(this.cartData.list).length) {
       this.mainWrapper.className = 'cart-empty';
       createHtmlElement('h1', 'cart-empty-text', 'Cart is empty', this.mainWrapper);
     } else {
-      let str1: string = '';
-      let str2: string = '';
-      let count: number = 0;
+      let str1 = '';
+      let str2 = '';
+      let count = 0;
       this.mainWrapper.className = 'cart__page';
       const popup = new Popup();
       const cartWrap = createHtmlElement('div', 'cart__wrap', '', this.mainWrapper);

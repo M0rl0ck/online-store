@@ -6,6 +6,7 @@ import ErrorPage from '../pages/ErrorPage/errorPage';
 import { createHtmlElement } from '../../utils/createElement';
 import MainPage from '../pages/Main/main';
 import CartPage from '../pages/CartPage/CartPage';
+import CartData from '../pages/CartPage/CartData';
 import ProductPage from './../pages/ProductPage/productPage';
 
 export const PATH = {
@@ -18,9 +19,11 @@ export const PATH = {
 class App {
   private container: HTMLElement;
   private routes;
+  cartData: CartData
   header: Header;
   constructor() {
-    this.header = new Header();
+    this.cartData = new CartData();
+    this.header = new Header(this.cartData);
     this.container = createHtmlElement('main', 'main__content', '', document.body);
     const footer = new Footer();
     footer.createFooter();
@@ -55,7 +58,7 @@ class App {
   private mainPage = async (): Promise<void> => {
     this.container.innerHTML = '';
     const data: ICard[] = await connector.getProducts(100);
-    const main = new MainPage(PATH.catalog, data);
+    const main = new MainPage(PATH.catalog, data, this.cartData);
     main.catalog.on('navigate', this.navigate);
     this.container.append(main.render());
   };
@@ -67,7 +70,7 @@ class App {
   };
   private cart = () => {
     this.container.innerHTML = '';
-    const page = new CartPage(PATH.cart);
+    const page = new CartPage(PATH.cart, this.cartData);
     this.container.innerHTML = '';
     this.container.append(page.render());
   };

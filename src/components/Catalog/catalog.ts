@@ -3,14 +3,17 @@ import { createHtmlElement } from '../../utils/createElement';
 import Card from './../Card/card';
 import ICard from '../constants/interfaces/ICard';
 import EventEmitter from 'events';
+import CartData from '../pages/CartPage/CartData';
 
 export default class Catalog extends EventEmitter {
   data: ICard[];
   cards: Card[] = [];
   element: HTMLElement;
   productsWrap!: HTMLElement;
-  constructor(dataCards: ICard[]) {
+  cartData: CartData;
+  constructor(dataCards: ICard[], cartData: CartData) {
     super();
+    this.cartData = cartData;
     this.data = [...dataCards];
     this.data.forEach((el) => this.cards.push(new Card(el)));
     this.element = createHtmlElement('div', 'catalog', '');
@@ -85,7 +88,7 @@ export default class Catalog extends EventEmitter {
       ...this.cards.map((card) => {
         card.detailsButton.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
         card.cardText.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
-        card.addButton.addEventListener('click', () => this.emit('navigate', `/cart/${card.id}`));
+        card.addButton.addEventListener('click', () => this.emit('addToCart', card.id));
 
         return card.element;
       })
