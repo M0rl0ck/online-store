@@ -12,6 +12,11 @@
   flex-direction: column;
 }
 
+.product__card_in-cart {
+  box-shadow: 0 0 5px 2px orange,
+              0 0 5px 4px red;
+}
+
 .small {
   width: 14.6%;
   padding-top: 12%;
