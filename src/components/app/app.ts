@@ -19,7 +19,7 @@ export const PATH = {
 class App {
   private container: HTMLElement;
   private routes;
-  cartData: CartData
+  cartData: CartData;
   header: Header;
   constructor() {
     this.cartData = new CartData();
@@ -42,7 +42,7 @@ class App {
       if (this.routes[patch]) {
         this.routes[patch]();
       } else {
-        window.history.pushState({}, 'path', (window.location.origin + PATH.errorPage));
+        window.history.pushState({}, 'path', window.location.origin + PATH.errorPage);
         this.routes[PATH.errorPage]();
       }
     });
@@ -68,9 +68,10 @@ class App {
     page.on('navigation', this.navigate);
     this.container.append(page.render());
   };
-  private cart = () => {
+  private cart = async () => {
     this.container.innerHTML = '';
-    const page = new CartPage(PATH.cart, this.cartData);
+    const data: ICard[] = await connector.getProducts(100);
+    const page = new CartPage(PATH.cart, this.cartData, data);
     this.container.innerHTML = '';
     this.container.append(page.render());
   };

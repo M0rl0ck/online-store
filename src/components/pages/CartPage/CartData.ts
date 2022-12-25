@@ -6,7 +6,7 @@ import ICard from '../../constants/interfaces/ICard';
 type CartList = { [key: string]: number };
 
 export default class CartData extends EventEmitter {
-  list: CartList;
+  private list: CartList;
   items: ICard[];
   countProducts: number;
   allPrice: number;
@@ -47,6 +47,26 @@ export default class CartData extends EventEmitter {
       }
     }
     this.saveData();
+  };
+
+  deleteStackProduct = (id: number) => {
+    const key = id.toString();
+    if (this.list[key]) {
+      delete this.list[key];
+    }
+    this.saveData();
+  };
+
+  isProductInCart = (id: number) => {
+    return !!this.list[id.toString()];
+  };
+
+  isCartEmpty = () => {
+    return !Object.keys(this.list).length;
+  };
+
+  getCartList = () => {
+    return { ...this.list };
   };
 
   private saveData() {

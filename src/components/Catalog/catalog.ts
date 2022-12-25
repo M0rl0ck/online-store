@@ -15,7 +15,6 @@ export default class Catalog extends EventEmitter {
     super();
     this.cartData = cartData;
     this.data = [...dataCards];
-    this.data.forEach((el) => this.cards.push(new Card(el)));
     this.element = createHtmlElement('div', 'catalog', '');
     this.createCatalog();
   }
@@ -80,15 +79,25 @@ export default class Catalog extends EventEmitter {
     });
 
     this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
+    this.render();
   }
 
   render() {
     this.productsWrap.innerHTML = '';
+    this.cards = [];
+    this.data.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
       ...this.cards.map((card) => {
         card.detailsButton.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
         card.cardText.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
-        card.addButton.addEventListener('click', () => this.emit('addToCart', card.id));
+        card.addButton.addEventListener('click', () => {
+          if (this.cartData.isProductInCart(card.id)) {
+            this.emit('deleteFromCart', card.id);
+          } else {
+            this.emit('addToCart', card.id);
+          }
+          this.render();
+        });
 
         return card.element;
       })
@@ -117,8 +126,6 @@ export default class Catalog extends EventEmitter {
         this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
     }
-    this.cards = [];
-    this.data.forEach((el) => this.cards.push(new Card(el)));
     this.render();
   }
 }

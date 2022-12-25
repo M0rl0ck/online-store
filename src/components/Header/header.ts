@@ -4,7 +4,7 @@ import { createHtmlElement } from '../../utils/createElement';
 import { PATH } from '../app/app';
 import CartData from '../pages/CartPage/CartData';
 
-export default class Header extends EventEmitter{
+export default class Header extends EventEmitter {
   element: HTMLElement;
   totalPriceNumber: HTMLElement;
   cart: HTMLElement;
@@ -35,5 +35,5 @@ export default class Header extends EventEmitter{
   renderCartData = (count: number, price: number) => {
     this.cartText.textContent = count.toString();
     this.totalPriceNumber.textContent = `€${price}.00`;
-  }
+  };
 }

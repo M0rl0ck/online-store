@@ -15,6 +15,7 @@ class MainPage extends Page {
     const leftFilter = new LeftFilter(data);
     this.mainWrapper.append(leftFilter.createLeftFilter(), this.catalog.render());
     this.catalog.on('addToCart', this.cartData.addProduct);
+    this.catalog.on('deleteFromCart', this.cartData.deleteStackProduct);
   }
 
   render(): HTMLElement {

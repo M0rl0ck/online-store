@@ -6,16 +6,19 @@ import Popup from './../../Popup/popup';
 import e from 'express';
 import Blackout from './../../Blackout/blackout';
 import CartData from './CartData';
+import ICard from '../../constants/interfaces/ICard';
 
 export default class CartPage extends Page {
   cartData: CartData;
-  constructor(id: string, cartData: CartData) {
+  data: ICard[];
+  constructor(id: string, cartData: CartData, data: ICard[]) {
     super(id);
     this.cartData = cartData;
+    this.data = data;
   }
 
   render(): HTMLElement {
-    if (!Object.keys(this.cartData.list).length) {
+    if (this.cartData.isCartEmpty()) {
       this.mainWrapper.className = 'cart-empty';
       createHtmlElement('h1', 'cart-empty-text', 'Cart is empty', this.mainWrapper);
     } else {
@@ -39,16 +42,25 @@ export default class CartPage extends Page {
       const pageNumberText = createHtmlElement('span', 'page__number-text', '1', pageNumber);
       const rightButton = createHtmlElement('button', 'page__button', ' > ', pageNumber);
       const prodItems = createHtmlElement('div', 'prod__items', '', productsInCart);
-      const productInCart = new ProductInCart();
-      productsInCart.append(productInCart.createProductInCart());
+
+      const cartList = this.cartData.getCartList();
+      const keys = Object.keys(cartList);
+      keys.forEach((key, index) => {
+        const data = this.data.filter((el) => el.id === Number(key))[0];
+        const productInCart = new ProductInCart(data, index);
+        productsInCart.append(productInCart.render());
+      });
+
       const summary = createHtmlElement('div', 'summary', '', cartWrap);
       const summaryTitle = createHtmlElement('h2', 'summary__title', 'Summary', summary);
       const totalAmount = createHtmlElement('div', 'total__amount', '', summary);
-      const totalAmountText = createHtmlElement('span', 'total__amount-text', 'Products: ', totalAmount);
-      totalAmount.append('1');
+      const totalAmountText = createHtmlElement('p', 'total__amount-text', '', totalAmount);
+      createHtmlElement('span', '', 'Products: ', totalAmountText);
+      const totalCountProducts = createHtmlElement('span', '', `${this.cartData.countProducts}`, totalAmountText);
       const totalPrice = createHtmlElement('div', 'total__price-sum', '', summary);
-      const totalPriceText = createHtmlElement('span', 'total__amount-text', 'Total: ', totalPrice);
-      totalPrice.append('€549');
+      const totalPriceText = createHtmlElement('p', 'total__amount-text', '', totalPrice);
+      createHtmlElement('span', '', 'Total: ', totalPriceText);
+      const totalPriceCount = createHtmlElement('span', '', `€${this.cartData.allPrice}.00`, totalPriceText);
       const newTotalPriceWrap = createHtmlElement('div', 'new__total__price-sum', '', summary);
       const newTotalPriceText = createHtmlElement('span', 'total__amount-text', 'Total: ', newTotalPriceWrap);
       const newTotalPrice = createHtmlElement('span', 'new__total__price', '', newTotalPriceText);
