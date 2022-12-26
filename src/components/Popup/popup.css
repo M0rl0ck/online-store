@@ -43,7 +43,14 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+.item__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 }
 
 .item__input {
@@ -144,4 +151,33 @@
   cursor: pointer;
   display: block;
   margin: 5% auto;
+}
+
+.item__input:invalid {
+  border-color: #900;
+  background-color: #181a1c;
+}
+
+.item__input:valid {
+  border-color: rgb(71, 161, 10);
+  background-color: #181a1c;
+}
+
+.item__input:focus:invalid {
+  outline: none;
+}
+
+.error__message {
+  width: 100%;
+  padding: 0;
+  font-size: 80%;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  display: none;
+}
+
+.active {
+  display: block;
 }

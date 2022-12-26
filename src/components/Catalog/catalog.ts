@@ -16,11 +16,11 @@ export default class Catalog extends EventEmitter {
   cartData: CartData;
 
   emit(event: CatalogEmitsName, data?: number | string) {
-    return super.emit(event, data)
+    return super.emit(event, data);
   }
 
   on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
-    return super.on(event, callback)
+    return super.on(event, callback);
   }
   constructor(dataCards: ICard[], cartData: CartData) {
     super();
@@ -50,7 +50,7 @@ export default class Catalog extends EventEmitter {
     if (!(sortSelect instanceof HTMLSelectElement)) {
       throw Error('Not select element');
     }
-    sortSelect.addEventListener('change', () => this.sortCards(sortSelect.value));
+    sortSelect.addEventListener('change', () => this.sortCards(sortSelect.value, this.data));
 
     const inputSearch = createHtmlElement('input', 'sort__search', '', sortProducts);
     inputSearch.setAttribute('type', 'search');
@@ -115,26 +115,26 @@ export default class Catalog extends EventEmitter {
     );
     return this.element;
   }
-    
-  sortCards(prop: string) {
+
+  sortCards(prop: string, sortedCards: Array<ICard>) {
     switch (prop) {
       case 'PriceASC':
-        this.data.sort((a, b) => a.price - b.price);
+        sortedCards = this.data.sort((a, b) => a.price - b.price);
         break;
       case 'PriceDESC':
-        this.data.sort((a, b) => b.price - a.price);
+        sortedCards = this.data.sort((a, b) => b.price - a.price);
         break;
       case 'RatingASC':
-        this.data.sort((a, b) => a.rating - b.rating);
+        sortedCards = this.data.sort((a, b) => a.rating - b.rating);
         break;
       case 'RatingDESC':
-        this.data.sort((a, b) => b.rating - a.rating);
+        sortedCards = this.data.sort((a, b) => b.rating - a.rating);
         break;
       case 'DiscountASC':
-        this.data.sort((a, b) => a.discountPercentage - b.discountPercentage);
+        sortedCards = this.data.sort((a, b) => a.discountPercentage - b.discountPercentage);
         break;
       case 'DiscountDESC':
-        this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
+        sortedCards = this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
     }
     this.render();

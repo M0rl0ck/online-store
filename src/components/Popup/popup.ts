@@ -10,10 +10,29 @@ export default class Popup {
     const personalDetails = createHtmlElement('div', 'personal__details', '', popupForm);
     const personalDetailsTitle = createHtmlElement('h2', 'personal__details-title', 'Personal details', personalDetails);
     const personalName = createHtmlElement('div', 'personal__item', '', personalDetails);
-    const nameInput = createHtmlElement('input', 'item__input', '', personalName);
+    const nameLabel = createHtmlElement('label', 'item__label', 'Name:', personalName);
+    const nameInput = createHtmlElement('input', 'item__input', '', nameLabel);
     nameInput.setAttribute('type', 'text');
-    nameInput.setAttribute('placeholder', 'Name');
+    nameInput.setAttribute('placeholder', 'Nick Borisov');
     nameInput.setAttribute('required', '');
+    nameInput.setAttribute('pattern', `[A-Za-zА-Яа-яЁё0-9-]{3,}\\s[A-Za-zА-Яа-яЁё0-9-]{3,}`);
+    const ErrorMessage = createHtmlElement('span', 'error__message');
+    nameLabel.append(ErrorMessage);
+    if (!(nameInput instanceof HTMLInputElement)) {
+      throw Error('Not select element');
+    }
+    nameInput.addEventListener('invalid', function (e: Event) {
+      e.preventDefault();
+      if (!nameInput.validity.valid) {
+        ErrorMessage.textContent = 'Name error';
+        ErrorMessage.classList.toggle('active');
+      }
+    });
+    nameInput.addEventListener('input', function (e: Event) {
+      if (ErrorMessage.classList.contains('active')) {
+        ErrorMessage.classList.toggle('active');
+      }
+    });
     const personalPhone = createHtmlElement('div', 'personal__item', '', personalDetails);
     const phoneInput = createHtmlElement('input', 'item__input', '', personalPhone);
     phoneInput.setAttribute('type', 'tel');
@@ -54,5 +73,12 @@ export default class Popup {
     cvvInput.setAttribute('placeholder', 'Code');
     cvvInput.setAttribute('required', '');
     const confirmButton = createHtmlElement('button', 'confirm__button', 'CONFIRM', popupForm);
+
+    function handleFormSubmit(event: Event) {
+      event.preventDefault();
+      console.log('Отправка!');
+    }
+
+    popupForm.addEventListener('submit', handleFormSubmit);
   }
 }
