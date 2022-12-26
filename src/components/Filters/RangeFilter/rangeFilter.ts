@@ -1,7 +1,7 @@
-import * as noUiSlider from '../../../../node_modules/nouislider/dist/nouislider';
+import * as noUiSlider from 'nouislider';
 import { createHtmlElement } from '../../../utils/createElement';
 import 'nouislider/dist/nouislider.css';
-import './range_filter.css';
+import './rangeFilter.css';
 
 export default class FilterRange {
   rangeInput: noUiSlider.target;
@@ -13,16 +13,11 @@ export default class FilterRange {
 
     noUiSlider.create(this.rangeInput, {
       start: [this.min, this.max],
-      // tooltips: true,
       step: 1,
       connect: true,
       format: {
-        to: function (value) {
-          return values[Math.round(value)];
-        },
-        from: function (value) {
-          return values.indexOf(Number(value));
-        },
+        to: value => values[Math.round(value)],
+        from: value => values.indexOf(Number(value)),
       },
       range: {
         min: [0],

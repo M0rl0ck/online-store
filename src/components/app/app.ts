@@ -38,9 +38,9 @@ class App {
       this.routes[window.location.pathname.split('/').slice(0, 2).join('/')]();
     });
     window.addEventListener('DOMContentLoaded', () => {
-      const patch = window.location.pathname.split('/').slice(0, 2).join('/');
-      if (this.routes[patch]) {
-        this.routes[patch]();
+      const path = window.location.pathname.split('/').slice(0, 2).join('/');
+      if (this.routes[path]) {
+        this.routes[path]();
       } else {
         window.history.pushState({}, 'path', window.location.origin + PATH.errorPage);
         this.routes[PATH.errorPage]();
