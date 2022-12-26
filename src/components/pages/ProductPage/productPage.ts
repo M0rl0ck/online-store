@@ -1,5 +1,4 @@
 import './productPage.css';
-import { createHtmlElement } from '../../../utils/createElement';
 import Page from '../Template/page';
 import ProductDetails from './../../ProductDetails/productDetails';
 

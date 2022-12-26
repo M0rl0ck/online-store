@@ -1,11 +1,11 @@
-import './left_filter.css';
+import './leftFilter.css';
 import { createHtmlElement } from '../../../utils/createElement';
-import FilterRange from '../Range filter/range_filter';
+import FilterRange from '../RangeFilter/rangeFilter';
 import ICard from '../../constants/interfaces/ICard';
 
 type FilterList = {
   [index: string]: number;
-}
+};
 
 export default class LeftFilter {
   rangePrice: number[];
@@ -42,7 +42,6 @@ export default class LeftFilter {
     for (const key in category) {
       categoryFilterList.append(this.createFilterLine(key, category[key], category[key]));
     }
-    
 
     const brandFilter = createHtmlElement('div', 'brand__filter', '', element);
     const brandFilterTitle = createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
@@ -70,52 +69,46 @@ export default class LeftFilter {
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
     stockRangeWrapper.append(this.rangeInputStock.rangeInput);
 
-    this.rangeInputPrice.rangeInput.noUiSlider?.on(
-      "update",
-      (values: (string | number)[], handle: number): void => {
-        this.currentRangePrice[handle] = Number(values[handle]);
-        this.priceDataFrom.textContent = values[0].toString();
-        this.priceDataTo.textContent = values[1].toString();
-      }
-    );
-    this.rangeInputStock.rangeInput.noUiSlider?.on(
-      "update",
-      (values: (string | number)[], handle: number): void => {
-        this.currentRangeStock[handle] = Number(values[handle]);
-        this.stockDataFrom.textContent = values[0].toString();
-        this.stockDataTo.textContent = values[1].toString();
-      }
-    );
+    this.rangeInputPrice.rangeInput.noUiSlider?.on('update', (values: (string | number)[], handle: number): void => {
+      this.currentRangePrice[handle] = Number(values[handle]);
+      this.priceDataFrom.textContent = values[0].toString();
+      this.priceDataTo.textContent = values[1].toString();
+    });
+    this.rangeInputStock.rangeInput.noUiSlider?.on('update', (values: (string | number)[], handle: number): void => {
+      this.currentRangeStock[handle] = Number(values[handle]);
+      this.stockDataFrom.textContent = values[0].toString();
+      this.stockDataTo.textContent = values[1].toString();
+    });
     return element;
   }
 
-  createFilterLine(name: string, min: number, max: number): HTMLElement {
+  private createFilterLine(name: string, min: number, max: number): HTMLElement {
     const el = createHtmlElement('li', 'filter-line item-active');
     const check = createHtmlElement('input', '', '', el);
     check.setAttribute('type', 'checkbox');
     check.setAttribute('id', name);
     const label = createHtmlElement('label', '', name, el);
     label.setAttribute('for', name);
-    createHtmlElement('span', '',  `(${min}/${max})`, el);
+    createHtmlElement('span', '', `(${min}/${max})`, el);
 
     return el;
   }
 
-  getFilterList(key: 'category' | 'brand'): FilterList {
+  private getFilterList(key: 'category' | 'brand'): FilterList {
     const list: FilterList = {};
-    this.data.forEach(el => {
+    this.data.forEach((el) => {
       const index = el[key];
       if (!list[index]) {
         list[index] = 1;
       } else list[index] += 1;
-    })
+    });
 
     return list;
   }
 
-  getRange(key: 'price' | 'stock'): number[] {;
-    const res = this.data.map(el => el[key]).sort((a, b) => a - b);
-    const result = [...(new Set(res))];
+  private getRange(key: 'price' | 'stock'): number[] {
+    const res = this.data.map((el) => el[key]).sort((a, b) => a - b);
+    const result = [...new Set(res)];
     return result;
   }
 }

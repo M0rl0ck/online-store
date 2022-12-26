@@ -2,8 +2,6 @@
   width: 23%;
   padding-top: 20%;
   position: relative;
-  /* width: 14.6%;
-  padding-top: 12%; */
   margin: 1%;
   border: 1px solid orange;
   border-radius: 0.5rem;
@@ -27,7 +25,6 @@
   height: 100%;
   position: absolute;
   top: 0;
-  /* background: url(https://i.dummyjson.com/data/products/6/thumbnail.png) 0% 0% / cover; */
 }
 
 .card__text {
@@ -65,12 +62,12 @@
 
 .info__category {
   font-size: 0.6rem;
-  color: wheat;
+  color: #bb954e;
 }
 
-.info__category > span {
+.info__category-data {
   font-size: 0.6rem;
-  color: #bb954e;
+  color: wheat;
 }
 
 .card__buttons {

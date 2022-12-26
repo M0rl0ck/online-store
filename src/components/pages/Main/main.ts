@@ -1,7 +1,7 @@
 import './main.css';
 import Page from '../Template/page';
 import Catalog from '../../Catalog/catalog';
-import LeftFilter from '../../Filters/Left filter/left_filter';
+import LeftFilter from '../../Filters/LeftFilter/leftFilter';
 import ICard from '../../constants/interfaces/ICard';
 import CartData from '../CartPage/CartData';
 

@@ -4,6 +4,9 @@ import Card from './../Card/card';
 import ICard from '../constants/interfaces/ICard';
 import EventEmitter from 'events';
 import CartData from '../pages/CartPage/CartData';
+import { PATH } from '../app/app';
+
+type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart';
 
 export default class Catalog extends EventEmitter {
   data: ICard[];
@@ -11,6 +14,14 @@ export default class Catalog extends EventEmitter {
   element: HTMLElement;
   productsWrap!: HTMLElement;
   cartData: CartData;
+
+  emit(event: CatalogEmitsName, data?: number | string) {
+    return super.emit(event, data)
+  }
+
+  on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+    return super.on(event, callback)
+  }
   constructor(dataCards: ICard[], cartData: CartData) {
     super();
     this.cartData = cartData;
@@ -88,8 +99,8 @@ export default class Catalog extends EventEmitter {
     this.data.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
       ...this.cards.map((card) => {
-        card.detailsButton.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
-        card.cardText.addEventListener('click', () => this.emit('navigate', `/product/${card.id}`));
+        card.detailsButton.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
+        card.cardText.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
         card.addButton.addEventListener('click', () => {
           if (this.cartData.isProductInCart(card.id)) {
             this.emit('deleteFromCart', card.id);
@@ -104,7 +115,7 @@ export default class Catalog extends EventEmitter {
     );
     return this.element;
   }
-
+    
   sortCards(prop: string) {
     switch (prop) {
       case 'PriceASC':

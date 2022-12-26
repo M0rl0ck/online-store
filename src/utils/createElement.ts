@@ -1,10 +1,10 @@
-const createHtmlElement = (type: string, newclass?: string, innerHTML?: string, parrent?: HTMLElement): HTMLElement => {
+const createHtmlElement = (type: string, newclass?: string, innerText?: string, parrent?: HTMLElement): HTMLElement => {
   const element = document.createElement(type);
   if (newclass) {
     element.className = newclass;
   }
-  if (innerHTML) {
-    element.innerHTML = innerHTML;
+  if (innerText) {
+    element.innerText = innerText;
   }
   if (parrent) {
     parrent.append(element);
