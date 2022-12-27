@@ -7,6 +7,14 @@ import CartData from '../pages/CartPage/CartData';
 import { PATH } from '../app/app';
 
 type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart';
+enum SORTBY {
+  PRICEASC = 'PriceASC',
+  PRICEDESC = 'PriceDESC',
+  RATINGASC = 'RatingASC',
+  RATINGDESC = 'RatingDESC',
+  DISCOUNTASC = 'DiscountASC',
+  DISCOUNTDESC = 'DiscountDESC',
+}
 
 export default class Catalog extends EventEmitter {
   data: ICard[];
@@ -14,6 +22,7 @@ export default class Catalog extends EventEmitter {
   element: HTMLElement;
   productsWrap!: HTMLElement;
   cartData: CartData;
+  sortStat!: HTMLElement;
 
   emit(event: CatalogEmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -34,18 +43,18 @@ export default class Catalog extends EventEmitter {
     const sortSelectWrap = createHtmlElement('div', 'sort__wrap', '', sortProducts);
     const sortSelect = createHtmlElement('select', 'sort__select', '', sortSelectWrap);
     const sortByPriceASC = createHtmlElement('option', 'sort__option-1', 'Sort by price ASC', sortSelect);
-    sortByPriceASC.setAttribute('value', 'PriceASC');
+    sortByPriceASC.setAttribute('value', SORTBY.PRICEASC);
     const sortByPriceDESC = createHtmlElement('option', 'sort__option-2', 'Sort by price DESC', sortSelect);
-    sortByPriceDESC.setAttribute('value', 'PriceDESC');
+    sortByPriceDESC.setAttribute('value', SORTBY.PRICEDESC);
     const sortByRatingASC = createHtmlElement('option', 'sort__option-3', 'Sort by rating ASC', sortSelect);
-    sortByRatingASC.setAttribute('value', 'RatingASC');
+    sortByRatingASC.setAttribute('value', SORTBY.RATINGASC);
     const sortByRatingDESC = createHtmlElement('option', 'sort__option-4', 'Sort by rating DESC', sortSelect);
-    sortByRatingDESC.setAttribute('value', 'RatingDESC');
+    sortByRatingDESC.setAttribute('value', SORTBY.RATINGDESC);
     const sortByDiscountASC = createHtmlElement('option', 'sort__option-5', 'Sort by discount ASC', sortSelect);
-    sortByDiscountASC.setAttribute('value', 'DiscountASC');
+    sortByDiscountASC.setAttribute('value', SORTBY.DISCOUNTASC);
     const sortByDiscountDESC = createHtmlElement('option', 'sort__option-6', 'Sort by discount DESC', sortSelect);
-    sortByDiscountDESC.setAttribute('value', 'DiscountDESC');
-    const sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
+    sortByDiscountDESC.setAttribute('value', SORTBY.DISCOUNTDESC);
+    this.sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
 
     if (!(sortSelect instanceof HTMLSelectElement)) {
       throw Error('Not select element');
@@ -113,27 +122,28 @@ export default class Catalog extends EventEmitter {
         return card.element;
       })
     );
+    this.sortStat.textContent = `Found: ${this.cards.length}`;
     return this.element;
   }
 
   sortCards(prop: string, sortedCards: Array<ICard>) {
     switch (prop) {
-      case 'PriceASC':
+      case SORTBY.PRICEASC:
         sortedCards = this.data.sort((a, b) => a.price - b.price);
         break;
-      case 'PriceDESC':
+      case SORTBY.PRICEDESC:
         sortedCards = this.data.sort((a, b) => b.price - a.price);
         break;
-      case 'RatingASC':
+      case SORTBY.RATINGASC:
         sortedCards = this.data.sort((a, b) => a.rating - b.rating);
         break;
-      case 'RatingDESC':
+      case SORTBY.RATINGDESC:
         sortedCards = this.data.sort((a, b) => b.rating - a.rating);
         break;
-      case 'DiscountASC':
+      case SORTBY.DISCOUNTASC:
         sortedCards = this.data.sort((a, b) => a.discountPercentage - b.discountPercentage);
         break;
-      case 'DiscountDESC':
+      case SORTBY.DISCOUNTDESC:
         sortedCards = this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
     }

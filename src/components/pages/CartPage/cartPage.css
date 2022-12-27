@@ -129,6 +129,11 @@
   font-size: 90%;
 }
 
+.total__amount-text span,
+.total__price-text span {
+  font-size: inherit;
+}
+
 .promo__code {
   display: flex;
   align-items: center;
