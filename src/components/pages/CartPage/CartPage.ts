@@ -115,6 +115,12 @@ export default class CartPage extends Page {
       const blackout = new Blackout();
       this.mainWrapper.prepend(blackout.render());
 
+      if (this.cartData.isStartBuy) {
+        this.cartData.isStartBuy = false;
+        popup.popupContentWrap.classList.toggle('popup__active');
+        blackout.blackout.classList.toggle('blackout__active');
+      }
+
       buttonBuy.addEventListener('click', () => {
         popup.popupContentWrap.classList.toggle('popup__active');
         blackout.blackout.classList.toggle('blackout__active');

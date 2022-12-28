@@ -11,8 +11,10 @@ export default class CartData extends EventEmitter {
   countProducts: number;
   allPrice: number;
   storage: Storage;
+  isStartBuy: boolean;
   constructor() {
     super();
+    this.isStartBuy = false;
     this.storage = new Storage();
     this.items = [];
     const list = this.storage.loadValue('cartData');

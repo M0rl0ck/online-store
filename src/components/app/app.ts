@@ -65,8 +65,8 @@ class App {
   };
   private product = () => {
     this.container.innerHTML = '';
-    const page = new ProductPage(PATH.product);
-    page.on('navigation', this.navigate);
+    const page = new ProductPage(PATH.product, this.cartData);
+    page.on('navigate', this.navigate);
     this.container.append(page.render());
   };
   private cart = async () => {

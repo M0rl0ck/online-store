@@ -6,7 +6,7 @@ import EventEmitter from 'events';
 import CartData from '../pages/CartPage/CartData';
 import { PATH } from '../app/app';
 
-type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart';
+export type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow';
 enum SORTBY {
   PRICEASC = 'PriceASC',
   PRICEDESC = 'PriceDESC',

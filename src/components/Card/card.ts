@@ -1,11 +1,7 @@
 import './card.css';
 import { createHtmlElement } from '../../utils/createElement';
 import ICard from '../constants/interfaces/ICard';
-
-enum BUTTON_TEXT {
-  ADD = 'ADD TO CART',
-  DEL = 'DROP FROM CART',
-}
+import { BUTTON_TEXT } from '../constants/constants/connstants';
 
 export default class Card {
   element: HTMLElement;

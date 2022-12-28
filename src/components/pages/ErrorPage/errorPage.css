@@ -1,4 +1,5 @@
 .error__wrap,
+.product__details-empty,
 .cart-empty {
   height: 70vh;
   width: 100%;
@@ -8,6 +9,7 @@
 }
 
 .error__text,
+.product__details-empty-text,
 .cart-empty-text {
   font-size: 200%;
   background: #181a1c;
