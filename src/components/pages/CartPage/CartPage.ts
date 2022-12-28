@@ -86,7 +86,7 @@ export default class CartPage extends Page {
           this.render();
         });
         productsInCart.append(productInCart.render());
-      };
+      }
 
       const summary = createHtmlElement('div', 'summary', '', cartWrap);
       const summaryTitle = createHtmlElement('h2', 'summary__title', 'Summary', summary);
@@ -126,11 +126,47 @@ export default class CartPage extends Page {
         blackout.blackout.classList.toggle('blackout__active');
       });
 
-      blackout.blackout.addEventListener('click', (e: Event) => {
+      const blackoutActive = (e: Event) => {
+        const errorMessages = popup.popupContentWrap?.querySelectorAll('.error__message');
         if (e.target !== popup.popupContentWrap) {
           popup.popupContentWrap.classList.toggle('popup__active');
           blackout.blackout.classList.toggle('blackout__active');
         }
+        errorMessages.forEach((el) => {
+          if (el.classList.contains('active')) {
+            el.classList.remove('active');
+          }
+        });
+      };
+
+      blackout.blackout.addEventListener('click', blackoutActive);
+
+      popup.popupForm.addEventListener('submit', (e: Event) => {
+        e.preventDefault();
+        this.cartData.clearCart();
+        popup.popupContentWrap.classList.toggle('popup__active');
+        blackout.blackout.removeEventListener('click', blackoutActive);
+        cartWrap.style.display = 'none';
+        this.mainWrapper.className = 'redirect__message';
+        const secondsLeft = createHtmlElement('span', 'seconds__text', '5');
+        const rediretcMessage = createHtmlElement(
+          'h1',
+          'redirect__message-text',
+          `Thanks for your order. Redirect to the store after `,
+          this.mainWrapper
+        );
+        rediretcMessage.append(secondsLeft);
+        rediretcMessage.append(' sec');
+        let timeleft = 5;
+        const backToCatalog = () => this.emit('navigate', PATH.catalog);
+        const downloadTimer = setInterval(function () {
+          timeleft--;
+          secondsLeft.textContent = timeleft.toString();
+          if (timeleft <= 0) {
+            clearInterval(downloadTimer);
+            backToCatalog();
+          }
+        }, 1000);
       });
 
       if (!(promoCodeInput instanceof HTMLInputElement)) {
@@ -262,7 +298,7 @@ export default class CartPage extends Page {
     }
     this.currentPage++;
     this.goPage();
-  }
+  };
 
   goPage = () => {
     const params = qs.parse(window.location.search);
@@ -270,5 +306,5 @@ export default class CartPage extends Page {
     const search = qs.stringify(params);
     window.history.pushState({}, 'path', window.location.origin + window.location.pathname + '?' + search);
     this.render();
-  }
+  };
 }

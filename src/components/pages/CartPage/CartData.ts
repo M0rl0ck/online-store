@@ -61,6 +61,11 @@ export default class CartData extends EventEmitter {
     this.saveData();
   };
 
+  clearCart = () => {
+    this.list = {};
+    this.saveData();
+  };
+
   isProductInCart = (id: number) => {
     return !!this.list[id.toString()];
   };
@@ -74,8 +79,8 @@ export default class CartData extends EventEmitter {
   };
 
   getCartListLength = () => {
-    return Object.keys(this.list).length
-  }
+    return Object.keys(this.list).length;
+  };
 
   private saveData() {
     this.storage.saveValue('cartData', JSON.stringify(this.list));

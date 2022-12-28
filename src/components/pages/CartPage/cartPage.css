@@ -233,3 +233,7 @@
   width: 50%;
   margin: 3rem auto 1rem;
 }
+
+.seconds__text {
+  font-size: 100%;
+}

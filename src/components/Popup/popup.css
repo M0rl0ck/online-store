@@ -50,7 +50,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  width: 100%;
+  width: 100px;
 }
 
 .item__input {
@@ -63,7 +63,7 @@
   outline: none;
   font-size: 90%;
   text-align: center;
-  margin: 2% auto;
+  margin: 2% 2%;
 }
 
 .card__details {
@@ -78,24 +78,81 @@
   margin: 0 auto;
   border-radius: 0.5rem;
   background: rgb(0, 9, 36);
-  background: linear-gradient(90deg, rgb(0, 9, 36) 6%, rgb(9, 9, 121) 34%, rgb(0, 212, 255) 100%);
+  background: linear-gradient(90deg, rgb(99 125 201) 6%, rgb(107 107 128) 34%, rgb(10 49 57) 100%);
   width: 80%;
-  height: 10rem;
+  height: 12.5rem;
   margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+}
+
+.all__cards {
+  background-color: #fff;
+  width: 280px;
+  height: 56px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/all_cards.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  align-self: center;
+  margin-top: 2px;
 }
 
 .card__number {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 7% auto 10%;
+  margin: 7% 3% 10%;
 }
 
 .card__img {
   background-color: #fff;
-  width: 10%;
+  width: 60px;
+  height: 30px;
   border-radius: 0.3rem;
   padding: 0.3rem;
+  background: url(../../../img/no_card_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.visa {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/visa_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.mastercard {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/mastercard_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.ae {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/AE_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .card__number-input {

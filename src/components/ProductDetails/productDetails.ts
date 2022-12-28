@@ -41,7 +41,7 @@ export default class ProductDetails extends EventEmitter {
     navigation.append(' >> ');
     const navLinkBrand = createHtmlElement('a', 'nav__link nav__link-brand', `${data.brand.toUpperCase()}`, navigation);
     navigation.append(' >> ');
-    const navLinkModel = createHtmlElement('a', 'nav__link nav__link-model', `${data.brand.toUpperCase()}`, navigation);
+    const navLinkModel = createHtmlElement('a', 'nav__link nav__link-model', `${data.title.toUpperCase()}`, navigation);
     const productDetail = createHtmlElement('div', 'product__detail', '', element);
     const productTitle = createHtmlElement('div', 'product__title', '', productDetail);
     const productTitleText = createHtmlElement('h1', 'product__title-text', `${data.title}`, productTitle);

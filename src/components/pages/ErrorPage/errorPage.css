@@ -1,6 +1,7 @@
 .error__wrap,
 .product__details-empty,
-.cart-empty {
+.cart-empty,
+.redirect__message {
   height: 70vh;
   width: 100%;
   display: flex;
@@ -10,10 +11,12 @@
 
 .error__text,
 .product__details-empty-text,
-.cart-empty-text {
+.cart-empty-text,
+.redirect__message-text {
   font-size: 200%;
   background: #181a1c;
   padding: 1rem;
   border: 2px solid orange;
   border-radius: 1rem;
+  z-index: 2;
 }
