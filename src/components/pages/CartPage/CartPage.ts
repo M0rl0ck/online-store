@@ -69,6 +69,9 @@ export default class CartPage extends Page {
       const cartList = this.cartData.getCartList();
       const keys = Object.keys(cartList);
       const start = this.limit * (this.currentPage - 1);
+      if (start >= keys.length) {
+        this.prevPage();
+      }
       const end = start + this.limit;
       for (let index = start; index < end && index < keys.length; index++) {
         const data = this.data.filter((el) => el.id === Number(keys[index]))[0];
