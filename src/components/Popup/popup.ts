@@ -148,7 +148,7 @@ export default class Popup {
     cardNumberInput.setAttribute('required', '');
     cardNumberInput.setAttribute('pattern', `[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}\\s[0-9]{4}`);
     cardNumberInput.setAttribute('maxLength', '19');
-    payment.formatCardNumber(cardNumberInput);
+    payment.formatCardNumber(cardNumberInput, 16);
     const ErrorMessageCardNumber = createHtmlElement('span', 'error__message', 'Invalid card number', cardDetails);
 
     if (!(cardNumberInput instanceof HTMLInputElement)) {
@@ -179,6 +179,9 @@ export default class Popup {
         cardImg.classList.add('mastercard');
         cardImg.classList.remove('visa');
         cardImg.classList.remove('ae');
+      }
+      if (cardNumberInput.value.startsWith('34')) {
+        cardNumberInput.value = '33';
       }
       if (cardNumberInput.value.slice(0, 1) !== '3' && cardNumberInput.value.slice(0, 1) !== '4' && cardNumberInput.value.slice(0, 1) !== '5') {
         cardImg.classList.remove('mastercard');
