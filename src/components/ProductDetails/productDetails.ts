@@ -48,7 +48,39 @@ export default class ProductDetails extends EventEmitter {
     const productData = createHtmlElement('div', 'product__data', '', productDetail);
     const produtPhotos = createHtmlElement('div', 'product__photos', '', productData);
     const smallPhotos = createHtmlElement('div', 'small__photos', '', produtPhotos);
-    data.images.forEach((image) => {
+
+    const removeDuplicates = (): Array<string> => {
+      interface ObjectInterface {
+        [key: string]: number;
+      }
+      let objAllImages = <ObjectInterface>{};
+      data.images.forEach((image) => {
+        const req = new XMLHttpRequest();
+        req.open('GET', image, false);
+        req.send();
+        let url = image;
+        let size = Number(req.getResponseHeader('content-length'));
+        objAllImages[url] = size;
+      });
+
+      const uniqValues: Array<number> = [...new Set(Object.values(objAllImages))];
+      const keys: Array<number> = Object.values(objAllImages);
+      let filteredImagesArr: Array<string>;
+
+      if (uniqValues.length !== keys.length) {
+        const object2 = Object.fromEntries(Object.entries(objAllImages).filter(([_, val], index) => val === uniqValues[index - 1]));
+
+        filteredImagesArr = Object.keys(object2);
+      } else {
+        filteredImagesArr = Object.keys(objAllImages);
+      }
+
+      return filteredImagesArr;
+    };
+
+    const filteredImages = removeDuplicates();
+
+    filteredImages.forEach((image) => {
       const photo = createHtmlElement('img', 'small__photo', '', smallPhotos);
       photo.setAttribute('src', image);
     });
