@@ -95,6 +95,10 @@
   font-size: 150%;
 }
 
+.number__control span {
+  font-size: inherit;
+}
+
 .plus__button,
 .minus__button {
   width: 2rem;

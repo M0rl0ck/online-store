@@ -3,21 +3,38 @@ import Page from '../Template/page';
 import './cartPage.css';
 import ProductInCart from './../../Cart/cart';
 import Popup from './../../Popup/popup';
-import e from 'express';
 import Blackout from './../../Blackout/blackout';
 import CartData from './CartData';
 import ICard from '../../constants/interfaces/ICard';
+import { PATH } from '../../app/app';
+import qs from 'query-string';
+
+type CartEmitsName = 'navigate' | 'addToCart' | 'deleteFromCart';
 
 export default class CartPage extends Page {
   cartData: CartData;
   data: ICard[];
+  limit: number;
+  currentPage: number;
   constructor(id: string, cartData: CartData, data: ICard[]) {
     super(id);
     this.cartData = cartData;
     this.data = data;
+    const params = qs.parse(window.location.search);
+    this.limit = params.limit ? Number(params.limit) : 3;
+    this.currentPage = params.page ? Number(params.page) : 1;
+  }
+
+  emit(event: CartEmitsName, data?: number | string) {
+    return super.emit(event, data);
+  }
+
+  on(event: CartEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+    return super.on(event, callback);
   }
 
   render(): HTMLElement {
+    this.mainWrapper.innerHTML = '';
     if (this.cartData.isCartEmpty()) {
       this.mainWrapper.className = 'cart-empty';
       createHtmlElement('h1', 'cart-empty-text', 'Cart is empty', this.mainWrapper);
@@ -35,21 +52,41 @@ export default class CartPage extends Page {
       const pageControl = createHtmlElement('div', 'page__control', '', titleAndPageControl);
       const limit = createHtmlElement('div', 'limit', ' ITEMS: ', pageControl);
       const limitInput = createHtmlElement('input', 'limit__input', '', limit);
+      if (!(limitInput instanceof HTMLInputElement)) {
+        throw new Error('not imput element');
+      }
       limitInput.setAttribute('type', 'text');
-      limitInput.setAttribute('value', '3');
+      limitInput.setAttribute('value', `${this.limit}`);
+      limitInput.addEventListener('input', () => this.setLimit(limitInput.value));
       const pageNumber = createHtmlElement('div', 'page__number', ' PAGE: ', pageControl);
       const leftButton = createHtmlElement('button', 'page__button', ' < ', pageNumber);
-      const pageNumberText = createHtmlElement('span', 'page__number-text', '1', pageNumber);
+      leftButton.addEventListener('click', this.prevPage);
+      const pageNumberText = createHtmlElement('span', 'page__number-text', `${this.currentPage}`, pageNumber);
       const rightButton = createHtmlElement('button', 'page__button', ' > ', pageNumber);
+      rightButton.addEventListener('click', this.nextPage);
       const prodItems = createHtmlElement('div', 'prod__items', '', productsInCart);
 
       const cartList = this.cartData.getCartList();
       const keys = Object.keys(cartList);
-      keys.forEach((key, index) => {
-        const data = this.data.filter((el) => el.id === Number(key))[0];
-        const productInCart = new ProductInCart(data, index);
+      const start = this.limit * (this.currentPage - 1);
+      if (start >= keys.length) {
+        this.prevPage();
+      }
+      const end = start + this.limit;
+      for (let index = start; index < end && index < keys.length; index++) {
+        const data = this.data.filter((el) => el.id === Number(keys[index]))[0];
+        const productInCart = new ProductInCart(data, index, cartList[keys[index]]);
+        productInCart.itemInfo.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${productInCart.id}`));
+        productInCart.plusButton.addEventListener('click', () => {
+          this.emit('addToCart', productInCart.id);
+          this.render();
+        });
+        productInCart.minusButton.addEventListener('click', () => {
+          this.emit('deleteFromCart', productInCart.id);
+          this.render();
+        });
         productsInCart.append(productInCart.render());
-      });
+      }
 
       const summary = createHtmlElement('div', 'summary', '', cartWrap);
       const summaryTitle = createHtmlElement('h2', 'summary__title', 'Summary', summary);
@@ -76,17 +113,60 @@ export default class CartPage extends Page {
       const promoEx = createHtmlElement('span', 'promo__ex', `Promo for test: 'RS', 'EPM'`, summary);
       const buttonBuy = createHtmlElement('button', 'button__buy', 'BUY NOW', summary);
       const blackout = new Blackout();
+      this.mainWrapper.prepend(blackout.render());
+
+      if (this.cartData.isStartBuy) {
+        this.cartData.isStartBuy = false;
+        popup.popupContentWrap.classList.toggle('popup__active');
+        blackout.blackout.classList.toggle('blackout__active');
+      }
 
       buttonBuy.addEventListener('click', () => {
         popup.popupContentWrap.classList.toggle('popup__active');
         blackout.blackout.classList.toggle('blackout__active');
       });
 
-      blackout.blackout.addEventListener('click', (e: Event) => {
+      const blackoutActive = (e: Event) => {
+        const errorMessages = popup.popupContentWrap?.querySelectorAll('.error__message');
         if (e.target !== popup.popupContentWrap) {
           popup.popupContentWrap.classList.toggle('popup__active');
           blackout.blackout.classList.toggle('blackout__active');
         }
+        errorMessages.forEach((el) => {
+          if (el.classList.contains('active')) {
+            el.classList.remove('active');
+          }
+        });
+      };
+
+      blackout.blackout.addEventListener('click', blackoutActive);
+
+      popup.popupForm.addEventListener('submit', (e: Event) => {
+        e.preventDefault();
+        this.cartData.clearCart();
+        popup.popupContentWrap.classList.toggle('popup__active');
+        blackout.blackout.removeEventListener('click', blackoutActive);
+        cartWrap.style.display = 'none';
+        this.mainWrapper.className = 'redirect__message';
+        const secondsLeft = createHtmlElement('span', 'seconds__text', '5');
+        const rediretcMessage = createHtmlElement(
+          'h1',
+          'redirect__message-text',
+          `Thanks for your order. Redirect to the store after `,
+          this.mainWrapper
+        );
+        rediretcMessage.append(secondsLeft);
+        rediretcMessage.append(' sec');
+        let timeleft = 5;
+        const backToCatalog = () => this.emit('navigate', PATH.catalog);
+        const downloadTimer = setInterval(function () {
+          timeleft--;
+          secondsLeft.textContent = timeleft.toString();
+          if (timeleft <= 0) {
+            clearInterval(downloadTimer);
+            backToCatalog();
+          }
+        }, 1000);
       });
 
       if (!(promoCodeInput instanceof HTMLInputElement)) {
@@ -190,4 +270,41 @@ export default class CartPage extends Page {
 
     return this.mainWrapper;
   }
+
+  private setLimit = (value: string) => {
+    this.limit = Number(value);
+    const params = qs.parse(window.location.search);
+    params.limit = value;
+    if (params.limit === '') {
+      delete params.limit;
+    }
+    const search = qs.stringify(params);
+    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + '?' + search);
+    this.render();
+  };
+
+  private prevPage = () => {
+    if (this.currentPage < 2) {
+      return;
+    }
+    this.currentPage--;
+    this.goPage();
+  };
+
+  private nextPage = () => {
+    const maxPage = Math.ceil(this.cartData.getCartListLength() / this.limit);
+    if (this.currentPage >= maxPage) {
+      return;
+    }
+    this.currentPage++;
+    this.goPage();
+  };
+
+  goPage = () => {
+    const params = qs.parse(window.location.search);
+    params.page = this.currentPage.toString();
+    const search = qs.stringify(params);
+    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + '?' + search);
+    this.render();
+  };
 }

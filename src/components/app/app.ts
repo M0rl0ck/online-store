@@ -7,6 +7,7 @@ import { createHtmlElement } from '../../utils/createElement';
 import MainPage from '../pages/Main/main';
 import CartPage from '../pages/CartPage/CartPage';
 import CartData from '../pages/CartPage/CartData';
+import CartControl from '../pages/CartPage/CartControl';
 import ProductPage from './../pages/ProductPage/productPage';
 
 export const PATH = {
@@ -64,8 +65,8 @@ class App {
   };
   private product = () => {
     this.container.innerHTML = '';
-    const page = new ProductPage(PATH.product);
-    page.on('navigation', this.navigate);
+    const page = new ProductPage(PATH.product, this.cartData);
+    page.on('navigate', this.navigate);
     this.container.append(page.render());
   };
   private cart = async () => {
@@ -74,6 +75,8 @@ class App {
     const page = new CartPage(PATH.cart, this.cartData, data);
     this.container.innerHTML = '';
     this.container.append(page.render());
+    page.on('navigate', this.navigate);
+    new CartControl(this.cartData, page);
   };
   private errorPage = () => {
     this.container.innerHTML = '';

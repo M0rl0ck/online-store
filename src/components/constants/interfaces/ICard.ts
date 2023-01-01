@@ -10,4 +10,5 @@ export default interface ICard {
   category: string
   thumbnail: string
   images: string[]
+  message?: string
 }

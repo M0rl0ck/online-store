@@ -2,32 +2,85 @@ import './productDetails.css';
 import { createHtmlElement } from '../../utils/createElement';
 import connector from '../../data/connector/Connector';
 import EventEmitter from 'events';
+import { PATH } from '../app/app';
+import { CatalogEmitsName } from '../Catalog/catalog';
+import { BUTTON_TEXT } from '../constants/constants/connstants';
 
 export default class ProductDetails extends EventEmitter {
   id: number;
-  constructor(id: number) {
+  isCart: boolean;
+  addToCartButton!: HTMLElement;
+  constructor(id: number, isCart: boolean) {
     super();
     this.id = id;
+    this.isCart = isCart;
+  }
+
+  emit(event: CatalogEmitsName, data?: number | string) {
+    return super.emit(event, data);
+  }
+
+  on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+    return super.on(event, callback);
   }
   async createProduct(): Promise<HTMLElement> {
     const element = createHtmlElement('div', 'product__details');
     const data = await connector.getProduct(this.id);
+
+    if (data.message) {
+      element.className = 'product__details-empty';
+      createHtmlElement('div', 'product__details-empty-text', data.message, element);
+      return element;
+    }
+
     const navigation = createHtmlElement('div', 'navigation', '', element);
     const navLinkStore = createHtmlElement('a', 'nav__link nav__link-store', 'STORE', navigation);
-    navLinkStore.addEventListener('click', () => this.emit('navigation', '/'));
+    navLinkStore.addEventListener('click', () => this.emit('navigate', PATH.catalog));
     navigation.append(' >> ');
     const navLinkCategory = createHtmlElement('a', 'nav__link nav__link-category', `${data.category.toUpperCase()}`, navigation);
     navigation.append(' >> ');
     const navLinkBrand = createHtmlElement('a', 'nav__link nav__link-brand', `${data.brand.toUpperCase()}`, navigation);
     navigation.append(' >> ');
-    const navLinkModel = createHtmlElement('a', 'nav__link nav__link-model', `${data.brand.toUpperCase()}`, navigation);
+    const navLinkModel = createHtmlElement('a', 'nav__link nav__link-model', `${data.title.toUpperCase()}`, navigation);
     const productDetail = createHtmlElement('div', 'product__detail', '', element);
     const productTitle = createHtmlElement('div', 'product__title', '', productDetail);
     const productTitleText = createHtmlElement('h1', 'product__title-text', `${data.title}`, productTitle);
     const productData = createHtmlElement('div', 'product__data', '', productDetail);
     const produtPhotos = createHtmlElement('div', 'product__photos', '', productData);
     const smallPhotos = createHtmlElement('div', 'small__photos', '', produtPhotos);
-    data.images.forEach((image) => {
+
+    const removeDuplicates = (): Array<string> => {
+      interface ObjectInterface {
+        [key: string]: number;
+      }
+      let objAllImages = <ObjectInterface>{};
+      data.images.forEach((image) => {
+        const req = new XMLHttpRequest();
+        req.open('GET', image, false);
+        req.send();
+        let url = image;
+        let size = Number(req.getResponseHeader('content-length'));
+        objAllImages[url] = size;
+      });
+
+      const uniqValues: Array<number> = [...new Set(Object.values(objAllImages))];
+      const keys: Array<number> = Object.values(objAllImages);
+      let filteredImagesArr: Array<string>;
+
+      if (uniqValues.length !== keys.length) {
+        const object2 = Object.fromEntries(Object.entries(objAllImages).filter(([_, val], index) => val === uniqValues[index - 1]));
+
+        filteredImagesArr = Object.keys(object2);
+      } else {
+        filteredImagesArr = Object.keys(objAllImages);
+      }
+
+      return filteredImagesArr;
+    };
+
+    const filteredImages = removeDuplicates();
+
+    filteredImages.forEach((image) => {
       const photo = createHtmlElement('img', 'small__photo', '', smallPhotos);
       photo.setAttribute('src', image);
     });
@@ -64,8 +117,20 @@ export default class ProductDetails extends EventEmitter {
     const productCategoryText = createHtmlElement('p', 'product__desc-text', `${data.category}`, productCategory);
     const addToCart = createHtmlElement('div', 'product__add-to-cart', '', productData);
     const cartButtons = createHtmlElement('div', 'cart__buttons', ` €${data.price} `, addToCart);
-    const addToCartButton = createHtmlElement('button', 'cart__button-add', ' ADD TO CART ', cartButtons);
+    this.addToCartButton = createHtmlElement('button', 'cart__button-add', `${this.isCart ? BUTTON_TEXT.DEL : BUTTON_TEXT.ADD}`, cartButtons);
+    this.addToCartButton.addEventListener('click', this.addToCart);
     const buyNowButton = createHtmlElement('button', 'cart__button-buy', ' BUY NOW ', cartButtons);
+    buyNowButton.addEventListener('click', () => this.emit('buyNow', this.id));
     return element;
   }
+
+  addToCart = () => {
+    this.isCart = !this.isCart;
+    this.addToCartButton.textContent = `${this.isCart ? BUTTON_TEXT.DEL : BUTTON_TEXT.ADD}`;
+    if (this.isCart) {
+      this.emit('addToCart', this.id);
+    } else {
+      this.emit('deleteFromCart', this.id);
+    }
+  };
 }

@@ -11,8 +11,10 @@ export default class CartData extends EventEmitter {
   countProducts: number;
   allPrice: number;
   storage: Storage;
+  isStartBuy: boolean;
   constructor() {
     super();
+    this.isStartBuy = false;
     this.storage = new Storage();
     this.items = [];
     const list = this.storage.loadValue('cartData');
@@ -29,10 +31,12 @@ export default class CartData extends EventEmitter {
   }
 
   addProduct = (id: number) => {
+    let stock = this.items.find((item) => item.id === id)?.stock;
+    stock = stock ? stock : 1;
     const key = id.toString();
-    if (this.list[key]) {
+    if (this.list[key] && this.list[key] < stock) {
       this.list[key] += 1;
-    } else {
+    } else if (!this.list[key]) {
       this.list[key] = 1;
     }
     this.saveData();
@@ -57,6 +61,11 @@ export default class CartData extends EventEmitter {
     this.saveData();
   };
 
+  clearCart = () => {
+    this.list = {};
+    this.saveData();
+  };
+
   isProductInCart = (id: number) => {
     return !!this.list[id.toString()];
   };
@@ -67,6 +76,10 @@ export default class CartData extends EventEmitter {
 
   getCartList = () => {
     return { ...this.list };
+  };
+
+  getCartListLength = () => {
+    return Object.keys(this.list).length;
   };
 
   private saveData() {

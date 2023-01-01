@@ -129,6 +129,11 @@
   font-size: 90%;
 }
 
+.total__amount-text span,
+.total__price-text span {
+  font-size: inherit;
+}
+
 .promo__code {
   display: flex;
   align-items: center;
@@ -227,4 +232,8 @@
   cursor: pointer;
   width: 50%;
   margin: 3rem auto 1rem;
+}
+
+.seconds__text {
+  font-size: 100%;
 }
