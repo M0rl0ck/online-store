@@ -4,18 +4,37 @@ import Catalog from '../../Catalog/catalog';
 import LeftFilter from '../../Filters/LeftFilter/leftFilter';
 import ICard from '../../constants/interfaces/ICard';
 import CartData from '../CartPage/CartData';
+import { EmitsName } from '../../constants/constants/connstants';
 
 class MainPage extends Page {
   catalog: Catalog;
   cartData: CartData;
-  constructor(id: string, data: ICard[], cardData: CartData) {
+  leftFilter: LeftFilter;
+  constructor(id: string, data: ICard[], cartData: CartData) {
     super(id);
-    this.cartData = cardData;
-    this.catalog = new Catalog(data, this.cartData);
-    const leftFilter = new LeftFilter(data);
-    this.mainWrapper.append(leftFilter.createLeftFilter(), this.catalog.render());
+    this.cartData = cartData;
+    this.leftFilter = new LeftFilter(data);
+    this.mainWrapper.append(this.leftFilter.createLeftFilter());
+    this.catalog = new Catalog(this.leftFilter.filtredData, this.cartData);
+    this.mainWrapper.append(this.catalog.render());
     this.catalog.on('addToCart', this.cartData.addProduct);
     this.catalog.on('deleteFromCart', this.cartData.deleteStackProduct);
+    this.leftFilter.on('filter', this.startFilter);
+  }
+
+  
+  emit(event: EmitsName, data?: number | string) {
+    return super.emit(event, data);
+  }
+
+  on(event: EmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+    return super.on(event, callback);
+  }
+
+  startFilter = () => {
+    this.leftFilter.createLeftFilter();
+    this.catalog.data = this.leftFilter.filtredData;
+    this.catalog.render();
   }
 
   render(): HTMLElement {

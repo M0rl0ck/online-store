@@ -14,7 +14,12 @@ class Connector {
     const endUrl = `?limit=${limit.toString()}`;
     const responce = await fetch(`${this.url}${endUrl}`);
     const data = await responce.json();
-    this.dataCards = data.products;
+    this.dataCards = data.products.map((el: ICard) => {
+      if (el.brand.toUpperCase() === 'APPLE') {
+        el.brand = 'Apple';
+      }
+      return el;
+    });
     return this.dataCards;
   }
 
@@ -27,7 +32,10 @@ class Connector {
     }
     const endUrl = `/${id.toString()}`;
     const responce = await fetch(`${this.url}${endUrl}`);
-    const data = await responce.json();
+    const data: ICard = await responce.json();
+    if (data.brand.toUpperCase() === 'APPLE') {
+      data.brand = 'Apple';
+    }
     return data;
   }
 }
