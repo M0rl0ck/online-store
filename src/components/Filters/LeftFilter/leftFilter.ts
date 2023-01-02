@@ -19,22 +19,27 @@ export default class LeftFilter {
   stockDataFrom!: HTMLElement;
   stockDataTo!: HTMLElement;
   data: ICard[];
+  filtredData: ICard[];
+  buttonReset!: HTMLElement;
+  buttonCopyLink!: HTMLElement;
+  element: HTMLElement;
   constructor(data: ICard[]) {
     this.data = data;
-
+    this.filtredData = data;
     this.rangePrice = this.getRange('price');
     this.rangeStock = this.getRange('stock');
     this.currentRangePrice = [this.rangePrice[0], this.rangePrice[this.rangePrice.length - 1]];
     this.currentRangeStock = [this.rangeStock[0], this.rangeStock[this.rangeStock.length - 1]];
     this.rangeInputPrice = new FilterRange(this.rangePrice, this.currentRangePrice, 'input__range');
     this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
+    this.element = createHtmlElement('div', 'filters', '');
+    const buttonsWrapper = createHtmlElement('div', 'reset__total', '', this.element);
+    this.buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', buttonsWrapper);
+    this.buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', buttonsWrapper);
   }
   createLeftFilter(): HTMLElement {
-    const element = createHtmlElement('div', 'filters', '');
-    const buttonsWrapper = createHtmlElement('div', 'reset__total', '', element);
-    const buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', buttonsWrapper);
-    const buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', buttonsWrapper);
-    const categoryFilter = createHtmlElement('div', 'category__filter', '', element);
+    this.element.innerHTML = '';
+    const categoryFilter = createHtmlElement('div', 'category__filter', '', this.element);
     const categoryFilterTitle = createHtmlElement('h3', 'category__filter-title', 'Category', categoryFilter);
     const categoryFilterList = createHtmlElement('ul', 'filter__list', '', categoryFilter);
 
@@ -43,7 +48,7 @@ export default class LeftFilter {
       categoryFilterList.append(this.createFilterLine(key, category[key], category[key]));
     }
 
-    const brandFilter = createHtmlElement('div', 'brand__filter', '', element);
+    const brandFilter = createHtmlElement('div', 'brand__filter', '', this.element);
     const brandFilterTitle = createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
     const brandFilterList = createHtmlElement('ul', 'filter__list', '', brandFilter);
 
@@ -52,7 +57,7 @@ export default class LeftFilter {
       brandFilterList.append(this.createFilterLine(key, brand[key], brand[key]));
     }
 
-    const priceDualSlider = createHtmlElement('div', 'price__slider', '', element);
+    const priceDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
     const priceDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
     const priceData = createHtmlElement('div', 'price__data', '', priceDualSlider);
     this.priceDataFrom = createHtmlElement('div', 'data__from', `€${this.rangePrice[0]}`, priceData);
@@ -60,7 +65,7 @@ export default class LeftFilter {
     this.priceDataTo = createHtmlElement('div', 'data__to', `€${this.rangePrice[1]}.00`, priceData);
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
-    const stockDualSlider = createHtmlElement('div', 'price__slider', '', element);
+    const stockDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
     const stockDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
     const stockData = createHtmlElement('div', 'price__data', '', stockDualSlider);
     this.stockDataFrom = createHtmlElement('div', 'data__from', `${this.rangeStock[0]}`, stockData);
@@ -79,7 +84,7 @@ export default class LeftFilter {
       this.stockDataFrom.textContent = values[0].toString();
       this.stockDataTo.textContent = values[1].toString();
     });
-    return element;
+    return this.element;
   }
 
   private createFilterLine(name: string, min: number, max: number): HTMLElement {

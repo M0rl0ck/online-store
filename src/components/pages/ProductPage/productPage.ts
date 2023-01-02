@@ -2,7 +2,7 @@ import './productPage.css';
 import Page from '../Template/page';
 import ProductDetails from './../../ProductDetails/productDetails';
 import CartData from '../CartPage/CartData';
-import { CatalogEmitsName } from '../../Catalog/catalog';
+import { EmitsName } from '../../constants/constants/connstants';
 import { PATH } from '../../app/app';
 
 export default class ProductPage extends Page {
@@ -13,11 +13,11 @@ export default class ProductPage extends Page {
     this.createProduct();
   }
 
-  emit(event: CatalogEmitsName, data?: number | string) {
+  emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
   }
 
-  on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+  on(event: EmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
     return super.on(event, callback);
   }
 

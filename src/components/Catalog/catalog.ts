@@ -5,9 +5,12 @@ import ICard from '../constants/interfaces/ICard';
 import EventEmitter from 'events';
 import CartData from '../pages/CartPage/CartData';
 import { PATH } from '../app/app';
+import { EmitsName } from '../constants/constants/connstants';
+import qs from 'query-string';
 
-export type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow';
+// export type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow';
 enum SORTBY {
+  DEFAULT = 'Default',
   PRICEASC = 'PriceASC',
   PRICEDESC = 'PriceDESC',
   RATINGASC = 'RatingASC',
@@ -23,18 +26,20 @@ export default class Catalog extends EventEmitter {
   productsWrap!: HTMLElement;
   cartData: CartData;
   sortStat!: HTMLElement;
+  sortedData: ICard[];
 
-  emit(event: CatalogEmitsName, data?: number | string) {
+  emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
   }
 
-  on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+  on(event: EmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
     return super.on(event, callback);
   }
   constructor(dataCards: ICard[], cartData: CartData) {
     super();
+    this.data = dataCards;
     this.cartData = cartData;
-    this.data = [...dataCards];
+    this.sortedData = [...dataCards];
     this.element = createHtmlElement('div', 'catalog', '');
     this.createCatalog();
   }
@@ -42,6 +47,8 @@ export default class Catalog extends EventEmitter {
     const sortProducts = createHtmlElement('div', 'sort__products', '', this.element);
     const sortSelectWrap = createHtmlElement('div', 'sort__wrap', '', sortProducts);
     const sortSelect = createHtmlElement('select', 'sort__select', '', sortSelectWrap);
+    const sortDefault = createHtmlElement('option', 'sort__option-1', 'Sort default', sortSelect);
+    sortDefault.setAttribute('value', SORTBY.DEFAULT);
     const sortByPriceASC = createHtmlElement('option', 'sort__option-1', 'Sort by price ASC', sortSelect);
     sortByPriceASC.setAttribute('value', SORTBY.PRICEASC);
     const sortByPriceDESC = createHtmlElement('option', 'sort__option-2', 'Sort by price DESC', sortSelect);
@@ -54,12 +61,26 @@ export default class Catalog extends EventEmitter {
     sortByDiscountASC.setAttribute('value', SORTBY.DISCOUNTASC);
     const sortByDiscountDESC = createHtmlElement('option', 'sort__option-6', 'Sort by discount DESC', sortSelect);
     sortByDiscountDESC.setAttribute('value', SORTBY.DISCOUNTDESC);
-    this.sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
 
+    const sortProps = qs.parse(window.location.search);
     if (!(sortSelect instanceof HTMLSelectElement)) {
       throw Error('Not select element');
     }
-    sortSelect.addEventListener('change', () => this.sortCards(sortSelect.value, this.data));
+    if (sortProps.sort) {
+      sortSelect.value = sortProps.sort.toString();
+    }
+    this.sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
+
+    sortSelect.addEventListener('change', () => {
+      if (sortSelect.value !== SORTBY.DEFAULT) {
+        sortProps.sort = sortSelect.value;
+      } else {
+        delete sortProps.sort;
+      }
+      const search = qs.stringify(sortProps);
+      window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search? '?' + search : ''}`);
+      this.sortCards(sortSelect.value, this.sortedData);
+    });
 
     const inputSearch = createHtmlElement('input', 'sort__search', '', sortProducts);
     inputSearch.setAttribute('type', 'search');
@@ -99,13 +120,13 @@ export default class Catalog extends EventEmitter {
     });
 
     this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
-    this.render();
+    this.sortCards(sortSelect.value, this.sortedData);
   }
 
   render() {
     this.productsWrap.innerHTML = '';
     this.cards = [];
-    this.data.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
+    this.sortedData.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
       ...this.cards.map((card) => {
         card.detailsButton.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
@@ -129,23 +150,25 @@ export default class Catalog extends EventEmitter {
   sortCards(prop: string, sortedCards: Array<ICard>) {
     switch (prop) {
       case SORTBY.PRICEASC:
-        sortedCards = this.data.sort((a, b) => a.price - b.price);
+        sortedCards = this.sortedData.sort((a, b) => a.price - b.price);
         break;
       case SORTBY.PRICEDESC:
-        sortedCards = this.data.sort((a, b) => b.price - a.price);
+        sortedCards = this.sortedData.sort((a, b) => b.price - a.price);
         break;
       case SORTBY.RATINGASC:
-        sortedCards = this.data.sort((a, b) => a.rating - b.rating);
+        sortedCards = this.sortedData.sort((a, b) => a.rating - b.rating);
         break;
       case SORTBY.RATINGDESC:
-        sortedCards = this.data.sort((a, b) => b.rating - a.rating);
+        sortedCards = this.sortedData.sort((a, b) => b.rating - a.rating);
         break;
       case SORTBY.DISCOUNTASC:
-        sortedCards = this.data.sort((a, b) => a.discountPercentage - b.discountPercentage);
+        sortedCards = this.sortedData.sort((a, b) => a.discountPercentage - b.discountPercentage);
         break;
       case SORTBY.DISCOUNTDESC:
-        sortedCards = this.data.sort((a, b) => b.discountPercentage - a.discountPercentage);
+        sortedCards = this.sortedData.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
+      default :
+      this.sortedData = [...this.data];
     }
     this.render();
   }

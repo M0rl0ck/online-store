@@ -3,7 +3,7 @@ import { createHtmlElement } from '../../utils/createElement';
 import connector from '../../data/connector/Connector';
 import EventEmitter from 'events';
 import { PATH } from '../app/app';
-import { CatalogEmitsName } from '../Catalog/catalog';
+import { EmitsName } from '../constants/constants/connstants';
 import { BUTTON_TEXT } from '../constants/constants/connstants';
 
 export default class ProductDetails extends EventEmitter {
@@ -16,11 +16,11 @@ export default class ProductDetails extends EventEmitter {
     this.isCart = isCart;
   }
 
-  emit(event: CatalogEmitsName, data?: number | string) {
+  emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
   }
 
-  on(event: CatalogEmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
+  on(event: EmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
     return super.on(event, callback);
   }
   async createProduct(): Promise<HTMLElement> {
