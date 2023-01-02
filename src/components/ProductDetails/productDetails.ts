@@ -63,17 +63,15 @@ export default class ProductDetails extends EventEmitter {
         objAllImages[url] = size;
       });
 
-      const uniqValues: Array<number> = [...new Set(Object.values(objAllImages))];
-      const keys: Array<number> = Object.values(objAllImages);
       let filteredImagesArr: Array<string>;
-
-      if (uniqValues.length !== keys.length) {
-        const object2 = Object.fromEntries(Object.entries(objAllImages).filter(([_, val], index) => val === uniqValues[index - 1]));
-
-        filteredImagesArr = Object.keys(object2);
-      } else {
-        filteredImagesArr = Object.keys(objAllImages);
+      const filteredImagesObj = <ObjectInterface>{};
+      for (const key in objAllImages) {
+        if (!Object.values(filteredImagesObj).includes(objAllImages[key])) {
+          filteredImagesObj[key] = objAllImages[key];
+        }
       }
+
+      filteredImagesArr = Object.keys(filteredImagesObj);
 
       return filteredImagesArr;
     };
