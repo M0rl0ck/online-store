@@ -72,13 +72,14 @@ export default class Catalog extends EventEmitter {
     this.sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
 
     this.sortSelect.addEventListener('change', () => {
+      const sortProps = qs.parse(window.location.search);
       if (this.sortSelect.value !== SORTBY.DEFAULT) {
         sortProps.sort = this.sortSelect.value;
       } else {
         delete sortProps.sort;
       }
       const search = qs.stringify(sortProps);
-      window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search? '?' + search : ''}`);
+      window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
       this.render();
     });
 
@@ -149,6 +150,7 @@ export default class Catalog extends EventEmitter {
   }
 
   sortCards(prop: string) {
+    this.sortedData = [...this.data];
     switch (prop) {
       case SORTBY.PRICEASC:
         this.sortedData.sort((a, b) => a.price - b.price);
@@ -168,8 +170,6 @@ export default class Catalog extends EventEmitter {
       case SORTBY.DISCOUNTDESC:
         this.sortedData.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
-      default :
-      this.sortedData = [...this.data];
     }
   }
 }

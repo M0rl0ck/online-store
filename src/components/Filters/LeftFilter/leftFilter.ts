@@ -50,10 +50,14 @@ export default class LeftFilter extends EventEmitter {
     this.rangeStock = this.getRange('stock', this.data);
 
     const currentRangePrice = this.getCurrentRang('price');
-    this.currentRangePrice = currentRangePrice.length ? currentRangePrice : [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
+    this.currentRangePrice = currentRangePrice.length
+      ? currentRangePrice
+      : [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
 
     const currentRangeStock = this.getCurrentRang('stock');
-    this.currentRangeStock = currentRangeStock.length ? currentRangeStock : [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangeStock.length - 1]];
+    this.currentRangeStock = currentRangeStock.length
+      ? currentRangeStock
+      : [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangeStock.length - 1]];
     this.rangeInputPrice = new FilterRange(this.rangePrice, this.currentRangePrice, 'input__range');
     this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
     this.element = createHtmlElement('div', 'filters', '');
@@ -64,23 +68,26 @@ export default class LeftFilter extends EventEmitter {
 
   createLeftFilter(): HTMLElement {
     this.element.innerHTML = '';
+    this.filtredData = this.filter();
     this.element.append(this.buttonsWrapper);
     const categoryFilter = createHtmlElement('div', 'category__filter', '', this.element);
     const categoryFilterTitle = createHtmlElement('h3', 'category__filter-title', 'Category', categoryFilter);
     const categoryFilterList = createHtmlElement('ul', 'filter__list', '', categoryFilter);
 
-    const category = this.getFilterList('category');
+    const category = this.getFilterList('category', this.data);
+    const filtredCategory = this.getFilterList('category', this.filtredData);
     for (const key in category) {
-      categoryFilterList.append(this.createFilterLine(key, category[key], category[key], 'category'));
+      categoryFilterList.append(this.createFilterLine(key, filtredCategory[key] ? filtredCategory[key] : 0, category[key], 'category'));
     }
 
     const brandFilter = createHtmlElement('div', 'brand__filter', '', this.element);
     const brandFilterTitle = createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
     const brandFilterList = createHtmlElement('ul', 'filter__list', '', brandFilter);
 
-    const brand = this.getFilterList('brand');
+    const brand = this.getFilterList('brand', this.data);
+    const filtredBrand = this.getFilterList('brand', this.filtredData);
     for (const key in brand) {
-      brandFilterList.append(this.createFilterLine(key, brand[key], brand[key], 'brand'));
+      brandFilterList.append(this.createFilterLine(key, filtredBrand[key] ? filtredBrand[key] : 0, brand[key], 'brand'));
     }
 
     const priceDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
@@ -122,7 +129,7 @@ export default class LeftFilter extends EventEmitter {
     if (nameFilterProp && typeof nameFilterProp === 'string') {
       filterProp = nameFilterProp.split('↕');
     }
-    const el = createHtmlElement('li', 'filter-line item-active');
+    const el = createHtmlElement('li', min ? 'filter-line' : 'filter-line item-non-active');
     const check = createHtmlElement('input', '', '', el);
     if (!(check instanceof HTMLInputElement)) {
       throw Error('Not imput element');
@@ -167,9 +174,9 @@ export default class LeftFilter extends EventEmitter {
     this.emit('filter');
   };
 
-  private getFilterList(key: FilterName): FilterList {
+  private getFilterList(key: FilterName, data: ICard[]): FilterList {
     const list: FilterList = {};
-    this.data.forEach((el) => {
+    data.forEach((el) => {
       const index = el[key];
       if (!list[index]) {
         list[index] = 1;
@@ -190,8 +197,26 @@ export default class LeftFilter extends EventEmitter {
     let filterProp: number[] = [];
     const nameFilterProp = filterProps[name];
     if (nameFilterProp && typeof nameFilterProp === 'string') {
-      filterProp = nameFilterProp.split('↕').map(el => Number(el));
+      filterProp = nameFilterProp.split('↕').map((el) => Number(el));
     }
     return filterProp;
-  }
+  };
+
+  filter = (): ICard[] => {
+    let filtredData: ICard[] = [...this.data];
+    filtredData = this.getFiltredData(filtredData, 'category');
+    filtredData = this.getFiltredData(filtredData, 'brand');
+
+    return filtredData;
+  };
+
+  getFiltredData = (data: ICard[], name: FilterName): ICard[] => {
+    const filterProps = qs.parse(window.location.search);
+    let filterProp: string[] = [];
+    const nameFilterProp = filterProps[name];
+    if (nameFilterProp && typeof nameFilterProp === 'string') {
+      filterProp = nameFilterProp.split('↕');
+    }
+    return filterProp.length ? data.filter((el) => filterProp.includes(el[name])) : data;
+  };
 }
