@@ -3,6 +3,6 @@ enum BUTTON_TEXT {
   DEL = 'DROP FROM CART',
 }
 
-type EmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow';
+type EmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow' | 'filter';
 
 export { BUTTON_TEXT, EmitsName };

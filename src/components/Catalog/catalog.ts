@@ -8,7 +8,6 @@ import { PATH } from '../app/app';
 import { EmitsName } from '../constants/constants/connstants';
 import qs from 'query-string';
 
-// export type CatalogEmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow';
 enum SORTBY {
   DEFAULT = 'Default',
   PRICEASC = 'PriceASC',
@@ -27,6 +26,7 @@ export default class Catalog extends EventEmitter {
   cartData: CartData;
   sortStat!: HTMLElement;
   sortedData: ICard[];
+  sortSelect!: HTMLSelectElement;
 
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -46,40 +46,40 @@ export default class Catalog extends EventEmitter {
   private createCatalog() {
     const sortProducts = createHtmlElement('div', 'sort__products', '', this.element);
     const sortSelectWrap = createHtmlElement('div', 'sort__wrap', '', sortProducts);
-    const sortSelect = createHtmlElement('select', 'sort__select', '', sortSelectWrap);
-    const sortDefault = createHtmlElement('option', 'sort__option-1', 'Sort default', sortSelect);
+    this.sortSelect = createHtmlElement('select', 'sort__select', '', sortSelectWrap) as HTMLSelectElement;
+    const sortDefault = createHtmlElement('option', 'sort__option-1', 'Sort default', this.sortSelect);
     sortDefault.setAttribute('value', SORTBY.DEFAULT);
-    const sortByPriceASC = createHtmlElement('option', 'sort__option-1', 'Sort by price ASC', sortSelect);
+    const sortByPriceASC = createHtmlElement('option', 'sort__option-1', 'Sort by price ASC', this.sortSelect);
     sortByPriceASC.setAttribute('value', SORTBY.PRICEASC);
-    const sortByPriceDESC = createHtmlElement('option', 'sort__option-2', 'Sort by price DESC', sortSelect);
+    const sortByPriceDESC = createHtmlElement('option', 'sort__option-2', 'Sort by price DESC', this.sortSelect);
     sortByPriceDESC.setAttribute('value', SORTBY.PRICEDESC);
-    const sortByRatingASC = createHtmlElement('option', 'sort__option-3', 'Sort by rating ASC', sortSelect);
+    const sortByRatingASC = createHtmlElement('option', 'sort__option-3', 'Sort by rating ASC', this.sortSelect);
     sortByRatingASC.setAttribute('value', SORTBY.RATINGASC);
-    const sortByRatingDESC = createHtmlElement('option', 'sort__option-4', 'Sort by rating DESC', sortSelect);
+    const sortByRatingDESC = createHtmlElement('option', 'sort__option-4', 'Sort by rating DESC', this.sortSelect);
     sortByRatingDESC.setAttribute('value', SORTBY.RATINGDESC);
-    const sortByDiscountASC = createHtmlElement('option', 'sort__option-5', 'Sort by discount ASC', sortSelect);
+    const sortByDiscountASC = createHtmlElement('option', 'sort__option-5', 'Sort by discount ASC', this.sortSelect);
     sortByDiscountASC.setAttribute('value', SORTBY.DISCOUNTASC);
-    const sortByDiscountDESC = createHtmlElement('option', 'sort__option-6', 'Sort by discount DESC', sortSelect);
+    const sortByDiscountDESC = createHtmlElement('option', 'sort__option-6', 'Sort by discount DESC', this.sortSelect);
     sortByDiscountDESC.setAttribute('value', SORTBY.DISCOUNTDESC);
 
     const sortProps = qs.parse(window.location.search);
-    if (!(sortSelect instanceof HTMLSelectElement)) {
+    if (!(this.sortSelect instanceof HTMLSelectElement)) {
       throw Error('Not select element');
     }
     if (sortProps.sort) {
-      sortSelect.value = sortProps.sort.toString();
+      this.sortSelect.value = sortProps.sort.toString();
     }
     this.sortStat = createHtmlElement('p', 'sort__stat', `Found: ${this.cards.length}`, sortProducts);
 
-    sortSelect.addEventListener('change', () => {
-      if (sortSelect.value !== SORTBY.DEFAULT) {
-        sortProps.sort = sortSelect.value;
+    this.sortSelect.addEventListener('change', () => {
+      if (this.sortSelect.value !== SORTBY.DEFAULT) {
+        sortProps.sort = this.sortSelect.value;
       } else {
         delete sortProps.sort;
       }
       const search = qs.stringify(sortProps);
       window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search? '?' + search : ''}`);
-      this.sortCards(sortSelect.value, this.sortedData);
+      this.render();
     });
 
     const inputSearch = createHtmlElement('input', 'sort__search', '', sortProducts);
@@ -120,11 +120,12 @@ export default class Catalog extends EventEmitter {
     });
 
     this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
-    this.sortCards(sortSelect.value, this.sortedData);
+    this.render();
   }
 
   render() {
     this.productsWrap.innerHTML = '';
+    this.sortCards(this.sortSelect.value);
     this.cards = [];
     this.sortedData.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
@@ -147,29 +148,28 @@ export default class Catalog extends EventEmitter {
     return this.element;
   }
 
-  sortCards(prop: string, sortedCards: Array<ICard>) {
+  sortCards(prop: string) {
     switch (prop) {
       case SORTBY.PRICEASC:
-        sortedCards = this.sortedData.sort((a, b) => a.price - b.price);
+        this.sortedData.sort((a, b) => a.price - b.price);
         break;
       case SORTBY.PRICEDESC:
-        sortedCards = this.sortedData.sort((a, b) => b.price - a.price);
+        this.sortedData.sort((a, b) => b.price - a.price);
         break;
       case SORTBY.RATINGASC:
-        sortedCards = this.sortedData.sort((a, b) => a.rating - b.rating);
+        this.sortedData.sort((a, b) => a.rating - b.rating);
         break;
       case SORTBY.RATINGDESC:
-        sortedCards = this.sortedData.sort((a, b) => b.rating - a.rating);
+        this.sortedData.sort((a, b) => b.rating - a.rating);
         break;
       case SORTBY.DISCOUNTASC:
-        sortedCards = this.sortedData.sort((a, b) => a.discountPercentage - b.discountPercentage);
+        this.sortedData.sort((a, b) => a.discountPercentage - b.discountPercentage);
         break;
       case SORTBY.DISCOUNTDESC:
-        sortedCards = this.sortedData.sort((a, b) => b.discountPercentage - a.discountPercentage);
+        this.sortedData.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
       default :
       this.sortedData = [...this.data];
     }
-    this.render();
   }
 }

@@ -19,6 +19,7 @@ class MainPage extends Page {
     this.mainWrapper.append(this.catalog.render());
     this.catalog.on('addToCart', this.cartData.addProduct);
     this.catalog.on('deleteFromCart', this.cartData.deleteStackProduct);
+    this.leftFilter.on('filter', this.startFilter);
   }
 
   
@@ -28,6 +29,12 @@ class MainPage extends Page {
 
   on(event: EmitsName, callback: ((data: string) => void) | ((data: number) => void)) {
     return super.on(event, callback);
+  }
+
+  startFilter = () => {
+    this.leftFilter.createLeftFilter();
+    this.catalog.data = this.leftFilter.filtredData;
+    this.catalog.render();
   }
 
   render(): HTMLElement {
