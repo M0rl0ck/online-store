@@ -54,12 +54,32 @@ export default class LeftFilter extends EventEmitter {
       ? currentRangePrice
       : [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
 
+    this.priceDataFrom = createHtmlElement('div', 'data__from', `€${this.currentRangePrice[RANG.FIRST]}`);
+    this.priceDataTo = createHtmlElement('div', 'data__to', `€${this.currentRangePrice[RANG.SECOND]}.00`);
+
     const currentRangeStock = this.getCurrentRang('stock');
     this.currentRangeStock = currentRangeStock.length
       ? currentRangeStock
       : [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangeStock.length - 1]];
+
+    this.stockDataFrom = createHtmlElement('div', 'data__from', `${this.currentRangeStock[RANG.FIRST]}`);
+    this.stockDataTo = createHtmlElement('div', 'data__to', `${this.currentRangeStock[RANG.SECOND]}`);
     this.rangeInputPrice = new FilterRange(this.rangePrice, this.currentRangePrice, 'input__range');
     this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
+
+    this.rangeInputPrice.rangeInput.noUiSlider?.on('slide', (values: (string | number)[], handle: number): void => {
+      this.currentRangePrice[handle] = Number(values[handle]);
+      this.priceDataFrom.textContent = `€${this.currentRangePrice[RANG.FIRST]}`;
+      this.priceDataTo.textContent = `€${this.currentRangePrice[RANG.SECOND]}.00`;
+      this.setRangeFilter('price', this.currentRangePrice);
+    });
+    this.rangeInputStock.rangeInput.noUiSlider?.on('slide', (values: (string | number)[], handle: number): void => {
+      this.currentRangeStock[handle] = Number(values[handle]);
+      this.stockDataFrom.textContent = values[RANG.FIRST].toString();
+      this.stockDataTo.textContent = values[RANG.SECOND].toString();
+      this.setRangeFilter('stock', this.currentRangeStock);
+    });
+
     this.element = createHtmlElement('div', 'filters', '');
     this.buttonsWrapper = createHtmlElement('div', 'reset__total', '', this.element);
     this.buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', this.buttonsWrapper);
@@ -93,32 +113,33 @@ export default class LeftFilter extends EventEmitter {
     const priceDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
     const priceDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
     const priceData = createHtmlElement('div', 'price__data', '', priceDualSlider);
-    this.priceDataFrom = createHtmlElement('div', 'data__from', `€${this.currentRangePrice[RANG.FIRST]}`, priceData);
+
+    priceData.append(this.priceDataFrom);
     const dualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, priceData);
-    this.priceDataTo = createHtmlElement('div', 'data__to', `€${this.currentRangePrice[RANG.SECOND]}.00`, priceData);
+    priceData.append(this.priceDataTo);
+
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
+    const priceRange = this.getRange('price', this.filtredData);
+    this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
+    this.priceDataFrom.textContent = priceRange[RANG.FIRST].toString();
+    this.priceDataTo.textContent = priceRange[priceRange.length - 1].toString()
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
+
     const stockDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
     const stockDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
     const stockData = createHtmlElement('div', 'price__data', '', stockDualSlider);
-    this.stockDataFrom = createHtmlElement('div', 'data__from', `${this.currentRangeStock[RANG.FIRST]}`, stockData);
+
+    stockData.append(this.stockDataFrom);
     const stockDualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, stockData);
-    this.stockDataTo = createHtmlElement('div', 'data__to', `${this.currentRangeStock[RANG.SECOND]}`, stockData);
+    stockData.append(this.stockDataTo);
+
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
+    const stockRange = this.getRange('stock', this.filtredData);
+    this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
+    this.stockDataFrom.textContent = stockRange[RANG.FIRST].toString();
+    this.stockDataTo.textContent = stockRange[stockRange.length - 1].toString();
     stockRangeWrapper.append(this.rangeInputStock.rangeInput);
 
-    this.rangeInputPrice.rangeInput.noUiSlider?.on('change', (values: (string | number)[], handle: number): void => {
-      this.currentRangePrice[handle] = Number(values[handle]);
-      this.priceDataFrom.textContent = `€${this.currentRangePrice[RANG.FIRST]}`;
-      this.priceDataTo.textContent = `€${this.currentRangePrice[RANG.SECOND]}.00`;
-      this.setRangeFilter('price', this.currentRangePrice);
-    });
-    this.rangeInputStock.rangeInput.noUiSlider?.on('change', (values: (string | number)[], handle: number): void => {
-      this.currentRangeStock[handle] = Number(values[handle]);
-      this.stockDataFrom.textContent = values[RANG.FIRST].toString();
-      this.stockDataTo.textContent = values[RANG.SECOND].toString();
-      this.setRangeFilter('stock', this.currentRangeStock);
-    });
     return this.element;
   }
 
@@ -151,6 +172,7 @@ export default class LeftFilter extends EventEmitter {
     filterProps[name] = value.join('↕');
     const search = qs.stringify(filterProps);
     window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+    this.emit('filter');
   };
 
   private setFilter = (nameFilter: FilterName, id: string) => {
@@ -206,8 +228,20 @@ export default class LeftFilter extends EventEmitter {
     let filtredData: ICard[] = [...this.data];
     filtredData = this.getFiltredData(filtredData, 'category');
     filtredData = this.getFiltredData(filtredData, 'brand');
+    filtredData = this.getRangeFiltredData(filtredData, 'price');
+    filtredData = this.getRangeFiltredData(filtredData, 'stock');
 
     return filtredData;
+  };
+
+  getRangeFiltredData = (data: ICard[], name: RangeFilterName): ICard[] => {
+    const filterProps = qs.parse(window.location.search);
+    let filterProp: string[] = [];
+    const nameFilterProp = filterProps[name];
+    if (nameFilterProp && typeof nameFilterProp === 'string') {
+      filterProp = nameFilterProp.split('↕');
+    }
+    return filterProp.length ? data.filter((el) => el[name] >= Number(filterProp[RANG.FIRST]) && el[name] <= Number(filterProp[RANG.SECOND])) : data;
   };
 
   getFiltredData = (data: ICard[], name: FilterName): ICard[] => {
