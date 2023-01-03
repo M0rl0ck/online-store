@@ -18,10 +18,10 @@ export default class Header extends EventEmitter {
     document.body.prepend(this.element);
     const wrapper = createHtmlElement('div', 'header__wrapper', '', this.element);
     this.logo = createHtmlElement('a', 'logo__link', '', wrapper);
-    const logoImg = createHtmlElement('div', 'logo__img', `🛍`, this.logo);
-    const logoText = createHtmlElement('div', 'logo__text', 'Online Store', this.logo);
+    createHtmlElement('div', 'logo__img', `🛍`, this.logo);
+    createHtmlElement('div', 'logo__text', 'Online Store', this.logo);
     const totalPrice = createHtmlElement('div', 'total__price', ``, wrapper);
-    const totalPriceText = createHtmlElement('span', 'total__price-text', 'Cart total: ', totalPrice);
+    createHtmlElement('span', 'total__price-text', 'Cart total: ', totalPrice);
     this.totalPriceNumber = createHtmlElement('span', 'total__price-number', `€${this.cartData.allPrice}.00`, totalPrice);
     this.cart = createHtmlElement('div', 'cart', '', wrapper);
     this.cartText = createHtmlElement('span', 'cart__text', `${this.cartData.countProducts}`, this.cart);

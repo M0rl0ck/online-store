@@ -33,9 +33,12 @@ class Connector {
     const endUrl = `/${id.toString()}`;
     const responce = await fetch(`${this.url}${endUrl}`);
     const data: ICard = await responce.json();
-    if (data.brand.toUpperCase() === 'APPLE') {
-      data.brand = 'Apple';
+    if (data.brand) {
+      if (data.brand.toUpperCase() === 'APPLE') {
+        data.brand = 'Apple';
+      }
     }
+
     return data;
   }
 }

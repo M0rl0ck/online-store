@@ -37,7 +37,7 @@ export default class ProductPage extends Page {
     }
     this.cartData.isStartBuy = true;
     this.emit('navigate', PATH.cart);
-  }
+  };
 
   render(): HTMLElement {
     return this.mainWrapper;

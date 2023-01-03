@@ -48,7 +48,7 @@ export default class CartPage extends Page {
       this.mainWrapper.append(popup.popupContentWrap);
       const productsInCart = createHtmlElement('div', 'products__in__cart', '', cartWrap);
       const titleAndPageControl = createHtmlElement('div', 'title__page-control', '', productsInCart);
-      const title = createHtmlElement('h2', 'title__cart', 'Products In Cart', titleAndPageControl);
+      createHtmlElement('h2', 'title__cart', 'Products In Cart', titleAndPageControl);
       const pageControl = createHtmlElement('div', 'page__control', '', titleAndPageControl);
       const limit = createHtmlElement('div', 'limit', ' ITEMS: ', pageControl);
       const limitInput = createHtmlElement('input', 'limit__input', '', limit);
@@ -61,10 +61,10 @@ export default class CartPage extends Page {
       const pageNumber = createHtmlElement('div', 'page__number', ' PAGE: ', pageControl);
       const leftButton = createHtmlElement('button', 'page__button', ' < ', pageNumber);
       leftButton.addEventListener('click', this.prevPage);
-      const pageNumberText = createHtmlElement('span', 'page__number-text', `${this.currentPage}`, pageNumber);
+      createHtmlElement('span', 'page__number-text', `${this.currentPage}`, pageNumber);
       const rightButton = createHtmlElement('button', 'page__button', ' > ', pageNumber);
       rightButton.addEventListener('click', this.nextPage);
-      const prodItems = createHtmlElement('div', 'prod__items', '', productsInCart);
+      createHtmlElement('div', 'prod__items', '', productsInCart);
 
       const cartList = this.cartData.getCartList();
       const keys = Object.keys(cartList);
@@ -89,20 +89,20 @@ export default class CartPage extends Page {
       }
 
       const summary = createHtmlElement('div', 'summary', '', cartWrap);
-      const summaryTitle = createHtmlElement('h2', 'summary__title', 'Summary', summary);
+      createHtmlElement('h2', 'summary__title', 'Summary', summary);
       const totalAmount = createHtmlElement('div', 'total__amount', '', summary);
       const totalAmountText = createHtmlElement('p', 'total__amount-text', '', totalAmount);
       createHtmlElement('span', '', 'Products: ', totalAmountText);
-      const totalCountProducts = createHtmlElement('span', '', `${this.cartData.countProducts}`, totalAmountText);
+      createHtmlElement('span', '', `${this.cartData.countProducts}`, totalAmountText);
       const totalPrice = createHtmlElement('div', 'total__price-sum', '', summary);
       const totalPriceText = createHtmlElement('p', 'total__amount-text', '', totalPrice);
       createHtmlElement('span', '', 'Total: ', totalPriceText);
-      const totalPriceCount = createHtmlElement('span', '', `€${this.cartData.allPrice}.00`, totalPriceText);
+      createHtmlElement('span', '', `€${this.cartData.allPrice}.00`, totalPriceText);
       const newTotalPriceWrap = createHtmlElement('div', 'new__total__price-sum', '', summary);
       const newTotalPriceText = createHtmlElement('span', 'total__amount-text', 'Total: ', newTotalPriceWrap);
       const newTotalPrice = createHtmlElement('span', 'new__total__price', '', newTotalPriceText);
       const promoApplied = createHtmlElement('div', 'promo__applied', '', summary);
-      const promoAppliedTitle = createHtmlElement('h3', 'promo__applied-title', 'Applied codes', promoApplied);
+      createHtmlElement('h3', 'promo__applied-title', 'Applied codes', promoApplied);
       const promoCode = createHtmlElement('div', 'promo__code', '', summary);
       const promoCodeInput = createHtmlElement('input', 'promo__code-input', '', promoCode);
       promoCodeInput.setAttribute('placeholder', 'Enter promo code');
@@ -110,7 +110,7 @@ export default class CartPage extends Page {
       const promoRes = createHtmlElement('div', 'promo__res', '', summary);
       const promoResText = createHtmlElement('span', 'promo__res-text', '', promoRes);
       const promoAdd = createHtmlElement('button', 'promo__add', 'ADD', promoRes);
-      const promoEx = createHtmlElement('span', 'promo__ex', `Promo for test: 'RS', 'EPM'`, summary);
+      createHtmlElement('span', 'promo__ex', `Promo for test: 'RS', 'EPM'`, summary);
       const buttonBuy = createHtmlElement('button', 'button__buy', 'BUY NOW', summary);
       const blackout = new Blackout();
       this.mainWrapper.prepend(blackout.render());

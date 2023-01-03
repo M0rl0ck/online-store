@@ -1,5 +1,4 @@
 export default class Storage {
-
   public saveValue(key: string, value: string): void {
     localStorage.setItem(key, value);
   }
@@ -10,5 +9,5 @@ export default class Storage {
 
   public clear(): void {
     localStorage.clear();
-  } 
+  }
 }

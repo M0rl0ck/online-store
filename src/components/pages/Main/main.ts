@@ -22,7 +22,6 @@ class MainPage extends Page {
     this.leftFilter.on('filter', this.startFilter);
   }
 
-  
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
   }
@@ -35,7 +34,7 @@ class MainPage extends Page {
     this.leftFilter.createLeftFilter();
     this.catalog.data = this.leftFilter.filtredData;
     this.catalog.render();
-  }
+  };
 
   render(): HTMLElement {
     return this.mainWrapper;

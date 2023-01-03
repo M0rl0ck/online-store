@@ -18,15 +18,15 @@ export default class Card {
     const cardWrap = createHtmlElement('div', 'card__wrap', '', this.element);
     cardWrap.setAttribute('style', `background: url(${data.thumbnail}) 0% 0% / cover`);
     this.cardText = createHtmlElement('div', 'card__text', '', cardWrap);
-    const cardTitle = createHtmlElement('div', 'card__title', `${data.title}`, this.cardText);
+    createHtmlElement('div', 'card__title', `${data.title}`, this.cardText);
     const cardInfoWrap = createHtmlElement('div', 'card__info-wrap', '', this.cardText);
     const cardInfo = createHtmlElement('div', 'card__info', '', cardInfoWrap);
     const infoCategory = createHtmlElement('p', '', '', cardInfo);
     createHtmlElement('span', 'info__category', 'Category: ', infoCategory);
     createHtmlElement('span', 'info__category-data', ` ${data.category}`, infoCategory);
     const infoBrand = createHtmlElement('p', 'info__category', '', cardInfo);
-    createHtmlElement('span', 'info__category', 'Brand: ',infoBrand);
-    createHtmlElement('span', 'info__category-data', ` ${data.brand}`,infoBrand);
+    createHtmlElement('span', 'info__category', 'Brand: ', infoBrand);
+    createHtmlElement('span', 'info__category-data', ` ${data.brand}`, infoBrand);
     const infoPrice = createHtmlElement('p', 'info__category', '', cardInfo);
     createHtmlElement('span', 'info__category', 'Price: ', infoPrice);
     createHtmlElement('span', 'info__category-data', ` €${data.price}`, infoPrice);

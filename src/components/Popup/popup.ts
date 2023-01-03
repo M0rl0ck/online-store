@@ -10,9 +10,9 @@ export default class Popup {
     const popupContent = createHtmlElement('div', 'popup__content', '', this.popupContentWrap);
     this.popupForm = createHtmlElement('form', 'popup__form', '', popupContent);
     const personalDetails = createHtmlElement('div', 'personal__details', '', this.popupForm);
-    const personalDetailsTitle = createHtmlElement('h2', 'personal__details-title', 'Personal details', personalDetails);
+    createHtmlElement('h2', 'personal__details-title', 'Personal details', personalDetails);
     const personalName = createHtmlElement('div', 'personal__item', '', personalDetails);
-    const nameLabel = createHtmlElement('span', 'item__label', 'Name:', personalName);
+    createHtmlElement('span', 'item__label', 'Name:', personalName);
     const nameInput = createHtmlElement('input', 'item__input', '', personalName);
     nameInput.setAttribute('type', 'text');
     nameInput.setAttribute('placeholder', 'Nick Borisov');
@@ -39,7 +39,7 @@ export default class Popup {
       }
     });
     const personalPhone = createHtmlElement('div', 'personal__item', '', personalDetails);
-    const phoneLabel = createHtmlElement('span', 'item__label', 'Phone:', personalPhone);
+    createHtmlElement('span', 'item__label', 'Phone:', personalPhone);
     const phoneInput = createHtmlElement('input', 'item__input', '', personalPhone);
     phoneInput.setAttribute('type', 'tel');
     phoneInput.setAttribute('placeholder', '+15852826894');
@@ -76,7 +76,7 @@ export default class Popup {
     });
 
     const personalAddress = createHtmlElement('div', 'personal__item', '', personalDetails);
-    const addressLabel = createHtmlElement('span', 'item__label', 'Address:', personalAddress);
+    createHtmlElement('span', 'item__label', 'Address:', personalAddress);
     const addressInput = createHtmlElement('input', 'item__input', '', personalAddress);
     addressInput.setAttribute('type', 'text');
     addressInput.setAttribute('placeholder', 'Howard street Oswego');
@@ -108,7 +108,7 @@ export default class Popup {
     });
 
     const personalMail = createHtmlElement('div', 'personal__item', '', personalDetails);
-    const mailLabel = createHtmlElement('span', 'item__label', `E-mail:`, personalMail);
+    createHtmlElement('span', 'item__label', `E-mail:`, personalMail);
     const mailInput = createHtmlElement('input', 'item__input', '', personalMail);
     mailInput.setAttribute('type', 'text');
     mailInput.setAttribute('placeholder', 'nick-borisov@gmail.com');
@@ -137,9 +137,9 @@ export default class Popup {
     });
 
     const cardDetails = createHtmlElement('div', 'card__details', '', this.popupForm);
-    const cardDetailsTitle = createHtmlElement('h2', 'card__details-title', 'Credit card details', cardDetails);
+    createHtmlElement('h2', 'card__details-title', 'Credit card details', cardDetails);
     const cardData = createHtmlElement('div', 'card__data', '', cardDetails);
-    const allCards = createHtmlElement('div', 'all__cards', '', cardData);
+    createHtmlElement('div', 'all__cards', '', cardData);
     const cardNumber = createHtmlElement('div', 'card__number', '', cardData);
     const cardImg = createHtmlElement('div', 'card__img', '', cardNumber);
     const cardNumberInput = createHtmlElement('input', 'card__number-input', '', cardNumber);
@@ -258,6 +258,6 @@ export default class Popup {
       }
     });
 
-    const confirmButton = createHtmlElement('button', 'confirm__button', 'CONFIRM', this.popupForm);
+    createHtmlElement('button', 'confirm__button', 'CONFIRM', this.popupForm);
   }
 }
