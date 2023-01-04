@@ -20,6 +20,7 @@ class MainPage extends Page {
     this.catalog.on('addToCart', this.cartData.addProduct);
     this.catalog.on('deleteFromCart', this.cartData.deleteStackProduct);
     this.leftFilter.on('filter', this.startFilter);
+    this.catalog.on('filter', this.startFilter);
   }
 
   emit(event: EmitsName, data?: number | string) {
