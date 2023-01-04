@@ -115,10 +115,9 @@ export default class Catalog extends EventEmitter {
       this.emit('filter');
     });
 
-    const viewModeProp = qs.parse(window.location.search).big;
     const viewMode = createHtmlElement('div', 'view__mode', '', sortProducts);
-    this.viewModeSmall = createHtmlElement('div', viewModeProp === 'false' ? 'view__small active' : 'view__small', `6 in a row`, viewMode);
-    this.viewModeBig = createHtmlElement('div', viewModeProp === 'false' ? 'view__big' : 'view__big active', `4 in a row`, viewMode);
+    this.viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
+    this.viewModeBig = createHtmlElement('div', 'view__big active', `4 in a row`, viewMode);
 
     this.viewModeSmall.addEventListener('click', () => this.setSmallCard(true));
 
@@ -136,9 +135,6 @@ export default class Catalog extends EventEmitter {
     this.sortedData.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
       ...this.cards.map((card) => {
-        if (viewModeProp === 'false') {
-          card.element.classList.add('small');
-        }
         card.detailsButton.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
         card.cardText.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
         card.addButton.addEventListener('click', () => {
@@ -156,6 +152,11 @@ export default class Catalog extends EventEmitter {
     this.sortStat.textContent = `Found: ${this.cards.length}`;
     if (this.cards.length === 0) {
       createHtmlElement('div', 'not__found', 'No products found 😏', this.productsWrap);
+    }
+    if (viewModeProp === 'false') {
+      this.setSmallCard(true);
+    } else {
+      this.setSmallCard(false);
     }
     return this.element;
   }
