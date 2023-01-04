@@ -78,3 +78,11 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.not__found {
+  text-align: center;
+  font-size: 200%;
+  margin-top: 10%;
+  color: wheat;
+  margin: 5% auto;
+}

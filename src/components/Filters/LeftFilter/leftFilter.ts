@@ -121,8 +121,8 @@ export default class LeftFilter extends EventEmitter {
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     const priceRange = this.getRange('price', this.filtredData);
     this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
-    this.priceDataFrom.textContent = priceRange[RANG.FIRST].toString();
-    this.priceDataTo.textContent = priceRange[priceRange.length - 1].toString()
+    this.priceDataFrom.textContent = '€' + priceRange[RANG.FIRST].toString();
+    this.priceDataTo.textContent = '€' + priceRange[priceRange.length - 1].toString();
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
 
     const stockDualSlider = createHtmlElement('div', 'price__slider', '', this.element);

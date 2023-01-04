@@ -27,6 +27,7 @@ export default class Catalog extends EventEmitter {
   sortStat!: HTMLElement;
   sortedData: ICard[];
   sortSelect!: HTMLSelectElement;
+  inputSearch!: HTMLInputElement;
 
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -83,9 +84,35 @@ export default class Catalog extends EventEmitter {
       this.render();
     });
 
-    const inputSearch = createHtmlElement('input', 'sort__search', '', sortProducts);
-    inputSearch.setAttribute('type', 'search');
-    inputSearch.setAttribute('placeholder', 'Search product');
+    this.inputSearch = createHtmlElement('input', 'sort__search', '', sortProducts) as HTMLInputElement;
+    this.inputSearch.setAttribute('type', 'search');
+    this.inputSearch.setAttribute('placeholder', 'Search product');
+
+    const searchProps = qs.parse(window.location.search);
+    if (!(this.inputSearch instanceof HTMLInputElement)) {
+      throw Error('Not input element');
+    }
+    if (searchProps.search) {
+      this.inputSearch.value = searchProps.search.toString();
+    }
+    if (searchProps.search === undefined) {
+      searchProps.search = '';
+    }
+
+    this.inputSearch.setAttribute('value', `${searchProps.search}`);
+
+    this.inputSearch.addEventListener('input', () => {
+      const searchProps = qs.parse(window.location.search);
+      if (this.inputSearch.value !== '') {
+        searchProps.search = this.inputSearch.value;
+      } else {
+        delete searchProps.search;
+      }
+      const search = qs.stringify(searchProps);
+      window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+      this.render();
+    });
+
     const viewMode = createHtmlElement('div', 'view__mode', '', sortProducts);
     const viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
     const viewModeBig = createHtmlElement('div', 'view__big active', `4 in a row`, viewMode);
@@ -127,6 +154,7 @@ export default class Catalog extends EventEmitter {
   render() {
     this.productsWrap.innerHTML = '';
     this.sortCards(this.sortSelect.value);
+    this.searchCards(this.inputSearch.value);
     this.cards = [];
     this.sortedData.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
@@ -146,6 +174,9 @@ export default class Catalog extends EventEmitter {
       })
     );
     this.sortStat.textContent = `Found: ${this.cards.length}`;
+    if (this.cards.length === 0) {
+      createHtmlElement('div', 'not__found', 'No products found 😏', this.productsWrap);
+    }
     return this.element;
   }
 
@@ -171,5 +202,12 @@ export default class Catalog extends EventEmitter {
         this.sortedData.sort((a, b) => b.discountPercentage - a.discountPercentage);
         break;
     }
+  }
+
+  searchCards(value: string) {
+    const rgx = new RegExp(value, 'i');
+    this.sortedData = this.sortedData.filter((item) => {
+      return rgx.test(JSON.stringify(item));
+    });
   }
 }
