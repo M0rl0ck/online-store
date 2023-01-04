@@ -34,6 +34,8 @@ export default class LeftFilter extends EventEmitter {
   buttonCopyLink!: HTMLElement;
   element: HTMLElement;
   buttonsWrapper: HTMLElement;
+  stockDataText: HTMLElement;
+  priceDataText: HTMLElement;
 
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -55,6 +57,7 @@ export default class LeftFilter extends EventEmitter {
       : [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
 
     this.priceDataFrom = createHtmlElement('div', 'data__from', `€${this.currentRangePrice[RANG.FIRST]}`);
+    this.priceDataText = createHtmlElement('span', 'data__arrow', ` ⟷ `);
     this.priceDataTo = createHtmlElement('div', 'data__to', `€${this.currentRangePrice[RANG.SECOND]}.00`);
 
     const currentRangeStock = this.getCurrentRang('stock');
@@ -63,6 +66,7 @@ export default class LeftFilter extends EventEmitter {
       : [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangeStock.length - 1]];
 
     this.stockDataFrom = createHtmlElement('div', 'data__from', `${this.currentRangeStock[RANG.FIRST]}`);
+    this.stockDataText = createHtmlElement('span', 'data__arrow', ` ⟷ `);
     this.stockDataTo = createHtmlElement('div', 'data__to', `${this.currentRangeStock[RANG.SECOND]}`);
     this.rangeInputPrice = new FilterRange(this.rangePrice, this.currentRangePrice, 'input__range');
     this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
@@ -83,7 +87,15 @@ export default class LeftFilter extends EventEmitter {
     this.element = createHtmlElement('div', 'filters', '');
     this.buttonsWrapper = createHtmlElement('div', 'reset__total', '', this.element);
     this.buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', this.buttonsWrapper);
+    this.buttonReset.addEventListener('click', () => {
+      window.history.pushState({}, 'path', window.location.origin);
+      this.emit('filter');
+    });
     this.buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', this.buttonsWrapper);
+    this.buttonCopyLink.addEventListener('click', () => {
+      const url = window.location.origin + window.location.pathname + window.location.search;
+      navigator.clipboard.writeText(url);
+    });
   }
 
   createLeftFilter(): HTMLElement {
@@ -91,7 +103,7 @@ export default class LeftFilter extends EventEmitter {
     this.filtredData = this.filter();
     this.element.append(this.buttonsWrapper);
     const categoryFilter = createHtmlElement('div', 'category__filter', '', this.element);
-    const categoryFilterTitle = createHtmlElement('h3', 'category__filter-title', 'Category', categoryFilter);
+    createHtmlElement('h3', 'category__filter-title', 'Category', categoryFilter);
     const categoryFilterList = createHtmlElement('ul', 'filter__list', '', categoryFilter);
 
     const category = this.getFilterList('category', this.data);
@@ -101,7 +113,7 @@ export default class LeftFilter extends EventEmitter {
     }
 
     const brandFilter = createHtmlElement('div', 'brand__filter', '', this.element);
-    const brandFilterTitle = createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
+    createHtmlElement('h3', 'brand__filter-title', 'Brand', brandFilter);
     const brandFilterList = createHtmlElement('ul', 'filter__list', '', brandFilter);
 
     const brand = this.getFilterList('brand', this.data);
@@ -111,33 +123,45 @@ export default class LeftFilter extends EventEmitter {
     }
 
     const priceDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
-    const priceDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
+    createHtmlElement('h3', 'price__slider-title', 'Price', priceDualSlider);
     const priceData = createHtmlElement('div', 'price__data', '', priceDualSlider);
 
-    priceData.append(this.priceDataFrom);
-    const dualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, priceData);
-    priceData.append(this.priceDataTo);
+    priceData.append(this.priceDataFrom, this.priceDataText, this.priceDataTo);
 
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     const priceRange = this.getRange('price', this.filtredData);
-    this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
-    this.priceDataFrom.textContent = '€' + priceRange[RANG.FIRST].toString();
-    this.priceDataTo.textContent = '€' + priceRange[priceRange.length - 1].toString();
+    if (priceRange.length) {
+      this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
+      this.priceDataFrom.textContent = '€' + priceRange[RANG.FIRST].toString();
+      this.priceDataText.textContent = '⟷';
+      this.priceDataTo.textContent = '€' + priceRange[priceRange.length - 1].toString();
+    } else {
+      this.priceDataFrom.textContent = '';
+      this.priceDataText.textContent = 'No products found';
+      this.priceDataTo.textContent = '';
+    }
+
     priceRangeWrapper.append(this.rangeInputPrice.rangeInput);
 
     const stockDualSlider = createHtmlElement('div', 'price__slider', '', this.element);
-    const stockDualSliderTitle = createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
+    createHtmlElement('h3', 'price__slider-title', 'Stock', stockDualSlider);
     const stockData = createHtmlElement('div', 'price__data', '', stockDualSlider);
 
-    stockData.append(this.stockDataFrom);
-    const stockDualArrow = createHtmlElement('span', 'data__arrow', ` ⟷ `, stockData);
-    stockData.append(this.stockDataTo);
+    stockData.append(this.stockDataFrom, this.stockDataText, this.stockDataTo);
 
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
     const stockRange = this.getRange('stock', this.filtredData);
-    this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
-    this.stockDataFrom.textContent = stockRange[RANG.FIRST].toString();
-    this.stockDataTo.textContent = stockRange[stockRange.length - 1].toString();
+    if (stockRange.length) {
+      this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
+      this.stockDataFrom.textContent = stockRange[RANG.FIRST].toString();
+      this.stockDataText.textContent = '⟷';
+      this.stockDataTo.textContent = stockRange[stockRange.length - 1].toString();
+    } else {
+      this.stockDataFrom.textContent = '';
+      this.stockDataText.textContent = 'No products found';
+      this.stockDataTo.textContent = '';
+    }
+
     stockRangeWrapper.append(this.rangeInputStock.rangeInput);
 
     return this.element;
@@ -230,6 +254,7 @@ export default class LeftFilter extends EventEmitter {
     filtredData = this.getFiltredData(filtredData, 'brand');
     filtredData = this.getRangeFiltredData(filtredData, 'price');
     filtredData = this.getRangeFiltredData(filtredData, 'stock');
+    filtredData = this.searchCards(filtredData);
 
     return filtredData;
   };
@@ -253,4 +278,17 @@ export default class LeftFilter extends EventEmitter {
     }
     return filterProp.length ? data.filter((el) => filterProp.includes(el[name])) : data;
   };
+
+  searchCards(data: ICard[]) {
+    const searchProps = qs.parse(window.location.search);
+    const value = searchProps.search;
+    if (typeof value === 'string') {
+      const rgx = new RegExp(value, 'i');
+      return data.filter((item) => {
+        return rgx.test(JSON.stringify(item));
+      });
+    } else {
+      return data;
+    }
+  }
 }

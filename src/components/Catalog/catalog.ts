@@ -28,6 +28,8 @@ export default class Catalog extends EventEmitter {
   sortedData: ICard[];
   sortSelect!: HTMLSelectElement;
   inputSearch!: HTMLInputElement;
+  viewModeSmall!: HTMLElement;
+  viewModeBig!: HTMLElement;
 
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -110,42 +112,17 @@ export default class Catalog extends EventEmitter {
       }
       const search = qs.stringify(searchProps);
       window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
-      this.render();
+      this.emit('filter');
     });
 
+    const viewModeProp = qs.parse(window.location.search).big;
     const viewMode = createHtmlElement('div', 'view__mode', '', sortProducts);
-    const viewModeSmall = createHtmlElement('div', 'view__small', `6 in a row`, viewMode);
-    const viewModeBig = createHtmlElement('div', 'view__big active', `4 in a row`, viewMode);
+    this.viewModeSmall = createHtmlElement('div', viewModeProp === 'false' ? 'view__small active' : 'view__small', `6 in a row`, viewMode);
+    this.viewModeBig = createHtmlElement('div', viewModeProp === 'false' ? 'view__big' : 'view__big active', `4 in a row`, viewMode);
 
-    viewModeSmall.addEventListener('click', (e: Event) => {
-      const target = e.target;
-      if (!target || !(target instanceof HTMLElement)) {
-        return;
-      }
-      if (!target.classList.contains('active')) {
-        viewModeSmall.classList.toggle('active');
-        viewModeBig.classList.remove('active');
-        this.cards.forEach((card) => card.element.classList.toggle('small'));
-        this.cards.forEach((card) => card.element.querySelector('.card__text')?.classList.toggle('card__text-none'));
-        this.cards.forEach((card) => card.element.querySelector('.add__button')?.classList.toggle('button__small'));
-        this.cards.forEach((card) => card.element.querySelector('.details__button')?.classList.toggle('button__small'));
-      }
-    });
+    this.viewModeSmall.addEventListener('click', () => this.setSmallCard(true));
 
-    viewModeBig.addEventListener('click', (e: Event) => {
-      const target = e.target;
-      if (!target || !(target instanceof HTMLElement)) {
-        return;
-      }
-      if (!target.classList.contains('active')) {
-        viewModeBig.classList.toggle('active');
-        viewModeSmall.classList.remove('active');
-        this.cards.forEach((card) => card.element.classList.toggle('small'));
-        this.cards.forEach((card) => card.element.querySelector('.card__text')?.classList.toggle('card__text-none'));
-        this.cards.forEach((card) => card.element.querySelector('.add__button')?.classList.toggle('button__small'));
-        this.cards.forEach((card) => card.element.querySelector('.details__button')?.classList.toggle('button__small'));
-      }
-    });
+    this.viewModeBig.addEventListener('click', () => this.setSmallCard(false));
 
     this.productsWrap = createHtmlElement('div', 'products__wrap', '', this.element);
     this.render();
@@ -153,12 +130,15 @@ export default class Catalog extends EventEmitter {
 
   render() {
     this.productsWrap.innerHTML = '';
+    const viewModeProp = qs.parse(window.location.search).big;
     this.sortCards(this.sortSelect.value);
-    this.searchCards(this.inputSearch.value);
     this.cards = [];
     this.sortedData.forEach((el) => this.cards.push(new Card(el, this.cartData.isProductInCart(el.id))));
     this.productsWrap.append(
       ...this.cards.map((card) => {
+        if (viewModeProp === 'false') {
+          card.element.classList.add('small');
+        }
         card.detailsButton.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
         card.cardText.addEventListener('click', () => this.emit('navigate', `${PATH.product}/${card.id}`));
         card.addButton.addEventListener('click', () => {
@@ -204,10 +184,21 @@ export default class Catalog extends EventEmitter {
     }
   }
 
-  searchCards(value: string) {
-    const rgx = new RegExp(value, 'i');
-    this.sortedData = this.sortedData.filter((item) => {
-      return rgx.test(JSON.stringify(item));
-    });
-  }
+  setSmallCard = (is: boolean) => {
+    const sortProps = qs.parse(window.location.search);
+
+    if (is) {
+      this.viewModeSmall.classList.add('active');
+      this.viewModeBig.classList.remove('active');
+      this.cards.forEach((card) => card.element.classList.add('small'));
+      sortProps.big = 'false';
+    } else {
+      this.viewModeSmall.classList.remove('active');
+      this.viewModeBig.classList.add('active');
+      this.cards.forEach((card) => card.element.classList.remove('small'));
+      sortProps.big = 'true';
+    }
+    const search = qs.stringify(sortProps);
+    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+  };
 }
