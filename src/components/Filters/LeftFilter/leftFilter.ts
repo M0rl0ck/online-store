@@ -95,6 +95,10 @@ export default class LeftFilter extends EventEmitter {
     this.buttonCopyLink.addEventListener('click', () => {
       const url = window.location.origin + window.location.pathname + window.location.search;
       navigator.clipboard.writeText(url);
+      this.buttonCopyLink.textContent = 'Copied!';
+      setTimeout(() => {
+        this.buttonCopyLink.textContent = 'Copy Link';
+      }, 1300);
     });
   }
 
