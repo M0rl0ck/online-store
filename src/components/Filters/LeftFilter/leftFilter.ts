@@ -90,6 +90,7 @@ export default class LeftFilter extends EventEmitter {
     this.buttonReset.addEventListener('click', () => {
       window.history.pushState({}, 'path', window.location.origin);
       this.emit('filter');
+      this.emit('reset');
     });
     this.buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', this.buttonsWrapper);
     this.buttonCopyLink.addEventListener('click', () => {

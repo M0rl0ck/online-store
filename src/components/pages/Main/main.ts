@@ -20,6 +20,7 @@ class MainPage extends Page {
     this.catalog.on('addToCart', this.cartData.addProduct);
     this.catalog.on('deleteFromCart', this.cartData.deleteStackProduct);
     this.leftFilter.on('filter', this.startFilter);
+    this.leftFilter.on('reset', this.resetSearch);
     this.catalog.on('filter', this.startFilter);
   }
 
@@ -35,6 +36,10 @@ class MainPage extends Page {
     this.leftFilter.createLeftFilter();
     this.catalog.data = this.leftFilter.filtredData;
     this.catalog.render();
+  };
+
+  resetSearch = () => {
+    this.catalog.inputSearch.value = '';
   };
 
   render(): HTMLElement {
