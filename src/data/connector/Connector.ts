@@ -11,35 +11,57 @@ class Connector {
     if (this.dataCards.length && this.dataCards.length === limit) {
       return this.dataCards;
     }
-    const endUrl = `?limit=${limit.toString()}`;
-    const responce = await fetch(`${this.url}${endUrl}`);
-    const data = await responce.json();
-    this.dataCards = data.products.map((el: ICard) => {
-      if (el.brand.toUpperCase() === 'APPLE') {
-        el.brand = 'Apple';
+
+    try {
+      const endUrl = `?limit=${limit.toString()}`;
+      const responce = await fetch(`${this.url}${endUrl}`);
+
+      if (!responce.ok) {
+        throw new Error(`Sorry, but servet return status ${responce.status} error: ${responce.statusText}`);
       }
-      return el;
-    });
+      const data = await responce.json();
+      this.dataCards = data.products.map((el: ICard) => {
+        if (el.brand.toUpperCase() === 'APPLE') {
+          el.brand = 'Apple';
+        }
+        return el;
+      });
+    } catch (e) {
+      console.log(e);
+    }
     return this.dataCards;
   }
 
   async getProduct(id: number): Promise<ICard> {
+    let result: ICard | undefined;
     if (this.dataCards.length) {
-      const result = this.dataCards.find((el) => el.id === id);
+      result = this.dataCards.find((el) => el.id === id);
       if (result) {
         return result;
       }
     }
     const endUrl = `/${id.toString()}`;
-    const responce = await fetch(`${this.url}${endUrl}`);
-    const data: ICard = await responce.json();
-    if (data.brand) {
-      if (data.brand.toUpperCase() === 'APPLE') {
-        data.brand = 'Apple';
+
+    try {
+      const responce = await fetch(`${this.url}${endUrl}`);
+      if (!responce.ok) {
+        throw new Error(`Sorry, but servet return status ${responce.status} error: ${responce.statusText}`);
       }
+      const data: ICard = await responce.json();
+      if (data.brand) {
+        if (data.brand.toUpperCase() === 'APPLE') {
+          data.brand = 'Apple';
+        }
+      }
+      result = data;
+    } catch (e) {
+      console.log(e);
     }
 
-    return data;
+    if (!result) {
+      throw new Error('No data');
+    }
+    return result;
   }
 }
 
