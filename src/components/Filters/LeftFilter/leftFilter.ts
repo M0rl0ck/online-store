@@ -36,6 +36,7 @@ export default class LeftFilter extends EventEmitter {
   buttonsWrapper: HTMLElement;
   stockDataText: HTMLElement;
   priceDataText: HTMLElement;
+  isSetRange: boolean;
 
   emit(event: EmitsName, data?: number | string) {
     return super.emit(event, data);
@@ -50,6 +51,7 @@ export default class LeftFilter extends EventEmitter {
     this.filtredData = [...data];
     this.rangePrice = this.getRange('price', this.data);
     this.rangeStock = this.getRange('stock', this.data);
+    this.isSetRange = false;
 
     const currentRangePrice = this.getCurrentRang('price');
     this.currentRangePrice = currentRangePrice.length
@@ -72,12 +74,14 @@ export default class LeftFilter extends EventEmitter {
     this.rangeInputStock = new FilterRange(this.rangeStock, this.currentRangeStock, 'input__range');
 
     this.rangeInputPrice.rangeInput.noUiSlider?.on('slide', (values: (string | number)[], handle: number): void => {
+      this.isSetRange = false;
       this.currentRangePrice[handle] = Number(values[handle]);
       this.priceDataFrom.textContent = `€${this.currentRangePrice[RANG.FIRST]}`;
       this.priceDataTo.textContent = `€${this.currentRangePrice[RANG.SECOND]}.00`;
       this.setRangeFilter('price', this.currentRangePrice);
     });
     this.rangeInputStock.rangeInput.noUiSlider?.on('slide', (values: (string | number)[], handle: number): void => {
+      this.isSetRange = false;
       this.currentRangeStock[handle] = Number(values[handle]);
       this.stockDataFrom.textContent = values[RANG.FIRST].toString();
       this.stockDataTo.textContent = values[RANG.SECOND].toString();
@@ -89,6 +93,9 @@ export default class LeftFilter extends EventEmitter {
     this.buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', this.buttonsWrapper);
     this.buttonReset.addEventListener('click', () => {
       window.history.pushState({}, 'path', window.location.origin);
+      this.isSetRange = true;
+      this.currentRangePrice = [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
+      this.currentRangeStock = [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangePrice.length - 1]];
       this.emit('filter');
       this.emit('reset');
     });
@@ -136,10 +143,16 @@ export default class LeftFilter extends EventEmitter {
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     const priceRange = this.getRange('price', this.filtredData);
     if (priceRange.length) {
-      this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
-      this.priceDataFrom.textContent = '€' + priceRange[RANG.FIRST].toString();
-      this.priceDataText.textContent = '⟷';
-      this.priceDataTo.textContent = '€' + priceRange[priceRange.length - 1].toString();
+      if (this.isSetRange) {
+        this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
+      }
+
+      const priceText = this.rangeInputPrice.rangeInput.noUiSlider?.get();
+      if (priceText instanceof Array<string>) {
+        this.priceDataFrom.textContent = '€' + priceText[RANG.FIRST];
+        this.priceDataText.textContent = '⟷';
+        this.priceDataTo.textContent = '€' + priceText[RANG.SECOND];
+      }
     } else {
       this.priceDataFrom.textContent = '';
       this.priceDataText.textContent = 'No products found';
@@ -157,10 +170,16 @@ export default class LeftFilter extends EventEmitter {
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
     const stockRange = this.getRange('stock', this.filtredData);
     if (stockRange.length) {
-      this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
-      this.stockDataFrom.textContent = stockRange[RANG.FIRST].toString();
-      this.stockDataText.textContent = '⟷';
-      this.stockDataTo.textContent = stockRange[stockRange.length - 1].toString();
+      if (this.isSetRange) {
+        this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
+      }
+
+      const stockText = this.rangeInputStock.rangeInput.noUiSlider?.get();
+      if (stockText instanceof Array<string>) {
+        this.stockDataFrom.textContent = `${stockText[RANG.FIRST]}`;
+        this.stockDataText.textContent = '⟷';
+        this.stockDataTo.textContent = `${stockText[RANG.SECOND]}`;
+      }
     } else {
       this.stockDataFrom.textContent = '';
       this.stockDataText.textContent = 'No products found';
@@ -192,7 +211,10 @@ export default class LeftFilter extends EventEmitter {
     const label = createHtmlElement('label', '', name, el);
     label.setAttribute('for', name);
     createHtmlElement('span', '', `(${min}/${max})`, el);
-    check.addEventListener('change', () => this.setFilter(nameFilter, check.id));
+    check.addEventListener('change', () => {
+      this.isSetRange = true;
+      this.setFilter(nameFilter, check.id);
+    });
     return el;
   }
 

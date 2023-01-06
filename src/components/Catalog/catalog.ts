@@ -197,7 +197,7 @@ export default class Catalog extends EventEmitter {
       this.viewModeSmall.classList.remove('active');
       this.viewModeBig.classList.add('active');
       this.cards.forEach((card) => card.element.classList.remove('small'));
-      sortProps.big = 'true';
+      delete sortProps.big;
     }
     const search = qs.stringify(sortProps);
     window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
