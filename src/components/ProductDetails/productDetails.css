@@ -124,4 +124,18 @@
   cursor: pointer;
   width: 100%;
   margin: 1rem auto;
+  transition: all 0.5s;
+}
+
+.cart__button-add:hover,
+.cart__button-buy:hover {
+  background: #722323;
+  color: #ceb586;
+  transition: all 0.5s;
+}
+
+.cart__button-add:active,
+.cart__button-buy:active {
+  transform: scale(0.95);
+  transition: all 0.2s;
 }

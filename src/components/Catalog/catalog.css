@@ -66,6 +66,13 @@
   margin-left: 0.5rem;
   -webkit-user-select: none;
   user-select: none;
+  transition: all 0.5s;
+}
+
+.view__small:hover,
+.view__big:hover {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
 }
 
 .active {

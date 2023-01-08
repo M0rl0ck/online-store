@@ -34,7 +34,7 @@
 }
 
 .small .card__text {
-  opacity: 0
+  opacity: 0;
 }
 
 .card__title {
@@ -84,7 +84,19 @@
   padding-left: 2%;
   padding-right: 2%;
   font-size: 80%;
+  transition: text-shadow 0.5s;
   cursor: pointer;
+}
+
+.add__button:hover,
+.details__button:hover {
+  text-shadow: 0 0 5px rgb(184 24 24), 0 0 10px red, 0 0 15px red, 0 0 20px red;
+  transition: text-shadow 0.5s;
+}
+
+.add__button:active,
+.details__button:active {
+  transform: scale(0.95);
 }
 
 .small .add__button,
