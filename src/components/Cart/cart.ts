@@ -32,7 +32,7 @@ export default class ProductInCart {
     this.plusButton = createHtmlElement('button', 'plus__button', '+', numberControl);
     this.countItems = createHtmlElement('span', '', `${this.count}`, numberControl);
     this.minusButton = createHtmlElement('button', 'minus__button', '-', numberControl);
-    createHtmlElement('div', 'price__control', `€${data.price}.00`, itemControl);
+    createHtmlElement('div', 'price__control', `€${data.price * this.count}.00`, itemControl);
   }
   render(): HTMLElement {
     return this.element;
