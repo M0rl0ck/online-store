@@ -5,18 +5,8 @@ import ICard from '../constants/interfaces/ICard';
 import EventEmitter from 'events';
 import CartData from '../pages/CartPage/CartData';
 import { PATH } from '../app/app';
-import { EmitsName } from '../constants/constants/connstants';
+import { EmitsName, SORTBY } from '../constants/constants/connstants';
 import qs from 'query-string';
-
-enum SORTBY {
-  DEFAULT = 'Default',
-  PRICEASC = 'PriceASC',
-  PRICEDESC = 'PriceDESC',
-  RATINGASC = 'RatingASC',
-  RATINGDESC = 'RatingDESC',
-  DISCOUNTASC = 'DiscountASC',
-  DISCOUNTDESC = 'DiscountDESC',
-}
 
 export default class Catalog extends EventEmitter {
   data: ICard[];
