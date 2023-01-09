@@ -5,4 +5,14 @@ enum BUTTON_TEXT {
 
 type EmitsName = 'navigate' | 'deleteFromCart' | 'addToCart' | 'buyNow' | 'filter' | 'reset';
 
-export { BUTTON_TEXT, EmitsName };
+enum SORTBY {
+  DEFAULT = 'Default',
+  PRICEASC = 'PriceASC',
+  PRICEDESC = 'PriceDESC',
+  RATINGASC = 'RatingASC',
+  RATINGDESC = 'RatingDESC',
+  DISCOUNTASC = 'DiscountASC',
+  DISCOUNTDESC = 'DiscountDESC',
+}
+
+export { BUTTON_TEXT, EmitsName, SORTBY };

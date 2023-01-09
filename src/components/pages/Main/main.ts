@@ -4,7 +4,7 @@ import Catalog from '../../Catalog/catalog';
 import LeftFilter from '../../Filters/LeftFilter/leftFilter';
 import ICard from '../../constants/interfaces/ICard';
 import CartData from '../CartPage/CartData';
-import { EmitsName } from '../../constants/constants/connstants';
+import { EmitsName, SORTBY } from '../../constants/constants/connstants';
 
 class MainPage extends Page {
   catalog: Catalog;
@@ -40,6 +40,7 @@ class MainPage extends Page {
 
   resetSearch = () => {
     this.catalog.inputSearch.value = '';
+    this.catalog.sortSelect.value = SORTBY.DEFAULT;
   };
 
   render(): HTMLElement {

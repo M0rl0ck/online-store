@@ -51,7 +51,7 @@ export default class LeftFilter extends EventEmitter {
     this.filtredData = [...data];
     this.rangePrice = this.getRange('price', this.data);
     this.rangeStock = this.getRange('stock', this.data);
-    this.isSetRange = false;
+    this.isSetRange = true;
 
     const currentRangePrice = this.getCurrentRang('price');
     this.currentRangePrice = currentRangePrice.length
@@ -96,8 +96,8 @@ export default class LeftFilter extends EventEmitter {
       this.isSetRange = true;
       this.currentRangePrice = [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
       this.currentRangeStock = [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangePrice.length - 1]];
-      this.emit('filter');
       this.emit('reset');
+      this.emit('filter');
     });
     this.buttonCopyLink = createHtmlElement('button', 'copy__button', 'Copy Link', this.buttonsWrapper);
     this.buttonCopyLink.addEventListener('click', () => {
