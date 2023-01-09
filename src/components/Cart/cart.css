@@ -112,4 +112,12 @@
   border: none;
   cursor: pointer;
   border: 1px solid orange;
+  transition: all 0.5s;
+}
+
+.plus__button:hover,
+.minus__button:hover {
+  background-color: #373636;
+  text-shadow: 0 0 8px rgb(184 24 24), 0 0 10px red, 0 0 13px red, 0 0 17px red;
+  transition: all 0.5s;
 }

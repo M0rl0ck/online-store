@@ -34,12 +34,26 @@
   align-items: center;
   text-shadow: 0 0 10px rgb(88 68 68), 0 0 5px red, 0 0 10px red, 0 0 15px red;
   padding-bottom: 5%;
+  transition: all 0.5s;
 }
 
 .logo__text {
   margin-left: 1rem;
   text-shadow: 0 0 10px rgb(184 24 24), 0 0 20px red, 0 0 30px red, 0 0 40px red;
   font-size: 160%;
+  transition: all 0.5s;
+}
+
+.logo__link:hover .logo__img {
+  text-shadow: 0 0 20px rgb(88 68 68), 0 0 10px red, 0 0 20px red, 0 0 30px red;
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+
+.logo__link:hover .logo__text {
+  text-shadow: 0 0 20px rgb(184 24 24), 0 0 25px red, 0 0 35px red, 0 0 45px red, 0 0 55px red;
+  transform: scale(1.05);
+  transition: all 0.5s;
 }
 
 .total__price-number {
@@ -55,6 +69,7 @@
   background-repeat: no-repeat;
   background-size: 80%;
   cursor: pointer;
+  transition: all 0.5s;
 }
 
 .cart__text {
@@ -68,4 +83,14 @@
   background-color: #181a1c;
   border-radius: 50%;
   border: 1px solid orange;
+  transition: all 0.5s;
+}
+
+.cart:hover {
+  transform: scale(1.1);
+  transition: all 0.5s;
+}
+
+.cart:hover .cart__text {
+  text-shadow: 0 0 10px rgb(88 68 68), 0 0 5px red, 0 0 10px red, 0 0 15px red;
 }

@@ -25,6 +25,18 @@
   padding-right: 2%;
   font-size: 120%;
   cursor: pointer;
+  transition: all 0.5s;
+}
+
+.reset__button:hover,
+.copy__button:hover {
+  text-shadow: 0 0 5px rgb(184 24 24), 0 0 10px red, 0 0 15px red, 0 0 20px red;
+  transition: all 0.5s;
+}
+
+.reset__button:active,
+.copy__button:active {
+  transform: scale(0.95);
 }
 
 .category__filter,
@@ -89,11 +101,32 @@
   padding: 5px;
 }
 
+.filter-line input {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.filter-line input:checked {
+  accent-color: orange;
+}
+
+.filter-line input:hover ~ label {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
+}
+
 .filter-line label {
   overflow: hidden;
   padding-left: 5px;
   cursor: pointer;
   user-select: none;
+  transition: all 0.5s;
+}
+
+.filter-line label:hover {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
 }
 
 .filter-line span {

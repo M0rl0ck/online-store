@@ -143,10 +143,7 @@ export default class LeftFilter extends EventEmitter {
     const priceRangeWrapper = createHtmlElement('div', 'range__wrapper', '', priceDualSlider);
     const priceRange = this.getRange('price', this.filtredData);
     if (priceRange.length) {
-      if (this.isSetRange) {
-        this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
-      }
-
+      this.rangeInputPrice.rangeInput.noUiSlider?.set([priceRange[RANG.FIRST], priceRange[priceRange.length - 1]]);
       this.priceDataFrom.textContent = '€' + priceRange[RANG.FIRST].toString();
       this.priceDataText.textContent = '⟷';
       this.priceDataTo.textContent = '€' + priceRange[priceRange.length - 1].toString();
@@ -167,9 +164,7 @@ export default class LeftFilter extends EventEmitter {
     const stockRangeWrapper = createHtmlElement('div', 'range__wrapper', '', stockDualSlider);
     const stockRange = this.getRange('stock', this.filtredData);
     if (stockRange.length) {
-      if (this.isSetRange) {
-        this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
-      }
+      this.rangeInputStock.rangeInput.noUiSlider?.set([stockRange[RANG.FIRST], stockRange[stockRange.length - 1]]);
       this.stockDataFrom.textContent = stockRange[RANG.FIRST].toString();
       this.stockDataText.textContent = '⟷';
       this.stockDataTo.textContent = stockRange[stockRange.length - 1].toString();
