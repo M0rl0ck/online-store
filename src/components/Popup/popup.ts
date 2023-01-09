@@ -29,6 +29,9 @@ export default class Popup {
       }
     });
     nameInput.addEventListener('input', function () {
+      if (nameInput.value.split(' ').length >= 2) {
+        nameInput.pattern += '\\s?([A-Za-zА-Яа-яЁё0-9-]{3,})?';
+      }
       if (ErrorMessageName.classList.contains('active')) {
         ErrorMessageName.classList.toggle('active');
       }
@@ -57,6 +60,7 @@ export default class Popup {
       }
     });
     phoneInput.addEventListener('input', function () {
+      phoneInput.value = phoneInput.value.replace(/[^\d+]/g, '');
       if (ErrorMessagePhone.classList.contains('active')) {
         ErrorMessagePhone.classList.toggle('active');
       }
