@@ -1,5 +1,5 @@
 import './header.css';
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { createHtmlElement } from '../../utils/createElement';
 import { PATH } from '../app/app';
 import CartData from '../pages/CartPage/CartData';
