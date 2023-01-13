@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { createHtmlElement } from '../../../utils/createElement';
 
 export default abstract class Page extends EventEmitter {
