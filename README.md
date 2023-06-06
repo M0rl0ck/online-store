@@ -1,15 +1,30 @@
-# 🚀 Welcome to your new awesome project!
+# Online store
 
-This project has been created using **webpack-cli**, you can now run
+### This application is a educational project made by the team ([Gregory](https://github.com/gregory-vinokur), [Sergey](https://github.com/m0rl0ck)) as part of the task for [RS School](https://rs.school/js/).
++ Deploy: https://m0rl0ck-gregory-vinokur-online-store.netlify.app/
 
-```
-npm run build
-```
+## Stack
++ TypeScript
++ Modules
++ Webpack
++ SPA
 
-or
+## Setup and Running
 
-```
-yarn build
-```
+### Clone this repository:
+`$ git clone https://github.com/M0rl0ck/online-store.git`
 
-to bundle your application
+### Go to branch develop:
+`$ git checkout develop`
+
+### Install dependencies:
+`$ npm install`
+
+### Running the app
+`$ npm start`
+
+### Prepare for production
+`$ npm run build`
+
+## APP
+![app](https://github.com/M0rl0ck/online-store/assets/95146343/c717bf39-87cc-4fea-831d-e63929a03330)
