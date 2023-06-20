@@ -87,7 +87,9 @@ export default class ProductDetails extends EventEmitter {
       if (!target || !(target instanceof HTMLElement)) {
         return;
       }
-      grandPhoto.setAttribute('src', `${target.getAttribute('src')}`);
+      if (target.getAttribute('src')) {
+        grandPhoto.setAttribute('src', `${target.getAttribute('src')}`);
+      }
     });
 
     const grandPhotoWrap = createHtmlElement('div', 'grand__photo-wrap', '', produtPhotos);
