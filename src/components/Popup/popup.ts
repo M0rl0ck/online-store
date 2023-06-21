@@ -1,5 +1,6 @@
 import './popup.css';
 import { createHtmlElement } from '../../utils/createElement';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const payment = require('payment');
 
 export default class Popup {
@@ -206,7 +207,7 @@ export default class Popup {
     validInput.setAttribute('placeholder', 'MM / YY');
     validInput.setAttribute('required', '');
     validInput.setAttribute('maxLength', '7');
-    validInput.setAttribute('pattern', `^(0[1-9]|1[0-2])\\s\/?\\s([0-9]{4}|[0-9]{2})$`);
+    validInput.setAttribute('pattern', `^(0[1-9]|1[0-2])\\s/?\\s([0-9]{4}|[0-9]{2})$`);
     payment.formatCardExpiry(validInput);
     const ErrorMessageCardValid = createHtmlElement('span', 'error__message', 'Invalid card expiry', cardDetails);
 
