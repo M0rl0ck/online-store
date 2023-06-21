@@ -92,7 +92,7 @@ export default class LeftFilter extends EventEmitter {
     this.buttonsWrapper = createHtmlElement('div', 'reset__total', '', this.element);
     this.buttonReset = createHtmlElement('button', 'reset__button', 'Reset Filters', this.buttonsWrapper);
     this.buttonReset.addEventListener('click', () => {
-      window.history.pushState({}, 'path', window.location.origin);
+      window.history.replaceState({}, 'path', window.location.origin);
       this.isSetRange = true;
       this.currentRangePrice = [this.rangePrice[RANG.FIRST], this.rangePrice[this.rangePrice.length - 1]];
       this.currentRangeStock = [this.rangeStock[RANG.FIRST], this.rangeStock[this.rangePrice.length - 1]];
@@ -148,7 +148,7 @@ export default class LeftFilter extends EventEmitter {
       }
 
       const priceText = this.rangeInputPrice.rangeInput.noUiSlider?.get();
-      if (priceText instanceof Array<string>) {
+      if (priceText instanceof Array) {
         this.priceDataFrom.textContent = '€' + priceText[RANG.FIRST];
         this.priceDataText.textContent = '⟷';
         this.priceDataTo.textContent = '€' + priceText[RANG.SECOND];
@@ -175,7 +175,7 @@ export default class LeftFilter extends EventEmitter {
       }
 
       const stockText = this.rangeInputStock.rangeInput.noUiSlider?.get();
-      if (stockText instanceof Array<string>) {
+      if (stockText instanceof Array) {
         this.stockDataFrom.textContent = `${stockText[RANG.FIRST]}`;
         this.stockDataText.textContent = '⟷';
         this.stockDataTo.textContent = `${stockText[RANG.SECOND]}`;
@@ -222,7 +222,7 @@ export default class LeftFilter extends EventEmitter {
     const filterProps = qs.parse(window.location.search);
     filterProps[name] = value.join('↕');
     const search = qs.stringify(filterProps);
-    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+    window.history.replaceState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
     this.emit('filter');
   };
 
@@ -243,7 +243,7 @@ export default class LeftFilter extends EventEmitter {
       delete filterProps[nameFilter];
     }
     const search = qs.stringify(filterProps);
-    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+    window.history.replaceState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
     this.emit('filter');
   };
 

@@ -194,6 +194,6 @@ export default class Catalog extends EventEmitter {
       }
     }
     const search = qs.stringify(sortProps);
-    window.history.pushState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
+    window.history.replaceState({}, 'path', window.location.origin + window.location.pathname + `${search ? '?' + search : ''}`);
   };
 }
