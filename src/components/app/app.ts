@@ -1,0 +1,88 @@
+import Header from '../Header/header';
+import Footer from '../Footer/footer';
+import ICard from '../constants/interfaces/ICard';
+import connector from '../../data/connector/Connector';
+import ErrorPage from '../pages/ErrorPage/errorPage';
+import { createHtmlElement } from '../../utils/createElement';
+import MainPage from '../pages/Main/main';
+import CartPage from '../pages/CartPage/CartPage';
+import CartData from '../pages/CartPage/CartData';
+import CartControl from '../pages/CartPage/CartControl';
+import ProductPage from './../pages/ProductPage/productPage';
+
+export const PATH = {
+  catalog: '/',
+  product: '/product',
+  cart: '/cart',
+  errorPage: '/404',
+};
+
+class App {
+  private container: HTMLElement;
+  private routes;
+  cartData: CartData;
+  header: Header;
+  constructor() {
+    this.cartData = new CartData();
+    this.header = new Header(this.cartData);
+    this.container = createHtmlElement('main', 'main__content', '', document.body);
+    const footer = new Footer();
+    footer.createFooter();
+    this.routes = {
+      [PATH.catalog]: this.mainPage,
+      [PATH.product]: this.product,
+      [PATH.cart]: this.cart,
+      [PATH.errorPage]: this.errorPage,
+    };
+
+    window.addEventListener('popstate', () => {
+      this.routes[window.location.pathname.split('/').slice(0, 2).join('/')]();
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      const path = window.location.pathname.split('/').slice(0, 2).join('/');
+      if (this.routes[path]) {
+        this.routes[path]();
+      } else {
+        window.history.pushState({}, 'path', window.location.origin + PATH.errorPage);
+        this.routes[PATH.errorPage]();
+      }
+    });
+
+    this.header.on('navigate', this.navigate);
+  }
+
+  navigate = (path: string) => {
+    window.history.pushState({}, 'path', window.location.origin + path);
+    this.routes[path.split('/').slice(0, 2).join('/')]();
+  };
+
+  private mainPage = async (): Promise<void> => {
+    this.container.innerHTML = '';
+    const data: ICard[] = await connector.getProducts(100);
+    const main = new MainPage(PATH.catalog, data, this.cartData);
+    main.catalog.on('navigate', this.navigate);
+    this.container.append(main.render());
+  };
+  private product = () => {
+    this.container.innerHTML = '';
+    const page = new ProductPage(PATH.product, this.cartData);
+    page.on('navigate', this.navigate);
+    this.container.append(page.render());
+  };
+  private cart = async () => {
+    this.container.innerHTML = '';
+    const data: ICard[] = await connector.getProducts(100);
+    const page = new CartPage(PATH.cart, this.cartData, data);
+    this.container.innerHTML = '';
+    this.container.append(page.render());
+    page.on('navigate', this.navigate);
+    new CartControl(this.cartData, page);
+  };
+  private errorPage = () => {
+    this.container.innerHTML = '';
+    const page = new ErrorPage(PATH.errorPage);
+    this.container.append(page.render());
+  };
+}
+
+export default App;

@@ -1,0 +1,141 @@
+.product__details {
+  width: 80%;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.navigation {
+  margin: 3% auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.nav__link {
+  font-size: 100%;
+  color: wheat;
+}
+
+.product__detail {
+  width: 100%;
+  border: 2px solid orange;
+  border-radius: 1rem;
+  background: rgba(24, 26, 28, 0.5);
+  overflow: hidden;
+}
+
+.product__title {
+  width: 100%;
+  text-align: center;
+  background: #181a1c;
+  border-bottom: 1px solid orange;
+}
+
+.product__title-text {
+  font-size: 150%;
+  padding: 0.5%;
+}
+
+.product__data {
+  display: flex;
+  width: 100%;
+  padding: 0.5%;
+}
+
+.product__photos {
+  width: 40%;
+  display: flex;
+}
+
+.small__photos {
+  width: 25%;
+}
+
+.small__photo {
+  width: 80%;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.grand__photo-wrap {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grand__photo {
+  max-height: 40vh;
+  width: auto;
+  max-width: 100%;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+}
+
+.product__info {
+  width: 40%;
+}
+
+.product__detail-item {
+  margin: 1% auto;
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  text-align: center;
+}
+
+.product__desc-title {
+  text-align: center;
+  background-color: #181a1c;
+  padding: 0.7%;
+}
+
+.product__desc-text {
+  padding: 0.7%;
+  color: wheat;
+}
+
+.product__add-to-cart {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cart__buttons {
+  width: 90%;
+  font-size: 200%;
+  color: wheat;
+  text-shadow: 0 0 10px rgb(184 24 24), 0 0 20px red, 0 0 30px red, 0 0 40px red;
+}
+
+.cart__button-add,
+.cart__button-buy {
+  font-size: 40%;
+  display: block;
+  padding: 7% 0;
+  background: #9a3535;
+  color: wheat;
+  border: 2px solid orange;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  width: 100%;
+  margin: 1rem auto;
+  transition: all 0.5s;
+}
+
+.cart__button-add:hover,
+.cart__button-buy:hover {
+  background: #722323;
+  color: #ceb586;
+  transition: all 0.5s;
+}
+
+.cart__button-add:active,
+.cart__button-buy:active {
+  transform: scale(0.95);
+  transition: all 0.2s;
+}

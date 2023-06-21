@@ -1,0 +1,28 @@
+.product__details {
+  width: 80%;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.navigation {
+  margin: 3% auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.main__wrapper {
+  justify-content: center;
+}
+
+.nav__link-store {
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.nav__link-store:hover {
+  transform: scale(1.2);
+  text-shadow: 6px 4px 1px black;
+  transition: 0.4s;
+}

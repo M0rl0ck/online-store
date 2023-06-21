@@ -1,0 +1,139 @@
+.filters {
+  width: 25%;
+  background: rgba(24, 26, 28, 0.5);
+  border: 1px solid orange;
+  border-radius: 0.7rem;
+  padding: 0.5%;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.reset__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2%;
+  color: wheat;
+}
+
+.reset__button,
+.copy__button {
+  background-color: #181a1c;
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  padding-left: 2%;
+  padding-right: 2%;
+  font-size: 120%;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.reset__button:hover,
+.copy__button:hover {
+  text-shadow: 0 0 5px rgb(184 24 24), 0 0 10px red, 0 0 15px red, 0 0 20px red;
+  transition: all 0.5s;
+}
+
+.reset__button:active,
+.copy__button:active {
+  transform: scale(0.95);
+}
+
+.category__filter,
+.brand__filter {
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 5%;
+  display: block;
+}
+
+.category__filter-title,
+.brand__filter-title,
+.price__slider-title {
+  text-align: center;
+  background-color: #181a1c;
+  border-bottom: 1px solid orange;
+}
+
+.filter__list {
+  height: 10rem;
+  overflow: hidden;
+  overflow-y: auto;
+  background: rgba(76, 74, 65, 0.4);
+  padding: 2%;
+}
+
+.price__slider {
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 5%;
+  display: block;
+  background: rgba(76, 74, 65, 0.4);
+}
+
+.price__data {
+  margin-top: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.data__from,
+.data__arrow,
+.data__to {
+  color: wheat;
+}
+
+.range__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 2rem;
+}
+
+.filter-line {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.filter-line input {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.filter-line input:checked {
+  accent-color: orange;
+}
+
+.filter-line input:hover ~ label {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
+}
+
+.filter-line label {
+  overflow: hidden;
+  padding-left: 5px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.5s;
+}
+
+.filter-line label:hover {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
+}
+
+.filter-line span {
+  margin-left: auto;
+}
+
+.item-non-active span,
+.item-non-active label {
+  color: grey;
+}

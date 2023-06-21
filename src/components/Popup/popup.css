@@ -1,0 +1,258 @@
+.popup__content-wrap {
+  padding: 1%;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  width: 40%;
+  background-color: #181a1c;
+  z-index: 99;
+  position: absolute;
+  display: none;
+}
+
+.popup__active {
+  display: block;
+}
+
+.popup__content {
+  width: 100%;
+  margin: auto;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.popup__form {
+  height: fit-content;
+}
+
+.personal__details {
+  width: 90%;
+  margin: auto;
+}
+
+.personal__details-title,
+.card__details-title {
+  text-align: center;
+  margin: 0 auto;
+  font-size: 90%;
+}
+
+.personal__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.item__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100px;
+}
+
+.item__input {
+  background-color: #181a1c;
+  width: 85%;
+  border: 1px solid orange;
+  color: orange;
+  border-radius: 2rem;
+  padding: 0.4rem;
+  outline: none;
+  font-size: 90%;
+  text-align: center;
+  margin: 2% 2%;
+}
+
+.card__details {
+  margin-top: 1%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__data {
+  border: 1px solid orange;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  background: rgb(0, 9, 36);
+  background: linear-gradient(90deg, rgb(99 125 201) 6%, rgb(107 107 128) 34%, rgb(10 49 57) 100%);
+  width: 80%;
+  height: 12.5rem;
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+}
+
+.all__cards {
+  background-color: #fff;
+  width: 280px;
+  height: 56px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/all_cards.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  align-self: center;
+  margin-top: 2px;
+}
+
+.card__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 7% 3% 10%;
+}
+
+.card__img {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/no_card_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.visa {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/visa_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.mastercard {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/mastercard_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.ae {
+  background-color: #fff;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+  background: url(../../../img/AE_logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.card__number-input {
+  width: 80%;
+  background: rgb(233, 233, 202);
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  outline: none;
+  text-align: center;
+  margin-left: 2%;
+  font-size: 100%;
+  color: #000;
+  font-weight: 700;
+  height: 1.6rem;
+}
+
+.card__other {
+  margin-bottom: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.valid__data,
+.cvv__data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 90%;
+}
+
+.valid__input,
+.cvv__input {
+  width: 60%;
+  height: 1rem;
+  background: rgb(233, 233, 202);
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  outline: none;
+  text-align: center;
+  margin-left: 2%;
+  font-size: 90%;
+  color: #000;
+  font-weight: 700;
+}
+
+.confirm__button {
+  width: 40%;
+  font-size: 90%;
+  background-color: #3f1010;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  padding: 1%;
+  cursor: pointer;
+  display: block;
+  margin: 5% auto;
+}
+
+.item__input:invalid {
+  border-color: #900;
+  background-color: #181a1c;
+}
+
+.item__input:valid {
+  border-color: rgb(71, 161, 10);
+  background-color: #181a1c;
+}
+
+.card__number-input:valid,
+.valid__input:valid,
+.cvv__input:valid {
+  border-color: rgb(71, 161, 10);
+}
+
+.card__number-input:invalid,
+.valid__input:invalid,
+.cvv__input:invalid {
+  border: 1px solid orange;
+}
+
+.item__input:focus:invalid {
+  outline: none;
+}
+
+.error__message {
+  width: 35%;
+  padding: 0;
+  font-size: 80%;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  display: none;
+  text-align: center;
+  align-self: center;
+  margin-top: 5px;
+}
+
+.active {
+  display: block;
+}

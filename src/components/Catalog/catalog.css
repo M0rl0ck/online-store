@@ -1,0 +1,95 @@
+.catalog {
+  width: 74%;
+  background: rgba(24, 26, 28, 0.5);
+  border: 1px solid orange;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+.sort__products {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(24, 26, 28, 0.5);
+  padding: 0.5%;
+  border-bottom: 1px solid orange;
+}
+
+.sort__select {
+  outline: 0;
+  border: 0;
+  flex: 1;
+  padding: 0 1em;
+  color: #fff;
+  background-color: #181a1c;
+  cursor: pointer;
+  border-radius: 1rem;
+  color: orange;
+  border: 1px solid orange;
+  text-align: center;
+}
+
+.sort__stat {
+  color: wheat;
+}
+
+.sort__search {
+  background-color: #181a1c;
+  width: 20%;
+  border: 1px solid orange;
+  color: orange;
+  border-radius: 2rem;
+  padding: 0.2rem;
+  outline: none;
+  font-size: 80%;
+  text-align: center;
+}
+
+.view__mode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.view__small,
+.view__big {
+  border: 1px solid orange;
+  height: 2rem;
+  width: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.3rem;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: all 0.5s;
+}
+
+.view__small:hover,
+.view__big:hover {
+  text-shadow: 0 0 2px rgb(184 24 24), 0 0 4px red, 0 0 8px red, 0 0 10px red;
+  transition: all 0.5s;
+}
+
+.active {
+  box-shadow: 0 0 3px 1px #c45f07;
+  border: 1px solid rgb(235, 68, 68);
+}
+
+.products__wrap {
+  padding: 0.5%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.not__found {
+  text-align: center;
+  font-size: 200%;
+  margin-top: 10%;
+  color: wheat;
+  margin: 5% auto;
+}

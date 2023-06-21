@@ -1,0 +1,105 @@
+.product__card {
+  width: 23%;
+  padding-top: 20%;
+  position: relative;
+  margin: 1%;
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product__card_in-cart {
+  box-shadow: 0 0 5px 2px orange, 0 0 5px 4px red;
+}
+
+.small {
+  width: 14.6%;
+  padding-top: 12%;
+}
+
+.card__wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.card__text {
+  width: 100%;
+  height: 83%;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.small .card__text {
+  opacity: 0;
+}
+
+.card__title {
+  background: rgba(24, 26, 28, 0.8);
+  padding: 1%;
+  font-size: 90%;
+  text-align: center;
+  border-bottom: 1px solid orange;
+  white-space: nowrap;
+}
+
+.card__info-wrap {
+  color: wheat;
+}
+
+.card__info {
+  width: 60%;
+  background-color: #4d2f14f2;
+  border-radius: 0 0 0.4rem;
+  border-bottom: 1px solid orange;
+  border-right: 1px solid orange;
+  padding: 1%;
+}
+
+.info__category {
+  font-size: 0.6rem;
+  color: #bb954e;
+}
+
+.info__category-data {
+  font-size: 0.6rem;
+  color: wheat;
+}
+
+.card__buttons {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.add__button,
+.details__button {
+  background-color: #181a1c;
+  border: 1px solid orange;
+  border-radius: 0.3rem;
+  padding-left: 2%;
+  padding-right: 2%;
+  font-size: 80%;
+  transition: text-shadow 0.5s;
+  cursor: pointer;
+}
+
+.add__button:hover,
+.details__button:hover {
+  text-shadow: 0 0 5px rgb(184 24 24), 0 0 10px red, 0 0 15px red, 0 0 20px red;
+  transition: text-shadow 0.5s;
+}
+
+.add__button:active,
+.details__button:active {
+  transform: scale(0.95);
+}
+
+.small .add__button,
+.small .details__button {
+  font-size: 65%;
+}
